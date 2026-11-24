@@ -1,0 +1,1875 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Ukraine Health – Hero Support 1.2.0\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Domain: ukraine-health\n"
+
+#. Plugin Name of the plugin
+#: ukraine-health.php
+msgid "Ukraine Health – Hero Support"
+msgstr "Ukraine Health – підтримка Героїв"
+
+#. Plugin URI of the plugin
+#: ukraine-health.php
+msgid "https://github.com/kangarooo/ukraine-health"
+msgstr ""
+
+#. Description of the plugin
+#: ukraine-health.php
+msgid "Connects Heroes (patients in rehabilitation) with Supporters (hairdressers, nail care, clothing, care products, mobility aids…). Requests are grouped per hospital and service; when a group reaches its minimum size, matching Supporters are notified (email, Telegram, WhatsApp) and can accept it with an appointment date."
+msgstr "Поєднує Героїв (пацієнтів на реабілітації) з Помічниками (перукарі, манікюр, одяг, засоби догляду, засоби пересування…). Запити групуються за лікарнею та послугою; коли група набирає мінімум, відповідних Помічників сповіщають (email, Telegram, WhatsApp), і вони можуть прийняти її з датою візиту."
+
+#. Author of the plugin
+#: ukraine-health.php
+msgid "kangarooo"
+msgstr ""
+
+#: includes/class-uh-admin.php:31
+msgid "Dashboard"
+msgstr "Огляд"
+
+#: includes/class-uh-admin.php:32
+#: includes/class-uh-admin.php:405
+msgid "Groups"
+msgstr "Групи"
+
+#: includes/class-uh-admin.php:33
+msgid "Network"
+msgstr "Мережа"
+
+#: includes/class-uh-admin.php:34
+#: includes/class-uh-admin.php:467
+msgid "Hospitals"
+msgstr "Лікарні"
+
+#: includes/class-uh-admin.php:35
+#: includes/class-uh-admin.php:487
+msgid "Services"
+msgstr "Послуги"
+
+#: includes/class-uh-admin.php:36
+msgid "Settings"
+msgstr "Налаштування"
+
+#: includes/class-uh-admin.php:52
+msgid "Saved."
+msgstr "Збережено."
+
+#: includes/class-uh-admin.php:53
+msgid "Deleted."
+msgstr "Видалено."
+
+#: includes/class-uh-admin.php:54
+msgid "Pages created. You can find them under Pages."
+msgstr "Сторінки створено. Їх можна знайти в розділі «Сторінки»."
+
+#: includes/class-uh-admin.php:55
+msgid "Cannot delete: it is used by groups. Deactivate it instead."
+msgstr "Неможливо видалити: це використовується групами. Краще деактивуйте."
+
+#: includes/class-uh-admin.php:56
+msgid "Could not save."
+msgstr "Не вдалося зберегти."
+
+#: includes/class-uh-admin.php:57
+msgid "Not changed: that would put the member under someone they invited."
+msgstr "Не змінено: так учасник опинився б під людиною, яку сам запросив."
+
+#: includes/class-uh-admin.php:58
+msgid "Telegram bot connected."
+msgstr "Telegram-бота підключено."
+
+#: includes/class-uh-admin.php:59
+msgid "Could not connect the Telegram bot. Check the token and that the site is reachable over HTTPS."
+msgstr "Не вдалося підключити Telegram-бота. Перевірте токен і те, що сайт доступний через HTTPS."
+
+#: includes/class-uh-admin.php:60
+msgid "Test email sent. Check your inbox (and spam folder) before you switch two-step login on."
+msgstr "Тестовий лист надіслано. Перевірте пошту (і папку «Спам»), перш ніж увімкнути двоетапний вхід."
+
+#: includes/class-uh-admin.php:80
+msgid "Not allowed."
+msgstr "Не дозволено."
+
+#: includes/class-uh-admin.php:280
+msgid "Request help"
+msgstr "Попросити допомогу"
+
+#: includes/class-uh-admin.php:281
+#: includes/class-uh-frontend.php:880
+msgid "My requests"
+msgstr "Мої запити"
+
+#: includes/class-uh-admin.php:282
+#: includes/class-uh-admin.php:363
+#: includes/class-uh-frontend.php:1056
+msgid "Supporters"
+msgstr "Помічники"
+
+#: includes/class-uh-admin.php:283
+msgid "Join"
+msgstr "Приєднатися"
+
+#: includes/class-uh-admin.php:352
+#, php-format
+msgid "%d open problem report"
+msgid_plural "%d open problem reports"
+msgstr[0] "%d відкрита скарга"
+msgstr[1] "%d відкриті скарги"
+msgstr[2] "%d відкритих скарг"
+
+#: includes/class-uh-admin.php:352
+msgid "Review now"
+msgstr "Переглянути зараз"
+
+#: includes/class-uh-admin.php:355
+#, php-format
+msgid "%d Supporter is waiting for approval"
+msgid_plural "%d Supporters are waiting for approval"
+msgstr[0] "%d Помічник чекає на схвалення"
+msgstr[1] "%d Помічники чекають на схвалення"
+msgstr[2] "%d Помічників чекають на схвалення"
+
+#: includes/class-uh-admin.php:355
+msgid "Review"
+msgstr "Переглянути"
+
+#: includes/class-uh-admin.php:359
+msgid "Heroes waiting"
+msgstr "Героїв чекають"
+
+#: includes/class-uh-admin.php:360
+msgid "Groups ready"
+msgstr "Готові групи"
+
+#: includes/class-uh-admin.php:361
+#: includes/class-uh-install.php:347
+msgid "Scheduled"
+msgstr "Заплановано"
+
+#: includes/class-uh-admin.php:362
+#: includes/class-uh-frontend.php:1053
+msgid "Heroes helped"
+msgstr "Героям допомогли"
+
+#: includes/class-uh-admin.php:370
+msgid "Ready groups without a Supporter"
+msgstr "Готові групи без Помічника"
+
+#: includes/class-uh-admin.php:372
+msgid "None – well done!"
+msgstr "Немає – чудово!"
+
+#: includes/class-uh-admin.php:374
+#: includes/class-uh-admin.php:412
+#: includes/class-uh-admin.php:489
+#: includes/class-uh-privacy.php:173
+msgid "Service"
+msgstr "Послуга"
+
+#: includes/class-uh-admin.php:374
+#: includes/class-uh-admin.php:412
+#: includes/class-uh-frontend.php:555
+#: includes/class-uh-privacy.php:174
+msgid "Hospital"
+msgstr "Лікарня"
+
+#: includes/class-uh-admin.php:374
+#: includes/class-uh-admin.php:412
+msgid "Heroes"
+msgstr "Герої"
+
+#: includes/class-uh-admin.php:374
+msgid "Matching Supporters"
+msgstr "Відповідні Помічники"
+
+#: includes/class-uh-admin.php:377
+msgid "Open"
+msgstr "Відкрити"
+
+#: includes/class-uh-admin.php:384
+msgid "Next step: create the public pages under Ukraine Health → Settings."
+msgstr "Наступний крок: створіть публічні сторінки в Ukraine Health → Налаштування."
+
+#: includes/class-uh-admin.php:387
+msgid "Recent activity"
+msgstr "Остання активність"
+
+#: includes/class-uh-admin.php:390
+msgid "guest"
+msgstr "гість"
+
+#: includes/class-uh-admin.php:405
+msgid "Export CSV"
+msgstr "Експорт CSV"
+
+#: includes/class-uh-admin.php:407
+msgid "All"
+msgstr "Усі"
+
+#: includes/class-uh-admin.php:412
+#: includes/class-uh-admin.php:739
+#: includes/class-uh-admin.php:763
+#: includes/class-uh-privacy.php:180
+msgid "Status"
+msgstr "Статус"
+
+#: includes/class-uh-admin.php:412
+#: includes/class-uh-admin.php:611
+#: includes/class-uh-admin.php:677
+#: includes/class-uh-admin.php:763
+msgid "Supporter"
+msgstr "Помічник"
+
+#: includes/class-uh-admin.php:412
+#: includes/class-uh-admin.php:453
+msgid "Appointment"
+msgstr "Візит"
+
+#: includes/class-uh-admin.php:415
+msgid "No groups yet."
+msgstr "Груп ще немає."
+
+#: includes/class-uh-admin.php:429
+msgid "All groups"
+msgstr "Усі групи"
+
+#: includes/class-uh-admin.php:430
+#, php-format
+msgid "Supporter: %1$s · Appointment: %2$s"
+msgstr "Помічник: %1$s · Візит: %2$s"
+
+#: includes/class-uh-admin.php:432
+#: includes/class-uh-admin.php:469
+#: includes/class-uh-admin.php:474
+#: includes/class-uh-admin.php:494
+msgid "Name"
+msgstr "Ім'я"
+
+#: includes/class-uh-admin.php:432
+#: includes/class-uh-privacy.php:178
+msgid "Ward"
+msgstr "Палата"
+
+#: includes/class-uh-admin.php:432
+#: includes/class-uh-frontend.php:605
+#: includes/class-uh-frontend.php:800
+#: includes/class-uh-frontend.php:930
+#: includes/class-uh-privacy.php:177
+msgid "Phone"
+msgstr "Телефон"
+
+#: includes/class-uh-admin.php:432
+#: includes/class-uh-admin.php:489
+msgid "Sizes"
+msgstr "Розміри"
+
+#: includes/class-uh-admin.php:432
+#: includes/class-uh-privacy.php:179
+msgid "Notes"
+msgstr "Примітки"
+
+#: includes/class-uh-admin.php:432
+msgid "Joined"
+msgstr "Приєднався"
+
+#: includes/class-uh-admin.php:434
+msgid "details deleted"
+msgstr "дані видалено"
+
+#: includes/class-uh-admin.php:436
+msgid "Remove this Hero from the group?"
+msgstr "Видалити цього Героя з групи?"
+
+#: includes/class-uh-admin.php:436
+msgid "Remove"
+msgstr "Видалити"
+
+#: includes/class-uh-admin.php:442
+#: includes/class-uh-admin.php:479
+#: includes/class-uh-admin.php:507
+msgid "Update"
+msgstr "Оновити"
+
+#: includes/class-uh-admin.php:448
+msgid "Assign Supporter"
+msgstr "Призначити Помічника"
+
+#: includes/class-uh-admin.php:453
+#: includes/class-uh-admin.php:739
+msgid "Note"
+msgstr "Примітка"
+
+#: includes/class-uh-admin.php:453
+msgid "★ = offers this service at this hospital."
+msgstr "★ = надає цю послугу в цій лікарні."
+
+#: includes/class-uh-admin.php:455
+msgid "Or change status"
+msgstr "Або змініть статус"
+
+#: includes/class-uh-admin.php:460
+#: includes/class-uh-admin.php:718
+msgid "Save"
+msgstr "Зберегти"
+
+#: includes/class-uh-admin.php:469
+#: includes/class-uh-admin.php:474
+msgid "City"
+msgstr "Місто"
+
+#: includes/class-uh-admin.php:469
+#: includes/class-uh-admin.php:474
+msgid "Country"
+msgstr "Країна"
+
+#: includes/class-uh-admin.php:469
+#: includes/class-uh-admin.php:478
+#: includes/class-uh-admin.php:489
+#: includes/class-uh-admin.php:506
+msgid "Active"
+msgstr "Активна"
+
+#: includes/class-uh-admin.php:471
+#: includes/class-uh-admin.php:491
+msgid "Delete"
+msgstr "Видалити"
+
+#: includes/class-uh-admin.php:473
+msgid "Edit hospital"
+msgstr "Редагувати лікарню"
+
+#: includes/class-uh-admin.php:473
+msgid "Add hospital"
+msgstr "Додати лікарню"
+
+#: includes/class-uh-admin.php:474
+msgid "Address"
+msgstr "Адреса"
+
+#: includes/class-uh-admin.php:474
+msgid "Visiting hours (shown to Heroes and Supporters)"
+msgstr "Години відвідування (бачать Герої та Помічники)"
+
+#: includes/class-uh-admin.php:474
+msgid "Contact person / phone"
+msgstr "Контактна особа / телефон"
+
+#: includes/class-uh-admin.php:474
+msgid "Contact person email"
+msgstr "Email контактної особи"
+
+#: includes/class-uh-admin.php:477
+msgid "Email the contact person when a visit is planned (service, time, number of patients, wards and the Supporter’s nickname – no patient names)"
+msgstr "Надсилати контактній особі email, коли заплановано візит (послуга, час, кількість пацієнтів, палати та нікнейм Помічника – без імен пацієнтів)"
+
+#: includes/class-uh-admin.php:479
+#: includes/class-uh-admin.php:507
+msgid "Add"
+msgstr "Додати"
+
+#: includes/class-uh-admin.php:489
+#: includes/class-uh-admin.php:495
+msgid "Category"
+msgstr "Категорія"
+
+#: includes/class-uh-admin.php:489
+msgid "Min. group"
+msgstr "Мін. група"
+
+#: includes/class-uh-admin.php:493
+msgid "Edit service"
+msgstr "Редагувати послугу"
+
+#: includes/class-uh-admin.php:493
+msgid "Add service"
+msgstr "Додати послугу"
+
+#: includes/class-uh-admin.php:500
+msgid "Minimum Heroes before Supporters are notified"
+msgstr "Мінімум Героїв, перш ніж сповіщати Помічників"
+
+#: includes/class-uh-admin.php:501
+msgid "Minutes per Hero (for calendar length)"
+msgstr "Хвилин на одного Героя (для тривалості в календарі)"
+
+#: includes/class-uh-admin.php:502
+msgid "Ask for clothing / shoe sizes"
+msgstr "Запитувати розміри одягу / взуття"
+
+#: includes/class-uh-admin.php:503
+msgid "Group chat link (optional)"
+msgstr "Посилання на груповий чат (необов'язково)"
+
+#: includes/class-uh-admin.php:504
+msgid "Description"
+msgstr "Опис"
+
+#: includes/class-uh-admin.php:505
+msgid "Sort order"
+msgstr "Порядок сортування"
+
+#: includes/class-uh-admin.php:513
+msgid "Ukraine Health settings"
+msgstr "Налаштування Ukraine Health"
+
+#: includes/class-uh-admin.php:517
+msgid "Public pages"
+msgstr "Публічні сторінки"
+
+#: includes/class-uh-admin.php:528
+msgid "Re-create missing pages"
+msgstr "Створити відсутні сторінки"
+
+#: includes/class-uh-admin.php:528
+msgid "Create pages"
+msgstr "Створити сторінки"
+
+#: includes/class-uh-admin.php:530
+msgid "Sign-up is invite-only: people join through an invite link from a member (see Ukraine Health → Network). Leave WordPress’s “Anyone can register” switched off."
+msgstr "Реєстрація лише за запрошенням: люди приєднуються за посиланням-запрошенням від учасника (див. Ukraine Health → Мережа). Залиште вимкненим параметр WordPress «Будь-хто може зареєструватися»."
+
+#: includes/class-uh-admin.php:532
+#, php-format
+msgid "“Anyone can register” is on in <a href=\"%s\">Settings → General</a>. Accounts made through the WordPress sign-up form are not connected to anyone and get no access until a coordinator reviews them, but it is safer to switch it off."
+msgstr "Параметр «Будь-хто може зареєструватися» увімкнено в <a href=\"%s\">Налаштування → Загальні</a>. Облікові записи, створені через форму реєстрації WordPress, ні з ким не пов'язані й не мають доступу, доки їх не перевірить координатор, але безпечніше його вимкнути."
+
+#: includes/class-uh-admin.php:537
+msgid "Requests"
+msgstr "Запити"
+
+#: includes/class-uh-admin.php:538
+msgid "Guests"
+msgstr "Гості"
+
+#: includes/class-uh-admin.php:538
+msgid "Heroes can request help without an account (phone required)"
+msgstr "Герої можуть попросити допомогу без облікового запису (потрібен телефон)"
+
+#: includes/class-uh-admin.php:539
+msgid "Invite-only requests"
+msgstr "Запити лише за запрошенням"
+
+#: includes/class-uh-admin.php:539
+msgid "Heroes without a connected account need an invite code to request help (recommended)"
+msgstr "Героям без пов'язаного облікового запису для запиту потрібен код запрошення (рекомендовано)"
+
+#: includes/class-uh-admin.php:540
+msgid "Rate limit"
+msgstr "Обмеження частоти"
+
+#: includes/class-uh-admin.php:540
+msgid "guest submissions per hour per device (0 = off)"
+msgstr "запитів гостей на годину з одного пристрою (0 = вимкнено)"
+
+#: includes/class-uh-admin.php:541
+msgid "Messengers"
+msgstr "Месенджери"
+
+#: includes/class-uh-admin.php:542
+msgid "Consent text"
+msgstr "Текст згоди"
+
+#: includes/class-uh-admin.php:543
+msgid "Privacy and safety"
+msgstr "Конфіденційність і безпека"
+
+#: includes/class-uh-admin.php:544
+msgid "Contact details for Supporters"
+msgstr "Контактні дані для Помічників"
+
+#: includes/class-uh-admin.php:544
+msgid "hours before the visit the Supporter sees the Heroes’ wards and phone numbers (0 = as soon as they accept)"
+msgstr "годин до візиту Помічник бачить палати та телефони Героїв (0 = одразу після прийняття)"
+
+#: includes/class-uh-admin.php:545
+msgid "Delete contact details"
+msgstr "Видаляти контактні дані"
+
+#: includes/class-uh-admin.php:545
+msgid "days after a visit is completed or cancelled, or a request withdrawn (0 = never). Only anonymous counts are kept."
+msgstr "днів після завершення чи скасування візиту або відкликання запиту (0 = ніколи). Зберігаються лише анонімні підрахунки."
+
+#: includes/class-uh-admin.php:546
+msgid "Waiting groups"
+msgstr "Групи, що чекають"
+
+#: includes/class-uh-admin.php:546
+msgid "days a ready group may wait before coordinators are alerted (0 = off)"
+msgstr "днів, скільки готова група може чекати, перш ніж сповістити координаторів (0 = вимкнено)"
+
+#: includes/class-uh-admin.php:547
+msgid "Approve Supporters"
+msgstr "Схвалювати Помічників"
+
+#: includes/class-uh-admin.php:547
+msgid "A coordinator approves every new Supporter before they see any Hero (Supporters you invite yourself are approved automatically)"
+msgstr "Координатор схвалює кожного нового Помічника, перш ніж той побачить будь-якого Героя (Помічників, яких ви запросили самі, схвалено автоматично)"
+
+#: includes/class-uh-admin.php:548
+#: includes/class-uh-admin.php:611
+msgid "Code of conduct"
+msgstr "Кодекс поведінки"
+
+#: includes/class-uh-admin.php:548
+msgid "One rule per line. Supporters must accept it before they can help."
+msgstr "Одне правило на рядок. Помічники мають прийняти його, перш ніж допомагати."
+
+#: includes/class-uh-admin.php:550
+msgid "Two-step login"
+msgstr "Двоетапний вхід"
+
+#: includes/class-uh-admin.php:550
+msgid "Administrators and coordinators enter a code sent by email after their password"
+msgstr "Адміністратори й координатори після пароля вводять код, надісланий на email"
+
+#: includes/class-uh-admin.php:550
+msgid "Send yourself a test email first (button below). If login codes do not arrive you would be locked out. Emergency switch: add define( 'UH_DISABLE_2FA', true ); to wp-config.php."
+msgstr "Спершу надішліть собі тестовий лист (кнопка нижче). Якщо коди входу не надходитимуть, ви не зможете увійти. Аварійний вимикач: додайте define( 'UH_DISABLE_2FA', true ); у wp-config.php."
+
+#: includes/class-uh-admin.php:550
+msgid "Currently switched off in wp-config.php."
+msgstr "Зараз вимкнено у wp-config.php."
+
+#: includes/class-uh-admin.php:551
+msgid "Coordinator notifications"
+msgstr "Сповіщення координаторів"
+
+#: includes/class-uh-admin.php:552
+#: includes/class-uh-frontend.php:929
+msgid "Email"
+msgstr "Email"
+
+#: includes/class-uh-admin.php:552
+msgid "notify on every request"
+msgstr "сповіщати про кожен запит"
+
+#: includes/class-uh-admin.php:553
+msgid "Bot token"
+msgstr "Токен бота"
+
+#: includes/class-uh-admin.php:553
+msgid "Coordinator chat / group ID"
+msgstr "ID чату / групи координатора"
+
+#: includes/class-uh-admin.php:553
+#, php-format
+msgid "Connected as @%s. Heroes and Supporters can link their chat in one tap."
+msgstr "Підключено як @%s. Герої та Помічники можуть під'єднати свій чат одним дотиком."
+
+#: includes/class-uh-admin.php:553
+msgid "Create a bot with @BotFather in Telegram, paste its token here, save, then press “Connect Telegram bot” below."
+msgstr "Створіть бота через @BotFather у Telegram, вставте сюди його токен, збережіть і натисніть «Підключити Telegram-бота» нижче."
+
+#: includes/class-uh-admin.php:555
+msgid "Disabled"
+msgstr "Вимкнено"
+
+#: includes/class-uh-admin.php:563
+msgid "Tools"
+msgstr "Інструменти"
+
+#: includes/class-uh-admin.php:565
+msgid "Send me a test login-code email"
+msgstr "Надіслати мені тестовий лист із кодом входу"
+
+#: includes/class-uh-admin.php:569
+msgid "Connect Telegram bot"
+msgstr "Підключити Telegram-бота"
+
+#: includes/class-uh-admin.php:572
+#, php-format
+msgid "Personal data requests (copy or delete) are handled in <a href=\"%1$s\">Tools → Export Personal Data</a> and <a href=\"%2$s\">Erase Personal Data</a>. Suggested privacy policy text is in <a href=\"%3$s\">Settings → Privacy</a>."
+msgstr "Запити щодо персональних даних (копія чи видалення) обробляються в <a href=\"%1$s\">Інструменти → Експорт персональних даних</a> та <a href=\"%2$s\">Видалення персональних даних</a>. Пропонований текст політики конфіденційності – у <a href=\"%3$s\">Налаштування → Конфіденційність</a>."
+
+#: includes/class-uh-admin.php:574
+msgid "Shortcodes"
+msgstr "Шорткоди"
+
+#: includes/class-uh-admin.php:584
+msgid "Network – who invited whom"
+msgstr "Мережа – хто кого запросив"
+
+#: includes/class-uh-admin.php:586
+msgid "Everyone joins through an invite from a member. A member is connected when their chain of inviters reaches an administrator or coordinator through accounts that are not suspended. Only connected Supporters are notified about groups and can see Heroes’ details. Suspending someone also freezes everyone below them until you re-attach those people to another member."
+msgstr "Кожен приєднується за запрошенням від учасника. Учасник пов'язаний, коли ланцюжок тих, хто запрошував, доходить до адміністратора чи координатора через незаблоковані облікові записи. Лише пов'язані Помічники отримують сповіщення про групи й бачать дані Героїв. Блокування когось також заморожує всіх нижче від нього, доки ви не прив'яжете цих людей до іншого учасника."
+
+#: includes/class-uh-admin.php:590
+msgid "Tree"
+msgstr "Дерево"
+
+#: includes/class-uh-admin.php:590
+msgid "Needs review"
+msgstr "Потребує перевірки"
+
+#: includes/class-uh-admin.php:590
+msgid "Problem reports"
+msgstr "Скарги"
+
+#: includes/class-uh-admin.php:590
+msgid "Invites"
+msgstr "Запрошення"
+
+#: includes/class-uh-admin.php:607
+msgid "Supporters waiting for approval"
+msgstr "Помічники, що чекають на схвалення"
+
+#: includes/class-uh-admin.php:609
+msgid "Nobody is waiting."
+msgstr "Ніхто не чекає."
+
+#: includes/class-uh-admin.php:611
+#: includes/class-uh-admin.php:739
+msgid "Invited by"
+msgstr "Запросив(ла)"
+
+#: includes/class-uh-admin.php:611
+msgid "About"
+msgstr "Про себе"
+
+#: includes/class-uh-admin.php:614
+msgid "Approve"
+msgstr "Схвалити"
+
+#: includes/class-uh-admin.php:618
+msgid "Members who are not connected"
+msgstr "Учасники без зв'язку"
+
+#: includes/class-uh-admin.php:626
+msgid "Everyone is connected."
+msgstr "Усі пов'язані."
+
+#: includes/class-uh-admin.php:628
+msgid "Member"
+msgstr "Учасник"
+
+#: includes/class-uh-admin.php:628
+msgid "Why"
+msgstr "Чому"
+
+#: includes/class-uh-admin.php:628
+msgid "Actions"
+msgstr "Дії"
+
+#: includes/class-uh-admin.php:632
+msgid "Suspended"
+msgstr "Заблоковано"
+
+#: includes/class-uh-admin.php:634
+msgid "Nobody invited them (e.g. signed up through the WordPress form)"
+msgstr "Їх ніхто не запрошував (наприклад, зареєструвалися через форму WordPress)"
+
+#: includes/class-uh-admin.php:637
+#, php-format
+msgid "Their inviter chain is broken (%s is suspended, deleted or not connected)"
+msgstr "Ланцюжок запрошень розірвано (%s заблоковано, видалено або без зв'язку)"
+
+#: includes/class-uh-admin.php:674
+#: includes/class-uh-install.php:225
+msgid "Coordinator"
+msgstr "Координатор"
+
+#: includes/class-uh-admin.php:680
+msgid "Hero"
+msgstr "Герой"
+
+#: includes/class-uh-admin.php:682
+#: includes/class-uh-frontend.php:1022
+msgid "suspended"
+msgstr "заблоковано"
+
+#: includes/class-uh-admin.php:682
+msgid "not connected"
+msgstr "без зв'язку"
+
+#: includes/class-uh-admin.php:684
+#, php-format
+msgid "invite note: “%s”"
+msgstr "примітка запрошення: «%s»"
+
+#: includes/class-uh-admin.php:687
+msgid "on hold (report)"
+msgstr "призупинено (скарга)"
+
+#: includes/class-uh-admin.php:689
+msgid "waiting for approval"
+msgstr "чекає на схвалення"
+
+#: includes/class-uh-admin.php:702
+msgid "Unsuspend"
+msgstr "Розблокувати"
+
+#: includes/class-uh-admin.php:704
+msgid "Suspend this member? They are logged out and cannot log in, help or invite."
+msgstr "Заблокувати цього учасника? Його буде виведено з системи, і він не зможе входити, допомагати чи запрошувати."
+
+#: includes/class-uh-admin.php:704
+msgid "Suspend"
+msgstr "Заблокувати"
+
+#: includes/class-uh-admin.php:706
+msgid "Suspend this member AND everyone they invited, directly or indirectly?"
+msgstr "Заблокувати цього учасника І всіх, кого він запросив прямо чи опосередковано?"
+
+#: includes/class-uh-admin.php:706
+msgid "Suspend with branch"
+msgstr "Заблокувати з гілкою"
+
+#: includes/class-uh-admin.php:710
+msgid "Make Supporter"
+msgstr "Зробити Помічником"
+
+#: includes/class-uh-admin.php:712
+msgid "Re-attach under…"
+msgstr "Прив'язати до…"
+
+#: includes/class-uh-admin.php:726
+msgid "Invite link:"
+msgstr "Посилання-запрошення:"
+
+#: includes/class-uh-admin.php:728
+msgid "Create an invite"
+msgstr "Створити запрошення"
+
+#: includes/class-uh-admin.php:729
+#: includes/class-uh-admin.php:739
+msgid "For"
+msgstr "Для"
+
+#: includes/class-uh-admin.php:733
+msgid "Note (who is it for)"
+msgstr "Примітка (для кого це)"
+
+#: includes/class-uh-admin.php:733
+#: includes/class-uh-frontend.php:1006
+msgid "Uses"
+msgstr "Використань"
+
+#: includes/class-uh-admin.php:733
+#: includes/class-uh-frontend.php:1007
+msgid "Valid days"
+msgstr "Днів дії"
+
+#: includes/class-uh-admin.php:734
+msgid "Tip: a multi-use Hero invite can be given to hospital staff for one ward. Each person who uses it is recorded as invited by you."
+msgstr "Порада: багаторазове запрошення для Героїв можна дати персоналу лікарні для одного відділення. Кожну людину, яка ним скористається, буде записано як запрошену вами."
+
+#: includes/class-uh-admin.php:735
+msgid "Create invite"
+msgstr "Створити запрошення"
+
+#: includes/class-uh-admin.php:739
+msgid "Used"
+msgstr "Використано"
+
+#: includes/class-uh-admin.php:739
+msgid "Valid until"
+msgstr "Дійсне до"
+
+#: includes/class-uh-admin.php:742
+msgid "No invites yet."
+msgstr "Запрошень ще немає."
+
+#: includes/class-uh-admin.php:747
+#: includes/class-uh-frontend.php:1033
+msgid "open"
+msgstr "відкрите"
+
+#: includes/class-uh-admin.php:747
+#: includes/class-uh-frontend.php:1033
+msgid "cancelled"
+msgstr "скасоване"
+
+#: includes/class-uh-admin.php:747
+#: includes/class-uh-frontend.php:1033
+msgid "used"
+msgstr "використане"
+
+#: includes/class-uh-admin.php:747
+#: includes/class-uh-frontend.php:1033
+msgid "expired"
+msgstr "прострочене"
+
+#: includes/class-uh-admin.php:749
+msgid "Cancel"
+msgstr "Скасувати"
+
+#: includes/class-uh-admin.php:759
+msgid "No problem reports."
+msgstr "Скарг немає."
+
+#: includes/class-uh-admin.php:762
+msgid "When a Hero reports a problem, the Supporter is put on hold at once: no new groups and no Heroes’ details. Clear the report to lift the hold, or suspend the Supporter."
+msgstr "Коли Герой повідомляє про проблему, Помічника одразу призупиняють: жодних нових груп і даних Героїв. Закрийте скаргу, щоб зняти призупинення, або заблокуйте Помічника."
+
+#: includes/class-uh-admin.php:763
+msgid "When"
+msgstr "Коли"
+
+#: includes/class-uh-admin.php:763
+msgid "Visit"
+msgstr "Візит"
+
+#: includes/class-uh-admin.php:763
+msgid "What happened"
+msgstr "Що сталося"
+
+#: includes/class-uh-admin.php:768
+msgid "What you found / did"
+msgstr "Що ви з'ясували / зробили"
+
+#: includes/class-uh-admin.php:768
+msgid "Clear and lift hold"
+msgstr "Закрити й зняти призупинення"
+
+#: includes/class-uh-admin.php:768
+msgid "Suspend this Supporter?"
+msgstr "Заблокувати цього Помічника?"
+
+#: includes/class-uh-admin.php:768
+msgid "Suspend Supporter"
+msgstr "Заблокувати Помічника"
+
+#: includes/class-uh-cron.php:75
+#, php-format
+msgid "%d matching Supporter"
+msgid_plural "%d matching Supporters"
+msgstr[0] "%d відповідний Помічник"
+msgstr[1] "%d відповідні Помічники"
+msgstr[2] "%d відповідних Помічників"
+
+#: includes/class-uh-cron.php:78
+#, php-format
+msgid "%d group is still waiting for a Supporter"
+msgid_plural "%d groups are still waiting for a Supporter"
+msgstr[0] "%d група досі чекає на Помічника"
+msgstr[1] "%d групи досі чекають на Помічника"
+msgstr[2] "%d груп досі чекають на Помічника"
+
+#: includes/class-uh-cron.php:79
+#, php-format
+msgid "These groups have been ready for more than %d days and nobody has accepted them yet:"
+msgstr "Ці групи готові вже понад %d днів, і ніхто їх ще не прийняв:"
+
+#: includes/class-uh-frontend.php:43
+msgid "already waiting"
+msgstr "уже чекають"
+
+#: includes/class-uh-frontend.php:44
+msgid "Group is full – a Supporter will be found soon"
+msgstr "Група набрана – Помічника скоро знайдуть"
+
+#: includes/class-uh-frontend.php:45
+msgid "more needed to start"
+msgstr "ще потрібно, щоб почати"
+
+#: includes/class-uh-frontend.php:381
+msgid "New Supporter to approve"
+msgstr "Новий Помічник на схвалення"
+
+#. translators: 1: nickname, 2: inviter nickname, 3: link
+#: includes/class-uh-frontend.php:384
+#, php-format
+msgid "%1$s (invited by %2$s) wants to help as a Supporter and is waiting for your approval:\n%3$s"
+msgstr "%1$s (запросив(ла) %2$s) хоче допомагати як Помічник і чекає на ваше схвалення:\n%3$s"
+
+#: includes/class-uh-frontend.php:423
+msgid "Thank you! Your request was received."
+msgid_plural "Thank you! Your %d requests were received."
+msgstr[0] "Дякуємо! Ваш запит отримано."
+msgstr[1] "Дякуємо! Ваші %d запити отримано."
+msgstr[2] "Дякуємо! Ваші %d запитів отримано."
+
+#: includes/class-uh-frontend.php:424
+msgid "Your request was withdrawn."
+msgstr "Ваш запит відкликано."
+
+#: includes/class-uh-frontend.php:425
+msgid "Profile saved."
+msgstr "Профіль збережено."
+
+#: includes/class-uh-frontend.php:426
+msgid "You accepted the group. The Heroes have been notified – thank you!"
+msgstr "Ви прийняли групу. Героїв сповіщено – дякуємо!"
+
+#: includes/class-uh-frontend.php:427
+msgid "Group released back to the queue."
+msgstr "Групу повернуто в чергу."
+
+#: includes/class-uh-frontend.php:428
+msgid "Marked as completed. Thank you for helping!"
+msgstr "Позначено як виконане. Дякуємо за допомогу!"
+
+#: includes/class-uh-frontend.php:429
+msgid "Account created. Check your email to set a password."
+msgstr "Обліковий запис створено. Перевірте пошту, щоб установити пароль."
+
+#: includes/class-uh-frontend.php:430
+msgid "Invite created. Send the link below to the person – it works once."
+msgstr "Запрошення створено. Надішліть посилання нижче цій людині – воно спрацює один раз."
+
+#: includes/class-uh-frontend.php:431
+msgid "Invite cancelled."
+msgstr "Запрошення скасовано."
+
+#: includes/class-uh-frontend.php:432
+msgid "Thank you for telling us. A coordinator will contact you. The Supporter will not get new groups until this is reviewed."
+msgstr "Дякуємо, що повідомили. Координатор зв'яжеться з вами. Помічник не отримуватиме нових груп, доки це не буде перевірено."
+
+#: includes/class-uh-frontend.php:435
+msgid "The form expired. Please try again."
+msgstr "Час дії форми минув. Спробуйте ще раз."
+
+#: includes/class-uh-frontend.php:436
+msgid "Please log in first."
+msgstr "Спершу увійдіть."
+
+#: includes/class-uh-frontend.php:437
+msgid "Too many submissions. Please try again later."
+msgstr "Забагато спроб. Спробуйте пізніше."
+
+#: includes/class-uh-frontend.php:438
+msgid "Please fill in all required fields."
+msgstr "Заповніть усі обов'язкові поля."
+
+#: includes/class-uh-frontend.php:439
+msgid "Please enter a valid phone number."
+msgstr "Введіть правильний номер телефону."
+
+#: includes/class-uh-frontend.php:440
+msgid "Please agree to share your contact details."
+msgstr "Погодьтеся поділитися своїми контактними даними."
+
+#: includes/class-uh-frontend.php:441
+msgid "You are already on the list for the selected services."
+msgstr "Ви вже в списку на вибрані послуги."
+
+#: includes/class-uh-frontend.php:442
+msgid "Request not found."
+msgstr "Запит не знайдено."
+
+#: includes/class-uh-frontend.php:443
+msgid "You are not allowed to do that."
+msgstr "Вам не дозволено це робити."
+
+#: includes/class-uh-frontend.php:444
+#: includes/class-uh-matching.php:116
+msgid "This request can no longer be changed."
+msgstr "Цей запит уже не можна змінити."
+
+#: includes/class-uh-frontend.php:445
+msgid "Someone else already took this group."
+msgstr "Цю групу вже взяв хтось інший."
+
+#: includes/class-uh-frontend.php:446
+#: includes/class-uh-matching.php:136
+msgid "Please choose an appointment date and time."
+msgstr "Виберіть дату й час візиту."
+
+#: includes/class-uh-frontend.php:447
+msgid "An account with this email already exists. Please log in."
+msgstr "Обліковий запис із цим email уже існує. Будь ласка, увійдіть."
+
+#: includes/class-uh-frontend.php:448
+msgid "Registration is currently closed."
+msgstr "Реєстрацію зараз закрито."
+
+#: includes/class-uh-frontend.php:449
+msgid "This site is invite-only. Please open the invite link you received, or ask a Supporter or coordinator you know for one."
+msgstr "Цей сайт працює лише за запрошеннями. Відкрийте отримане посилання-запрошення або попросіть його у знайомого Помічника чи координатора."
+
+#: includes/class-uh-frontend.php:450
+#: includes/class-uh-frontend.php:537
+#: includes/class-uh-frontend.php:900
+msgid "This invite has already been used, has expired or was cancelled. Please ask the person who invited you for a new one."
+msgstr "Це запрошення вже використано, воно прострочене або скасоване. Попросіть нове в людини, яка вас запросила."
+
+#: includes/class-uh-frontend.php:451
+msgid "This invite is not for that role. Please choose the role your invite is for."
+msgstr "Це запрошення не для цієї ролі. Виберіть роль, для якої воно призначене."
+
+#: includes/class-uh-frontend.php:452
+#: includes/class-uh-frontend.php:969
+msgid "Your account is not connected to the network yet, so you cannot invite others. Please contact the coordinator."
+msgstr "Ваш обліковий запис ще не пов'язаний із мережею, тому ви не можете запрошувати інших. Зверніться до координатора."
+
+#: includes/class-uh-frontend.php:453
+msgid "You have too many unused invites. Cancel some or wait until they are used."
+msgstr "У вас забагато невикористаних запрошень. Скасуйте деякі або зачекайте, доки їх використають."
+
+#: includes/class-uh-frontend.php:454
+msgid "Please read and accept the code of conduct."
+msgstr "Прочитайте й прийміть кодекс поведінки."
+
+#: includes/class-uh-frontend.php:455
+#: includes/class-uh-reports.php:49
+msgid "There is no visit to report for this request."
+msgstr "Для цього запиту немає візиту, про який можна повідомити."
+
+#: includes/class-uh-frontend.php:456
+#: includes/class-uh-reports.php:52
+msgid "You already reported this visit. A coordinator will contact you."
+msgstr "Ви вже повідомили про цей візит. Координатор зв'яжеться з вами."
+
+#: includes/class-uh-frontend.php:457
+#: includes/class-uh-frontend.php:786
+msgid "To help as a Supporter you need a Supporter invite from a Supporter or coordinator who knows you."
+msgstr "Щоб допомагати як Помічник, вам потрібне запрошення для Помічника від Помічника чи координатора, який вас знає."
+
+#: includes/class-uh-frontend.php:463
+msgid "Something went wrong."
+msgstr "Щось пішло не так."
+
+#: includes/class-uh-frontend.php:477
+msgid "— Choose hospital —"
+msgstr "— Виберіть лікарню —"
+
+#: includes/class-uh-frontend.php:508
+msgid "Save this private link to check or cancel your request:"
+msgstr "Збережіть це особисте посилання, щоб перевірити чи скасувати запит:"
+
+#: includes/class-uh-frontend.php:511
+#: includes/class-uh-frontend.php:727
+msgid "Get updates on Telegram"
+msgstr "Отримувати новини в Telegram"
+
+#: includes/class-uh-frontend.php:516
+#, php-format
+msgid "Please <a href=\"%s\">log in</a> to request help."
+msgstr "Будь ласка, <a href=\"%s\">увійдіть</a>, щоб попросити допомогу."
+
+#: includes/class-uh-frontend.php:522
+msgid "The system is not configured yet."
+msgstr "Систему ще не налаштовано."
+
+#: includes/class-uh-frontend.php:535
+msgid "Invite-only"
+msgstr "Лише за запрошенням"
+
+#: includes/class-uh-frontend.php:535
+msgid "To keep Heroes safe, everyone here is invited by someone they know. Ask a Supporter, a coordinator or another Hero for an invite link, or enter your invite code below."
+msgstr "Щоб Герої були в безпеці, кожного тут запрошує хтось знайомий. Попросіть посилання-запрошення в Помічника, координатора чи іншого Героя або введіть код запрошення нижче."
+
+#: includes/class-uh-frontend.php:540
+#: includes/class-uh-frontend.php:914
+#, php-format
+msgid "You were invited by %s."
+msgstr "Вас запросив(ла) %s."
+
+#: includes/class-uh-frontend.php:554
+msgid "Where are you?"
+msgstr "Де ви?"
+
+#: includes/class-uh-frontend.php:566
+msgid "Visiting hours"
+msgstr "Години відвідування"
+
+#: includes/class-uh-frontend.php:569
+msgid "Ward / room"
+msgstr "Палата / кімната"
+
+#: includes/class-uh-frontend.php:573
+msgid "What do you need?"
+msgstr "Що вам потрібно?"
+
+#: includes/class-uh-frontend.php:574
+msgid "Choose one or more. Some services start when enough people at your hospital sign up."
+msgstr "Виберіть одне чи кілька. Деякі послуги починаються, коли в лікарні набирається достатньо людей."
+
+#: includes/class-uh-frontend.php:583
+#, php-format
+msgid "group of %d"
+msgstr "група з %d"
+
+#: includes/class-uh-frontend.php:591
+msgid "Your sizes"
+msgstr "Ваші розміри"
+
+#: includes/class-uh-frontend.php:593
+msgid "Top"
+msgstr "Верх"
+
+#: includes/class-uh-frontend.php:593
+msgid "Trousers"
+msgstr "Штани"
+
+#: includes/class-uh-frontend.php:593
+#: includes/class-uh-install.php:316
+msgid "Shoes"
+msgstr "Взуття"
+
+#: includes/class-uh-frontend.php:593
+msgid "Jacket"
+msgstr "Куртка"
+
+#: includes/class-uh-frontend.php:599
+msgid "How can we reach you?"
+msgstr "Як з вами зв'язатися?"
+
+#: includes/class-uh-frontend.php:601
+#: includes/class-uh-frontend.php:779
+#: includes/class-uh-frontend.php:927
+#: includes/class-uh-privacy.php:175
+msgid "Nickname"
+msgstr "Нікнейм"
+
+#: includes/class-uh-frontend.php:603
+msgid "What the Supporter will call you. Do not use your full name."
+msgstr "Як вас називатиме Помічник. Не вказуйте повне ім'я."
+
+#: includes/class-uh-frontend.php:610
+msgid "Messenger"
+msgstr "Месенджер"
+
+#: includes/class-uh-frontend.php:611
+msgid "Phone call / SMS"
+msgstr "Дзвінок / SMS"
+
+#: includes/class-uh-frontend.php:621
+msgid "Email (optional, for updates)"
+msgstr "Email (необов'язково, для новин)"
+
+#: includes/class-uh-frontend.php:626
+#: includes/class-uh-frontend.php:928
+msgid "Real name (optional)"
+msgstr "Справжнє ім'я (необов'язково)"
+
+#: includes/class-uh-frontend.php:627
+msgid "Real name – seen only by coordinators, never by Supporters"
+msgstr "Справжнє ім'я – бачать лише координатори, ніколи Помічники"
+
+#: includes/class-uh-frontend.php:631
+msgid "Notes (mobility, preferences, anything we should know)"
+msgstr "Примітки (пересування, побажання, усе, що нам варто знати)"
+
+#: includes/class-uh-frontend.php:635
+#: includes/class-uh-frontend.php:892
+msgid "Invite code"
+msgstr "Код запрошення"
+
+#: includes/class-uh-frontend.php:640
+msgid "Send request"
+msgstr "Надіслати запит"
+
+#: includes/class-uh-frontend.php:678
+#, php-format
+msgid "Please <a href=\"%s\">log in</a> or open the private link you received."
+msgstr "Будь ласка, <a href=\"%s\">увійдіть</a> або відкрийте отримане особисте посилання."
+
+#: includes/class-uh-frontend.php:683
+msgid "Invite another Hero you know"
+msgstr "Запросити іншого знайомого Героя"
+
+#: includes/class-uh-frontend.php:686
+msgid "No requests yet."
+msgstr "Запитів ще немає."
+
+#: includes/class-uh-frontend.php:686
+msgid "Ask for help"
+msgstr "Попросити допомогу"
+
+#: includes/class-uh-frontend.php:697
+#, php-format
+msgid "%1$d of %2$d people signed up"
+msgstr "%1$d з %2$d людей записалися"
+
+#: includes/class-uh-frontend.php:703
+#, php-format
+msgid "Supporter: %s"
+msgstr "Помічник: %s"
+
+#: includes/class-uh-frontend.php:708
+msgid "You reported a problem with this visit. A coordinator will contact you."
+msgstr "Ви повідомили про проблему з цим візитом. Координатор зв'яжеться з вами."
+
+#: includes/class-uh-frontend.php:710
+msgid "Report a problem with this visit"
+msgstr "Повідомити про проблему з цим візитом"
+
+#: includes/class-uh-frontend.php:711
+msgid "Only coordinators see this. The Supporter is paused right away and gets no new groups until a coordinator has looked at it."
+msgstr "Це бачать лише координатори. Помічника одразу призупиняють, і він не отримує нових груп, доки координатор не розгляне це."
+
+#: includes/class-uh-frontend.php:712
+msgid "What happened?"
+msgstr "Що сталося?"
+
+#: includes/class-uh-frontend.php:712
+msgid "Send to coordinator"
+msgstr "Надіслати координатору"
+
+#: includes/class-uh-frontend.php:716
+msgid "Cancel this request?"
+msgstr "Скасувати цей запит?"
+
+#: includes/class-uh-frontend.php:716
+msgid "Cancel request"
+msgstr "Скасувати запит"
+
+#: includes/class-uh-frontend.php:741
+#, php-format
+msgid "Want to help? <a href=\"%1$s\">Log in</a> or <a href=\"%2$s\">sign up as a Supporter</a>."
+msgstr "Хочете допомогти? <a href=\"%1$s\">Увійдіть</a> або <a href=\"%2$s\">зареєструйтеся як Помічник</a>."
+
+#: includes/class-uh-frontend.php:752
+msgid "Groups to help"
+msgstr "Групи, яким потрібна допомога"
+
+#: includes/class-uh-frontend.php:752
+msgid "My schedule"
+msgstr "Мій розклад"
+
+#: includes/class-uh-frontend.php:752
+msgid "Invite"
+msgstr "Запросити"
+
+#: includes/class-uh-frontend.php:752
+msgid "My profile"
+msgstr "Мій профіль"
+
+#: includes/class-uh-frontend.php:767
+msgid "Your account is not connected to the network yet (nobody has vouched for it, or the person who invited you was suspended). A coordinator needs to review it before you can help or invite others."
+msgstr "Ваш обліковий запис ще не пов'язаний із мережею (ніхто за нього не поручився, або людину, яка вас запросила, заблоковано). Координатор має перевірити його, перш ніж ви зможете допомагати чи запрошувати інших."
+
+#: includes/class-uh-frontend.php:774
+msgid "Your Supporter account is paused while a coordinator reviews a report. You will hear from them."
+msgstr "Ваш обліковий запис Помічника призупинено, доки координатор розглядає скаргу. Вони з вами зв'яжуться."
+
+#: includes/class-uh-frontend.php:776
+msgid "Thank you! A coordinator will review and approve your Supporter account. Until then you will not see groups."
+msgstr "Дякуємо! Координатор перевірить і схвалить ваш обліковий запис Помічника. До того ви не бачитимете груп."
+
+#: includes/class-uh-frontend.php:779
+msgid "The only name Heroes and other members see."
+msgstr "Єдине ім'я, яке бачать Герої та інші учасники."
+
+#: includes/class-uh-frontend.php:781
+msgid "I want to help as a Supporter"
+msgstr "Я хочу допомагати як Помічник"
+
+#: includes/class-uh-frontend.php:788
+msgid "What can you offer?"
+msgstr "Що ви можете запропонувати?"
+
+#: includes/class-uh-frontend.php:793
+msgid "Which hospitals? (none = all)"
+msgstr "Які лікарні? (жодної = усі)"
+
+#: includes/class-uh-frontend.php:798
+msgid "Notifications"
+msgstr "Сповіщення"
+
+#: includes/class-uh-frontend.php:801
+msgid "WhatsApp number"
+msgstr "Номер WhatsApp"
+
+#: includes/class-uh-frontend.php:802
+msgid "Telegram chat ID"
+msgstr "ID чату Telegram"
+
+#: includes/class-uh-frontend.php:806
+msgid "Connect Telegram in one tap"
+msgstr "Підключити Telegram одним дотиком"
+
+#: includes/class-uh-frontend.php:808
+msgid "Email notifications are always on."
+msgstr "Сповіщення email завжди увімкнені."
+
+#: includes/class-uh-frontend.php:810
+msgid "About you (shown to coordinators)"
+msgstr "Про вас (бачать координатори)"
+
+#: includes/class-uh-frontend.php:811
+msgid "Save profile"
+msgstr "Зберегти профіль"
+
+#: includes/class-uh-frontend.php:820
+msgid "Nothing scheduled yet."
+msgstr "Поки нічого не заплановано."
+
+#: includes/class-uh-frontend.php:827
+#, php-format
+msgid "To protect the Heroes, their wards and phone numbers appear here from %s."
+msgstr "Щоб захистити Героїв, їхні палати й телефони з'являться тут з %s."
+
+#: includes/class-uh-frontend.php:837
+msgid "ward"
+msgstr "палата"
+
+#: includes/class-uh-frontend.php:841
+msgid "Mark done"
+msgstr "Позначити виконаним"
+
+#: includes/class-uh-frontend.php:842
+msgid "Give this group back to the queue?"
+msgstr "Повернути цю групу в чергу?"
+
+#: includes/class-uh-frontend.php:842
+msgid "I can’t make it"
+msgstr "Я не зможу"
+
+#: includes/class-uh-frontend.php:851
+msgid "Choose the services you offer in your profile to see groups."
+msgstr "Виберіть у профілі послуги, які ви надаєте, щоб бачити групи."
+
+#: includes/class-uh-frontend.php:855
+msgid "No groups waiting right now. We will notify you when one is ready."
+msgstr "Зараз немає груп, що чекають. Ми повідомимо, коли якась буде готова."
+
+#: includes/class-uh-frontend.php:861
+#: includes/class-uh-notify.php:108
+#, php-format
+msgid "Visiting hours: %s"
+msgstr "Години відвідування: %s"
+
+#: includes/class-uh-frontend.php:862
+#, php-format
+msgid "%1$d of %2$d Heroes"
+msgstr "%1$d з %2$d Героїв"
+
+#: includes/class-uh-frontend.php:864
+msgid "Date & time"
+msgstr "Дата й час"
+
+#: includes/class-uh-frontend.php:865
+msgid "Message to Heroes (optional)"
+msgstr "Повідомлення Героям (необов'язково)"
+
+#: includes/class-uh-frontend.php:866
+msgid "Accept group"
+msgstr "Прийняти групу"
+
+#: includes/class-uh-frontend.php:866
+msgid "Accept anyway"
+msgstr "Усе одно прийняти"
+
+#: includes/class-uh-frontend.php:880
+msgid "You are logged in."
+msgstr "Ви увійшли."
+
+#: includes/class-uh-frontend.php:880
+msgid "Supporter area"
+msgstr "Розділ Помічника"
+
+#: includes/class-uh-frontend.php:888
+msgid "Ukraine Health is invite-only."
+msgstr "Ukraine Health працює лише за запрошеннями."
+
+#: includes/class-uh-frontend.php:889
+msgid "To keep wounded Heroes safe, every Supporter and every Hero is invited by someone already in the network who knows them. That way we always know who vouched for whom."
+msgstr "Щоб поранені Герої були в безпеці, кожного Помічника й кожного Героя запрошує хтось із мережі, хто їх знає. Так ми завжди знаємо, хто за кого поручився."
+
+#: includes/class-uh-frontend.php:890
+msgid "Ask a Supporter or coordinator you know for an invite link. Already have a code? Enter it here:"
+msgstr "Попросіть посилання-запрошення в знайомого Помічника чи координатора. Уже маєте код? Введіть його тут:"
+
+#: includes/class-uh-frontend.php:893
+msgid "Continue"
+msgstr "Продовжити"
+
+#: includes/class-uh-frontend.php:904
+msgid "Hero – I need help"
+msgstr "Герой – мені потрібна допомога"
+
+#: includes/class-uh-frontend.php:905
+msgid "Supporter – I can help"
+msgstr "Помічник – я можу допомогти"
+
+#: includes/class-uh-frontend.php:906
+msgid "Both"
+msgstr "Обидва"
+
+#: includes/class-uh-frontend.php:919
+msgid "I am joining as"
+msgstr "Я приєднуюся як"
+
+#: includes/class-uh-frontend.php:927
+msgid "The only name other members see. Do not use your full name."
+msgstr "Єдине ім'я, яке бачать інші учасники. Не вказуйте повне ім'я."
+
+#: includes/class-uh-frontend.php:928
+msgid "Seen only by coordinators."
+msgstr "Бачать лише координатори."
+
+#: includes/class-uh-frontend.php:935
+msgid "Create account"
+msgstr "Створити обліковий запис"
+
+#: includes/class-uh-frontend.php:936
+msgid "We will email you a link to set your password."
+msgstr "Ми надішлемо вам на email посилання для встановлення пароля."
+
+#: includes/class-uh-frontend.php:945
+msgid "Supporter code of conduct"
+msgstr "Кодекс поведінки Помічника"
+
+#: includes/class-uh-frontend.php:949
+msgid "I have read the code of conduct and I agree to follow it."
+msgstr "Я прочитав(ла) кодекс поведінки й погоджуюся його дотримуватися."
+
+#: includes/class-uh-frontend.php:960
+#, php-format
+msgid "Please <a href=\"%s\">log in</a> to invite someone."
+msgstr "Будь ласка, <a href=\"%s\">увійдіть</a>, щоб когось запросити."
+
+#: includes/class-uh-frontend.php:980
+msgid "Your invite link"
+msgstr "Ваше посилання-запрошення"
+
+#: includes/class-uh-frontend.php:981
+msgid "Send it only to the person you know – by message or in person. Anyone with the link can use it."
+msgstr "Надсилайте його лише знайомій людині – повідомленням або особисто. Скористатися посиланням може будь-хто, хто його має."
+
+#: includes/class-uh-frontend.php:982
+#: includes/class-uh-frontend.php:1036
+msgid "Invite link"
+msgstr "Посилання-запрошення"
+
+#: includes/class-uh-frontend.php:983
+#, php-format
+msgid "Code: %1$s · for: %2$s · valid until %3$s"
+msgstr "Код: %1$s · для: %2$s · дійсне до %3$s"
+
+#: includes/class-uh-frontend.php:989
+msgid "Everyone in Ukraine Health is invited by someone who knows them. You are responsible for the people you invite, so invite only people you know and trust."
+msgstr "Кожного в Ukraine Health запрошує хтось, хто його знає. Ви відповідаєте за людей, яких запрошуєте, тож запрошуйте лише тих, кого знаєте і кому довіряєте."
+
+#: includes/class-uh-frontend.php:993
+msgid "Invite as"
+msgstr "Запросити як"
+
+#: includes/class-uh-frontend.php:1000
+msgid "Who is it for? (only you and coordinators see this)"
+msgstr "Для кого це? (бачите лише ви й координатори)"
+
+#: includes/class-uh-frontend.php:1001
+msgid "e.g. Olena, barber from Rīga"
+msgstr "напр. Олена, перукарка з Риги"
+
+#: includes/class-uh-frontend.php:1010
+msgid "Create invite link"
+msgstr "Створити посилання-запрошення"
+
+#: includes/class-uh-frontend.php:1016
+msgid "People you invited"
+msgstr "Люди, яких ви запросили"
+
+#: includes/class-uh-frontend.php:1018
+msgid "Nobody yet."
+msgstr "Поки нікого."
+
+#: includes/class-uh-frontend.php:1030
+msgid "Your invites"
+msgstr "Ваші запрошення"
+
+#: includes/class-uh-frontend.php:1034
+#, php-format
+msgid "For: %1$s · used %2$d of %3$d · until %4$s"
+msgstr "Для: %1$s · використано %2$d з %3$d · до %4$s"
+
+#: includes/class-uh-frontend.php:1037
+msgid "Cancel invite"
+msgstr "Скасувати запрошення"
+
+#: includes/class-uh-frontend.php:1054
+msgid "Waiting now"
+msgstr "Чекають зараз"
+
+#: includes/class-uh-frontend.php:1055
+msgid "Visits scheduled"
+msgstr "Заплановано візитів"
+
+#: includes/class-uh-i18n.php:81
+msgid "Language"
+msgstr "Мова"
+
+#: includes/class-uh-install.php:66
+msgid "I will treat every Hero with respect and dignity.\nI will keep everything I learn about Heroes private and never share names, photos, locations or health details.\nI will not take photos or videos of Heroes or the hospital without written permission.\nI will follow the hospital's rules and staff instructions.\nI will contact Heroes only about the agreed visit and only through the ways they chose.\nI will not accept money or gifts.\nI understand a coordinator can suspend my account at any time."
+msgstr "Я ставитимуся до кожного Героя з повагою та гідністю.\nЯ зберігатиму в таємниці все, що дізнаюся про Героїв, і ніколи не поширюватиму імена, фото, місця перебування чи дані про здоров'я.\nЯ не фотографуватиму й не зніматиму Героїв чи лікарню без письмового дозволу.\nЯ дотримуватимуся правил лікарні та вказівок персоналу.\nЯ зв'язуватимуся з Героями лише щодо узгодженого візиту і лише обраними ними способами.\nЯ не прийматиму грошей чи подарунків.\nЯ розумію, що координатор може будь-коли заблокувати мій обліковий запис."
+
+#: includes/class-uh-install.php:70
+msgid "I agree that my nickname, ward and phone number are shared with the coordinator, and with the Supporter of my visit shortly before it. My contact details are deleted automatically after the visit."
+msgstr "Я погоджуюся, що мій нікнейм, палату й телефон буде передано координатору, а незадовго до візиту – Помічнику мого візиту. Мої контактні дані автоматично видаляються після візиту."
+
+#: includes/class-uh-install.php:221
+msgid "Hero (patient)"
+msgstr "Герой (пацієнт)"
+
+#: includes/class-uh-install.php:222
+msgid "Supporter (provider)"
+msgstr "Помічник (надавач)"
+
+#: includes/class-uh-install.php:311
+msgid "Haircut"
+msgstr "Стрижка"
+
+#: includes/class-uh-install.php:312
+msgid "Shaving / beard trim"
+msgstr "Гоління / стрижка бороди"
+
+#: includes/class-uh-install.php:313
+msgid "Manicure"
+msgstr "Манікюр"
+
+#: includes/class-uh-install.php:314
+msgid "Pedicure"
+msgstr "Педикюр"
+
+#: includes/class-uh-install.php:315
+msgid "Clothing"
+msgstr "Одяг"
+
+#: includes/class-uh-install.php:317
+msgid "Laundry"
+msgstr "Прання"
+
+#: includes/class-uh-install.php:318
+msgid "Hygiene products"
+msgstr "Засоби гігієни"
+
+#: includes/class-uh-install.php:319
+msgid "Skin care products"
+msgstr "Засоби догляду за шкірою"
+
+#: includes/class-uh-install.php:320
+msgid "Crutches"
+msgstr "Милиці"
+
+#: includes/class-uh-install.php:321
+msgid "Walking cane"
+msgstr "Ціпок"
+
+#: includes/class-uh-install.php:322
+msgid "Wheelchair"
+msgstr "Інвалідний візок"
+
+#: includes/class-uh-install.php:323
+msgid "Walker / rollator"
+msgstr "Ходунки / ролатор"
+
+#: includes/class-uh-install.php:324
+msgid "Massage"
+msgstr "Масаж"
+
+#: includes/class-uh-install.php:325
+msgid "Psychological support"
+msgstr "Психологічна підтримка"
+
+#: includes/class-uh-install.php:326
+msgid "Translation / paperwork help"
+msgstr "Переклад / допомога з документами"
+
+#: includes/class-uh-install.php:334
+msgid "Beauty"
+msgstr "Краса"
+
+#: includes/class-uh-install.php:335
+msgid "Clothing & shoes"
+msgstr "Одяг і взуття"
+
+#: includes/class-uh-install.php:336
+msgid "Care products"
+msgstr "Засоби догляду"
+
+#: includes/class-uh-install.php:337
+msgid "Mobility aids"
+msgstr "Засоби пересування"
+
+#: includes/class-uh-install.php:338
+msgid "Wellbeing"
+msgstr "Добробут"
+
+#: includes/class-uh-install.php:339
+msgid "Other"
+msgstr "Інше"
+
+#: includes/class-uh-install.php:345
+msgid "Collecting"
+msgstr "Набір"
+
+#: includes/class-uh-install.php:346
+msgid "Ready – needs Supporter"
+msgstr "Готова – потрібен Помічник"
+
+#: includes/class-uh-install.php:348
+msgid "Completed"
+msgstr "Виконано"
+
+#: includes/class-uh-install.php:349
+msgid "Cancelled"
+msgstr "Скасовано"
+
+#: includes/class-uh-matching.php:24
+msgid "Please choose a valid service and hospital."
+msgstr "Виберіть правильну послугу й лікарню."
+
+#: includes/class-uh-matching.php:44
+#, php-format
+msgid "You are already on the list for %s."
+msgstr "Ви вже в списку на %s."
+
+#: includes/class-uh-matching.php:132
+msgid "This group has already been taken or closed."
+msgstr "Цю групу вже взято або закрито."
+
+#: includes/class-uh-matching.php:150
+msgid "This group has already been taken."
+msgstr "Цю групу вже взято."
+
+#: includes/class-uh-matching.php:162
+msgid "You cannot release this group."
+msgstr "Ви не можете повернути цю групу."
+
+#: includes/class-uh-matching.php:175
+msgid "You cannot complete this group."
+msgstr "Ви не можете завершити цю групу."
+
+#: includes/class-uh-network.php:136
+msgid "You are approved as a Supporter"
+msgstr "Вас схвалено як Помічника"
+
+#: includes/class-uh-network.php:136
+#, php-format
+msgid "A coordinator approved you as a Supporter. You will now be told when a group of Heroes needs your help: %s"
+msgstr "Координатор схвалив вас як Помічника. Тепер ви отримуватимете повідомлення, коли групі Героїв потрібна ваша допомога: %s"
+
+#: includes/class-uh-network.php:197
+msgid "Hero (needs help)"
+msgstr "Герой (потребує допомоги)"
+
+#: includes/class-uh-network.php:198
+msgid "Supporter (gives help)"
+msgstr "Помічник (надає допомогу)"
+
+#: includes/class-uh-network.php:199
+msgid "Hero or Supporter"
+msgstr "Герой або Помічник"
+
+#: includes/class-uh-network.php:295
+msgid "Your account is not connected to the network yet, so you cannot invite others."
+msgstr "Ваш обліковий запис ще не пов'язаний із мережею, тому ви не можете запрошувати інших."
+
+#: includes/class-uh-network.php:298
+msgid "You cannot invite people for this role."
+msgstr "Ви не можете запрошувати людей на цю роль."
+
+#: includes/class-uh-network.php:302
+msgid "You have too many unused invites. Revoke or wait for some to be used first."
+msgstr "У вас забагато невикористаних запрошень. Скасуйте деякі або зачекайте, доки їх використають."
+
+#: includes/class-uh-network.php:431
+msgid "This account is suspended. Please contact the coordinator."
+msgstr "Цей обліковий запис заблоковано. Зверніться до координатора."
+
+#. translators: 1: service, 2: hospital, 3: members, 4: minimum, 5: link
+#: includes/class-uh-notify.php:31
+#, php-format
+msgid "New request: %1$s at %2$s (%3$d/%4$d).\nDetails (login needed): %5$s"
+msgstr "Новий запит: %1$s у %2$s (%3$d/%4$d).\nДеталі (потрібен вхід): %5$s"
+
+#. translators: 1: service — hospital, 2: number of heroes, 3: link
+#: includes/class-uh-notify.php:56
+#, php-format
+msgid "A group is ready: %1$s (%2$d Heroes). Accept it and pick a date: %3$s"
+msgstr "Група готова: %1$s (%2$d Героїв). Прийміть її та виберіть дату: %3$s"
+
+#: includes/class-uh-notify.php:62
+msgid "A group needs you"
+msgstr "Групі потрібна ваша допомога"
+
+#: includes/class-uh-notify.php:70
+#, php-format
+msgid "Your %s group is full. We are finding a Supporter now."
+msgstr "Ваша група «%s» набрана. Шукаємо Помічника."
+
+#. translators: 1: service, 2: date, 3: hospital, 4: supporter
+#: includes/class-uh-notify.php:82
+#, php-format
+msgid "Good news! %1$s is scheduled for %2$s at %3$s. Supporter: %4$s."
+msgstr "Гарна новина! %1$s заплановано на %2$s у %3$s. Помічник: %4$s."
+
+#. translators: 1: service — hospital, 2: date, 3: address, 4: number of heroes, 5: link
+#: includes/class-uh-notify.php:100
+#, php-format
+msgid "You accepted: %1$s on %2$s\n%3$s\n%4$d Heroes. Their wards and phone numbers appear in your Supporter area shortly before the visit: %5$s"
+msgstr "Ви прийняли: %1$s, %2$s\n%3$s\nГероїв: %4$d. Їхні палати й телефони з'являться у вашому розділі Помічника незадовго до візиту: %5$s"
+
+#: includes/class-uh-notify.php:110
+msgid "Group confirmed"
+msgstr "Групу підтверджено"
+
+#. translators: 1: service, 2: date, 3: number of patients, 4: wards, 5: supporter nickname
+#: includes/class-uh-notify.php:123
+#, php-format
+msgid "A volunteer visit is planned at your hospital.\nService: %1$s\nWhen: %2$s\nPatients: %3$d\nWards: %4$s\nVolunteer: %5$s (will show ID at the entrance)\n\nPlease reply to this email if the visit is not possible."
+msgstr "У вашій лікарні заплановано візит волонтера.\nПослуга: %1$s\nКоли: %2$s\nПацієнтів: %3$d\nПалати: %4$s\nВолонтер: %5$s (покаже документ на вході)\n\nБудь ласка, дайте відповідь на цей лист, якщо візит неможливий."
+
+#: includes/class-uh-notify.php:132
+#, php-format
+msgid "Planned visit: %s"
+msgstr "Запланований візит: %s"
+
+#: includes/class-uh-notify.php:141
+#, php-format
+msgid "Reminder: %1$s is planned for %2$s at %3$s."
+msgstr "Нагадування: %1$s заплановано на %2$s у %3$s."
+
+#: includes/class-uh-notify.php:145
+msgid "Visit reminder"
+msgstr "Нагадування про візит"
+
+#: includes/class-uh-notify.php:145
+#, php-format
+msgid "Reminder: your visit %1$s is on %2$s. The Heroes’ details are in your Supporter area: %3$s"
+msgstr "Нагадування: ваш візит %1$s – %2$s. Дані Героїв – у вашому розділі Помічника: %3$s"
+
+#: includes/class-uh-notify.php:153
+msgid "A Hero withdrew"
+msgstr "Герой відкликав запит"
+
+#: includes/class-uh-notify.php:153
+#, php-format
+msgid "A Hero withdrew from %s."
+msgstr "Герой відкликав запит у %s."
+
+#: includes/class-uh-notify.php:190
+msgid "Your request"
+msgstr "Ваш запит"
+
+#: includes/class-uh-privacy.php:35
+msgid "a Supporter"
+msgstr "Помічник"
+
+#: includes/class-uh-privacy.php:141
+#: includes/class-uh-privacy.php:149
+#: includes/class-uh-privacy.php:170
+msgid "Ukraine Health requests"
+msgstr "Запити Ukraine Health"
+
+#: includes/class-uh-privacy.php:176
+msgid "Real name"
+msgstr "Справжнє ім'я"
+
+#: includes/class-uh-privacy.php:181
+msgid "Created"
+msgstr "Створено"
+
+#: includes/class-uh-privacy.php:211
+msgid "Help requests (Ukraine Health)"
+msgstr "Запити на допомогу (Ukraine Health)"
+
+#: includes/class-uh-privacy.php:212
+msgid "When a Hero asks for help we store a nickname, optionally a real name, the hospital and ward, a phone number, an optional email address, the chosen messenger, clothing sizes when needed, and any notes. This can include information about health and treatment."
+msgstr "Коли Герой просить допомогу, ми зберігаємо нікнейм, за бажанням справжнє ім'я, лікарню й палату, номер телефону, за бажанням email, обраний месенджер, розміри одягу за потреби та будь-які примітки. Це може містити відомості про здоров'я та лікування."
+
+#: includes/class-uh-privacy.php:213
+msgid "Who sees it: the coordinators. The Supporter who accepted a visit sees the nickname, and the ward and phone number only shortly before the visit."
+msgstr "Хто це бачить: координатори. Помічник, який прийняв візит, бачить нікнейм, а палату й телефон – лише незадовго до візиту."
+
+#: includes/class-uh-privacy.php:213
+#, php-format
+msgid "This is currently %d hours before the visit."
+msgstr "Зараз це %d годин до візиту."
+
+#: includes/class-uh-privacy.php:214
+#, php-format
+msgid "How long: contact details are deleted automatically %d days after the visit is completed or cancelled, or the request is withdrawn. Only anonymous counts are kept."
+msgstr "Як довго: контактні дані автоматично видаляються через %d днів після завершення чи скасування візиту або відкликання запиту. Зберігаються лише анонімні підрахунки."
+
+#: includes/class-uh-privacy.php:215
+msgid "Accounts: every member is invited by an existing member. We record who invited whom so that everyone can be traced to a person who vouched for them."
+msgstr "Облікові записи: кожного учасника запрошує наявний учасник. Ми записуємо, хто кого запросив, щоб кожного можна було простежити до людини, яка за нього поручилася."
+
+#: includes/class-uh-privacy.php:216
+msgid "Messages are sent by email, and by Telegram or WhatsApp only when you connect them. You can ask for a copy of your data or for it to be deleted at any time."
+msgstr "Повідомлення надсилаються email, а в Telegram чи WhatsApp – лише якщо ви їх підключили. Ви будь-коли можете попросити копію своїх даних або їх видалення."
+
+#: includes/class-uh-reports.php:71
+msgid "Problem reported – Supporter on hold"
+msgstr "Повідомлено про проблему – Помічника призупинено"
+
+#. translators: 1: report id, 2: supporter nickname, 3: link
+#: includes/class-uh-reports.php:74
+#, php-format
+msgid "A Hero reported a problem with a visit (report #%1$d). Supporter %2$s is on hold and gets no new groups until you review it:\n%3$s"
+msgstr "Герой повідомив про проблему з візитом (скарга №%1$d). Помічника %2$s призупинено, і він не отримуватиме нових груп, доки ви не розглянете її:\n%3$s"
+
+#: includes/class-uh-telegram.php:68
+msgid "Enter the bot token first."
+msgstr "Спершу введіть токен бота."
+
+#: includes/class-uh-telegram.php:74
+msgid "Telegram did not accept the bot token."
+msgstr "Telegram не прийняв токен бота."
+
+#: includes/class-uh-telegram.php:90
+msgid "Telegram could not reach this site."
+msgstr "Telegram не зміг з'єднатися з цим сайтом."
+
+#: includes/class-uh-telegram.php:145
+msgid "Connected. You will get updates about your request here. Send /stop to stop."
+msgstr "Підключено. Ви отримуватимете тут новини про свій запит. Надішліть /stop, щоб зупинити."
+
+#: includes/class-uh-telegram.php:147
+#: includes/class-uh-telegram.php:155
+msgid "This link is no longer valid."
+msgstr "Це посилання вже недійсне."
+
+#: includes/class-uh-telegram.php:153
+msgid "Connected. You will get Ukraine Health notifications here. Send /stop to stop."
+msgstr "Підключено. Ви отримуватимете тут сповіщення Ukraine Health. Надішліть /stop, щоб зупинити."
+
+#: includes/class-uh-telegram.php:162
+msgid "Stopped. You will not get messages here any more."
+msgstr "Зупинено. Ви більше не отримуватимете тут повідомлень."
+
+#: includes/class-uh-telegram.php:164
+msgid "Hello! Open your Ukraine Health page and tap “Get updates on Telegram” to connect."
+msgstr "Вітаємо! Відкрийте свою сторінку Ukraine Health і натисніть «Отримувати новини в Telegram», щоб підключитися."
+
+#: includes/class-uh-twofa.php:94
+msgid "Your login code"
+msgstr "Ваш код входу"
+
+#. translators: 1: code, 2: minutes
+#: includes/class-uh-twofa.php:97
+#, php-format
+msgid "Your login code is %1$s\nIt works for %2$d minutes.\n\nIf you did not try to log in, change your password now."
+msgstr "Ваш код входу: %1$s\nВін діє %2$d хвилин.\n\nЯкщо ви не намагалися увійти, негайно змініть пароль."
+
+#: includes/class-uh-twofa.php:106
+msgid "Test: login code email"
+msgstr "Тест: лист із кодом входу"
+
+#: includes/class-uh-twofa.php:106
+msgid "This is a test. When two-step login is on, your login codes will arrive like this email. If you received it, it is safe to switch two-step login on."
+msgstr "Це тест. Коли двоетапний вхід увімкнено, коди входу надходитимуть так само, як цей лист. Якщо ви його отримали, двоетапний вхід можна безпечно вмикати."
+
+#: includes/class-uh-twofa.php:150
+msgid "That code is not right. Please try again."
+msgstr "Код неправильний. Спробуйте ще раз."
+
+#: includes/class-uh-twofa.php:152
+msgid "Login code"
+msgstr "Код входу"
+
+#: includes/class-uh-twofa.php:156
+msgid "We emailed you a 6-digit code. Enter it to finish logging in."
+msgstr "Ми надіслали вам на email 6-значний код. Введіть його, щоб завершити вхід."
+
+#: includes/class-uh-twofa.php:157
+msgid "Code"
+msgstr "Код"
+
+#: includes/class-uh-twofa.php:159
+#, php-format
+msgid "Trust this device for %d days"
+msgstr "Довіряти цьому пристрою %d днів"
+
+#: includes/class-uh-twofa.php:160
+msgid "Log in"
+msgstr "Увійти"

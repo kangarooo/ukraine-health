@@ -61,3 +61,20 @@
 	toggleSizes();
 	refresh();
 })();
+
+/* Show the Supporter code of conduct only when "Supporter" or "Both" is chosen. */
+(function () {
+	var wrap = document.querySelector('[data-uh-coc]');
+	if (!wrap) { return; }
+	var form = wrap.closest('form');
+	function sync() {
+		var r = form.querySelector('input[name="role"]:checked');
+		var need = !r || r.value !== 'hero';
+		var fs = wrap.querySelector('.uh-coc');
+		var cb = wrap.querySelector('input[name="coc"]');
+		fs.hidden = !need;
+		cb.required = need;
+	}
+	form.addEventListener('change', function (e) { if (e.target.name === 'role') { sync(); } });
+	sync();
+})();

@@ -22,6 +22,9 @@ class UH_Network {
 	const META_INVITE    = 'uh_invite_id';
 	const META_SUSPENDED = 'uh_suspended';
 	const META_CAN_HELP  = 'uh_supporter_ok';
+	const META_APPROVED  = 'uh_approved';  // A coordinator approved this Supporter.
+	const META_HOLD      = 'uh_hold';      // On hold because of an open problem report.
+	const META_COC       = 'uh_coc_at';    // When the Supporter agreed to the code of conduct.
 
 	const MAX_OPEN_INVITES = 10;   // Per ordinary member.
 	const MEMBER_DAYS      = 14;   // Invite lifetime for ordinary members.
@@ -94,7 +97,51 @@ class UH_Network {
 			return true;
 		}
 		$u = get_userdata( $user_id );
-		return $u && in_array( UH_Install::ROLE_SUPPORTER, (array) $u->roles, true ) && self::is_connected( $user_id );
+		return $u && in_array( UH_Install::ROLE_SUPPORTER, (array) $u->roles, true ) && self::is_connected( $user_id )
+			&& self::is_approved( $user_id ) && ! self::on_hold( $user_id );
+	}
+
+	/** Has a coordinator approved this Supporter (or is approval switched off)? */
+	public static function is_approved( $user_id ) {
+		if ( self::is_root( $user_id ) || empty( UH_Install::settings()['approve_supporters'] ) ) {
+			return true;
+		}
+		return (bool) get_user_meta( $user_id, self::META_APPROVED, true );
+	}
+
+	public static function on_hold( $user_id ) {
+		return (bool) get_user_meta( $user_id, self::META_HOLD, true );
+	}
+
+	/** Supporters waiting for a coordinator's approval. */
+	public static function pending_supporters() {
+		if ( empty( UH_Install::settings()['approve_supporters'] ) ) {
+			return array();
+		}
+		return array_values(
+			array_filter(
+				get_users( array( 'role' => UH_Install::ROLE_SUPPORTER ) ),
+				function ( $u ) {
+					return ! self::is_root( $u->ID ) && ! get_user_meta( $u->ID, self::META_APPROVED, true ) && ! self::is_suspended( $u->ID );
+				}
+			)
+		);
+	}
+
+	public static function approve( $user_id ) {
+		update_user_meta( $user_id, self::META_APPROVED, current_time( 'mysql' ) );
+		UH_Repo::log( 'supporter_approved', null, null, array( 'user' => (int) $user_id ) );
+		$u = get_userdata( $user_id );
+		if ( $u ) {
+			UH_Notify::to_user( $u, __( 'You are approved as a Supporter', 'ukraine-health' ), sprintf( __( 'A coordinator approved you as a Supporter. You will now be told when a group of Heroes needs your help: %s', 'ukraine-health' ), UH_Notify::page_url( 'supporter' ) ) );
+		}
+	}
+
+	/** A Supporter invited directly by a coordinator is approved by that invite. */
+	public static function maybe_auto_approve( $user_id, $inv ) {
+		if ( in_array( $inv->role, array( 'supporter', 'both' ), true ) && self::is_root( (int) $inv->inviter_id ) ) {
+			update_user_meta( $user_id, self::META_APPROVED, current_time( 'mysql' ) );
+		}
 	}
 
 	/** May this user tick "I want to help as a Supporter" in their profile? */
@@ -160,6 +207,9 @@ class UH_Network {
 		}
 		if ( self::is_root( $user_id ) || self::can_support( $user_id ) ) {
 			return array_keys( self::roles() );
+		}
+		if ( self::on_hold( $user_id ) ) {
+			return array();
 		}
 		return array( 'hero' );
 	}
@@ -309,6 +359,7 @@ class UH_Network {
 		if ( in_array( $inv->role, array( 'supporter', 'both' ), true ) ) {
 			update_user_meta( $user_id, self::META_CAN_HELP, 1 );
 		}
+		self::maybe_auto_approve( $user_id, $inv );
 		self::flush();
 		UH_Repo::log( 'joined_network', null, null, array( 'user' => (int) $user_id, 'invited_by' => (int) $inv->inviter_id, 'invite' => (int) $inv->id ) );
 	}
@@ -358,6 +409,7 @@ class UH_Network {
 
 	public static function allow_supporter( $user_id ) {
 		update_user_meta( $user_id, self::META_CAN_HELP, 1 );
+		update_user_meta( $user_id, self::META_APPROVED, current_time( 'mysql' ) );
 		$u = get_userdata( $user_id );
 		if ( $u ) {
 			$u->add_role( UH_Install::ROLE_SUPPORTER );
@@ -390,6 +442,7 @@ class UH_Network {
 		if ( $me && $me !== (int) $user_id ) {
 			update_user_meta( $user_id, self::META_INVITER, $me );
 			update_user_meta( $user_id, self::META_CAN_HELP, 1 );
+			update_user_meta( $user_id, self::META_APPROVED, current_time( 'mysql' ) );
 		}
 	}
 

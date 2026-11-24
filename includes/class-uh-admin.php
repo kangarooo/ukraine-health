@@ -55,8 +55,11 @@ class UH_Admin {
 				'inuse'   => __( 'Cannot delete: it is used by groups. Deactivate it instead.', 'ukraine-health' ),
 				'error'   => __( 'Could not save.', 'ukraine-health' ),
 				'loop'    => __( 'Not changed: that would put the member under someone they invited.', 'ukraine-health' ),
+				'tg_ok'   => __( 'Telegram bot connected.', 'ukraine-health' ),
+				'tg_fail' => __( 'Could not connect the Telegram bot. Check the token and that the site is reachable over HTTPS.', 'ukraine-health' ),
+				'twofa_sent' => __( 'Test email sent. Check your inbox (and spam folder) before you switch two-step login on.', 'ukraine-health' ),
 			);
-			echo '<div class="notice notice-' . ( in_array( $m, array( 'inuse', 'error', 'loop' ), true ) ? 'error' : 'success' ) . ' is-dismissible"><p>' . esc_html( $text[ $m ] ?? $m ) . '</p></div>';
+			echo '<div class="notice notice-' . ( in_array( $m, array( 'inuse', 'error', 'loop', 'tg_fail' ), true ) ? 'error' : 'success' ) . ' is-dismissible"><p>' . esc_html( $text[ $m ] ?? $m ) . '</p></div>';
 		}
 	}
 
@@ -65,7 +68,8 @@ class UH_Admin {
 	 * ===================================================================== */
 
 	public function handle() {
-		if ( isset( $_GET['uh_export'] ) && current_user_can( UH_Install::CAP_MANAGE ) && check_admin_referer( 'uh_export' ) ) {
+		// The export holds everyone's contact details: administrators only.
+		if ( isset( $_GET['uh_export'] ) && current_user_can( 'manage_options' ) && check_admin_referer( 'uh_export' ) ) {
 			$this->export_csv();
 		}
 		if ( empty( $_POST['uh_admin_action'] ) ) {
@@ -87,6 +91,9 @@ class UH_Admin {
 					'city'    => sanitize_text_field( $p['city'] ?? '' ),
 					'address' => sanitize_text_field( $p['address'] ?? '' ),
 					'contact' => sanitize_text_field( $p['contact'] ?? '' ),
+					'contact_email'  => sanitize_email( $p['contact_email'] ?? '' ),
+					'visiting_hours' => sanitize_text_field( $p['visiting_hours'] ?? '' ),
+					'notify_contact' => empty( $p['notify_contact'] ) ? 0 : 1,
 					'active'  => empty( $p['active'] ) ? 0 : 1,
 				);
 				if ( '' === $row['name'] ) {
@@ -217,8 +224,43 @@ class UH_Admin {
 				$s['rate_limit']     = absint( $p['rate_limit'] ?? 5 );
 				$s['messengers']     = array_values( array_filter( array_map( 'trim', explode( ',', sanitize_text_field( $p['messengers'] ?? '' ) ) ) ) );
 				$s['privacy_notice'] = sanitize_textarea_field( $p['privacy_notice'] ?? '' );
+				$s['contact_hours']      = min( 720, absint( $p['contact_hours'] ?? 48 ) );
+				$s['retention_days']     = min( 3650, absint( $p['retention_days'] ?? 30 ) );
+				$s['escalate_days']      = min( 60, absint( $p['escalate_days'] ?? 3 ) );
+				$s['approve_supporters'] = empty( $p['approve_supporters'] ) ? 0 : 1;
+				$s['code_of_conduct']    = sanitize_textarea_field( $p['code_of_conduct'] ?? '' );
+				$s['twofa']              = empty( $p['twofa'] ) ? 0 : 1;
+				if ( $s['telegram_token'] !== UH_Install::settings()['telegram_token'] ) {
+					$s['telegram_bot']    = '';
+					$s['telegram_secret'] = '';
+				}
 				update_option( 'uh_settings', $s );
 				$this->redirect( 'ukraine-health-settings' );
+				break;
+
+			case 'telegram_connect':
+				if ( ! current_user_can( 'manage_options' ) ) {
+					wp_die();
+				}
+				$r = UH_Telegram::connect();
+				$this->redirect( 'ukraine-health-settings', is_wp_error( $r ) ? 'tg_fail' : 'tg_ok' );
+				break;
+
+			case 'twofa_test':
+				if ( ! current_user_can( 'manage_options' ) ) {
+					wp_die();
+				}
+				$this->redirect( 'ukraine-health-settings', UH_TwoFA::send_test( wp_get_current_user() ) ? 'twofa_sent' : 'error' );
+				break;
+
+			case 'net_approve':
+				UH_Network::approve( absint( $p['user_id'] ?? 0 ) );
+				$this->redirect( 'ukraine-health-network', 'saved', array( 'tab' => 'review' ) );
+				break;
+
+			case 'report_resolve':
+				UH_Reports::resolve( absint( $p['report_id'] ?? 0 ), 'suspend' === ( $p['outcome'] ?? '' ) ? 'suspended' : 'cleared', sanitize_textarea_field( $p['note'] ?? '' ) );
+				$this->redirect( 'ukraine-health-network', 'saved', array( 'tab' => 'reports' ) );
 				break;
 
 			case 'create_pages':
@@ -261,10 +303,10 @@ class UH_Admin {
 	private function export_csv() {
 		global $wpdb;
 		$rows = $wpdb->get_results(
-			'SELECT r.id, r.created_at, s.name AS service, h.name AS hospital, r.name, r.ward, r.phone, r.messenger, r.email, r.sizes, r.notes, r.status AS request_status, g.id AS group_id, g.status AS group_status, g.appointment, u.display_name AS supporter
+			'SELECT r.id, r.created_at, s.name AS service, h.name AS hospital, r.name AS nickname, r.real_name, r.ward, r.phone, r.messenger, r.email, r.sizes, r.notes, r.status AS request_status, g.id AS group_id, g.status AS group_status, g.appointment, u.display_name AS supporter
 			FROM ' . UH_Repo::t( 'requests' ) . ' r JOIN ' . UH_Repo::t( 'groups' ) . ' g ON g.id=r.group_id
 			JOIN ' . UH_Repo::t( 'services' ) . ' s ON s.id=g.service_id JOIN ' . UH_Repo::t( 'hospitals' ) . ' h ON h.id=g.hospital_id
-			LEFT JOIN ' . $wpdb->users . ' u ON u.ID=g.supporter_id ORDER BY r.id DESC',
+			LEFT JOIN ' . $wpdb->users . ' u ON u.ID=g.supporter_id WHERE r.wiped_at IS NULL ORDER BY r.id DESC',
 			ARRAY_A
 		);
 		nocache_headers();
@@ -304,6 +346,14 @@ class UH_Admin {
 		$s = UH_Repo::stats();
 		echo '<div class="wrap uh-admin"><h1>Ukraine Health</h1>';
 		$this->msg();
+		$open_reports = UH_Reports::open_count();
+		$pending      = count( UH_Network::pending_supporters() );
+		if ( $open_reports ) {
+			echo '<div class="notice notice-error inline"><p><strong>' . esc_html( sprintf( _n( '%d open problem report', '%d open problem reports', $open_reports, 'ukraine-health' ), $open_reports ) ) . '</strong> — <a href="' . esc_url( admin_url( 'admin.php?page=ukraine-health-network&tab=reports' ) ) . '">' . esc_html__( 'Review now', 'ukraine-health' ) . '</a></p></div>';
+		}
+		if ( $pending ) {
+			echo '<div class="notice notice-warning inline"><p>' . esc_html( sprintf( _n( '%d Supporter is waiting for approval', '%d Supporters are waiting for approval', $pending, 'ukraine-health' ), $pending ) ) . ' — <a href="' . esc_url( admin_url( 'admin.php?page=ukraine-health-network&tab=review' ) ) . '">' . esc_html__( 'Review', 'ukraine-health' ) . '</a></p></div>';
+		}
 		echo '<div class="uh-kpis">';
 		foreach ( array(
 			'heroes_waiting' => __( 'Heroes waiting', 'ukraine-health' ),
@@ -352,7 +402,7 @@ class UH_Admin {
 			return;
 		}
 		$status = sanitize_key( $_GET['status'] ?? '' );
-		echo '<h1 class="wp-heading-inline">' . esc_html__( 'Groups', 'ukraine-health' ) . '</h1> <a class="page-title-action" href="' . esc_url( wp_nonce_url( admin_url( 'admin.php?page=ukraine-health-groups&uh_export=1' ), 'uh_export' ) ) . '">' . esc_html__( 'Export CSV', 'ukraine-health' ) . '</a>';
+		echo '<h1 class="wp-heading-inline">' . esc_html__( 'Groups', 'ukraine-health' ) . '</h1>' . ( current_user_can( 'manage_options' ) ? ' <a class="page-title-action" href="' . esc_url( wp_nonce_url( admin_url( 'admin.php?page=ukraine-health-groups&uh_export=1' ), 'uh_export' ) ) . '">' . esc_html__( 'Export CSV', 'ukraine-health' ) . '</a>' : '' );
 		echo '<ul class="subsubsub">';
 		$links = array( '' => __( 'All', 'ukraine-health' ) ) + UH_Install::group_statuses();
 		$i     = 0;
@@ -377,11 +427,11 @@ class UH_Admin {
 		$sup = $g->supporter_id ? get_userdata( $g->supporter_id ) : null;
 		echo '<h1>' . esc_html( sprintf( '#%d %s — %s', $g->id, $s->name, $h->name ) ) . ' ' . self::badge( $g->status ) . '</h1>'; // phpcs:ignore
 		echo '<p><a href="' . esc_url( admin_url( 'admin.php?page=ukraine-health-groups' ) ) . '">← ' . esc_html__( 'All groups', 'ukraine-health' ) . '</a></p>';
-		echo '<p>' . esc_html( sprintf( __( 'Supporter: %1$s · Appointment: %2$s', 'ukraine-health' ), $sup ? $sup->display_name . ' <' . $sup->user_email . '>' : '—', $g->appointment ?: '—' ) ) . '</p>';
+		echo '<p>' . esc_html( sprintf( __( 'Supporter: %1$s · Appointment: %2$s', 'ukraine-health' ), $sup ? UH_Privacy::nickname( $sup ) . ( $sup->first_name ? ' (' . trim( $sup->first_name . ' ' . $sup->last_name ) . ')' : '' ) . ' <' . $sup->user_email . '>' : '—', $g->appointment ?: '—' ) ) . '</p>';
 
 		echo '<table class="widefat striped"><thead><tr><th>' . esc_html__( 'Name', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Ward', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Phone', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Sizes', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Notes', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Joined', 'ukraine-health' ) . '</th><th></th></tr></thead><tbody>';
 		foreach ( UH_Repo::group_members( $g->id ) as $m ) {
-			echo '<tr><td>' . esc_html( $m->name ?: '—' ) . ( $m->user_id ? ' <span class="dashicons dashicons-admin-users" title="registered"></span>' : '' ) . '</td><td>' . esc_html( $m->ward ) . '</td><td><a href="tel:' . esc_attr( $m->phone ) . '">' . esc_html( $m->phone ) . '</a> ' . esc_html( $m->messenger ) . ( $m->email ? '<br>' . esc_html( $m->email ) : '' ) . '</td><td>' . esc_html( $m->sizes ? UH_Notify::sizes_text( json_decode( $m->sizes, true ) ) : '' ) . '</td><td>' . esc_html( $m->notes ) . '</td><td>' . esc_html( $m->created_at ) . '</td><td>';
+			echo '<tr><td>' . esc_html( $m->name ?: '—' ) . ( $m->real_name ? '<br><small>' . esc_html( $m->real_name ) . '</small>' : '' ) . ( $m->user_id ? ' <span class="dashicons dashicons-admin-users" title="registered"></span>' : '' ) . ( $m->wiped_at ? ' <em>' . esc_html__( 'details deleted', 'ukraine-health' ) . '</em>' : '' ) . '</td><td>' . esc_html( $m->ward ) . '</td><td><a href="tel:' . esc_attr( $m->phone ) . '">' . esc_html( $m->phone ) . '</a> ' . esc_html( $m->messenger ) . ( $m->email ? '<br>' . esc_html( $m->email ) : '' ) . '</td><td>' . esc_html( $m->sizes ? UH_Notify::sizes_text( json_decode( $m->sizes, true ) ) : '' ) . '</td><td>' . esc_html( $m->notes ) . '</td><td>' . esc_html( $m->created_at ) . '</td><td>';
 			if ( ! in_array( $g->status, array( 'completed', 'cancelled' ), true ) ) {
 				echo '<form method="post" onsubmit="return confirm(\'' . esc_js( __( 'Remove this Hero from the group?', 'ukraine-health' ) ) . '\')">' . $this->field( 'remove_member' ) . '<input type="hidden" name="request_id" value="' . (int) $m->id . '"><button class="button-link-delete">' . esc_html__( 'Remove', 'ukraine-health' ) . '</button></form>'; // phpcs:ignore
 			}
@@ -421,9 +471,10 @@ class UH_Admin {
 			echo '<tr><td><a href="' . esc_url( admin_url( 'admin.php?page=ukraine-health-hospitals&edit=' . (int) $h->id ) ) . '">' . esc_html( $h->name ) . '</a><br><small>' . esc_html( $h->address ) . '</small></td><td>' . esc_html( $h->city ) . '</td><td>' . esc_html( $h->country ) . '</td><td>' . ( $h->active ? '✓' : '—' ) . '</td><td><form method="post" onsubmit="return confirm(\'Delete?\')">' . $this->field( 'hospital_delete' ) . '<input type="hidden" name="id" value="' . (int) $h->id . '"><button class="button-link-delete">' . esc_html__( 'Delete', 'ukraine-health' ) . '</button></form></td></tr>'; // phpcs:ignore
 		}
 		echo '</tbody></table></div><div class="uh-panel"><h2>' . ( $e ? esc_html__( 'Edit hospital', 'ukraine-health' ) : esc_html__( 'Add hospital', 'ukraine-health' ) ) . '</h2><form method="post">' . $this->field( 'hospital_save' ) . '<input type="hidden" name="id" value="' . (int) ( $e->id ?? 0 ) . '">'; // phpcs:ignore
-		foreach ( array( 'name' => __( 'Name', 'ukraine-health' ), 'country' => __( 'Country', 'ukraine-health' ), 'city' => __( 'City', 'ukraine-health' ), 'address' => __( 'Address', 'ukraine-health' ), 'contact' => __( 'Contact person / phone', 'ukraine-health' ) ) as $k => $l ) {
+		foreach ( array( 'name' => __( 'Name', 'ukraine-health' ), 'country' => __( 'Country', 'ukraine-health' ), 'city' => __( 'City', 'ukraine-health' ), 'address' => __( 'Address', 'ukraine-health' ), 'visiting_hours' => __( 'Visiting hours (shown to Heroes and Supporters)', 'ukraine-health' ), 'contact' => __( 'Contact person / phone', 'ukraine-health' ), 'contact_email' => __( 'Contact person email', 'ukraine-health' ) ) as $k => $l ) {
 			echo '<p><label>' . esc_html( $l ) . '<br><input class="regular-text" type="text" name="' . esc_attr( $k ) . '" value="' . esc_attr( $e->$k ?? ( 'country' === $k ? 'Latvia' : '' ) ) . '" ' . ( 'name' === $k ? 'required' : '' ) . '></label></p>';
 		}
+		echo '<p><label><input type="checkbox" name="notify_contact" value="1" ' . checked( (int) ( $e->notify_contact ?? 0 ), 1, false ) . '> ' . esc_html__( 'Email the contact person when a visit is planned (service, time, number of patients, wards and the Supporter’s nickname – no patient names)', 'ukraine-health' ) . '</label></p>';
 		echo '<p><label><input type="checkbox" name="active" value="1" ' . checked( $e ? (int) $e->active : 1, 1, false ) . '> ' . esc_html__( 'Active', 'ukraine-health' ) . '</label></p>';
 		submit_button( $e ? __( 'Update', 'ukraine-health' ) : __( 'Add', 'ukraine-health' ) );
 		echo '</form></div></div></div>';
@@ -489,9 +540,17 @@ class UH_Admin {
 		echo '<tr><th>' . esc_html__( 'Rate limit', 'ukraine-health' ) . '</th><td><input type="number" min="0" name="rate_limit" value="' . (int) $s['rate_limit'] . '"> ' . esc_html__( 'guest submissions per hour per device (0 = off)', 'ukraine-health' ) . '</td></tr>';
 		echo '<tr><th>' . esc_html__( 'Messengers', 'ukraine-health' ) . '</th><td><input class="regular-text" name="messengers" value="' . esc_attr( implode( ', ', $s['messengers'] ) ) . '"></td></tr>';
 		echo '<tr><th>' . esc_html__( 'Consent text', 'ukraine-health' ) . '</th><td><textarea class="large-text" rows="2" name="privacy_notice">' . esc_textarea( $s['privacy_notice'] ) . '</textarea></td></tr>';
+		echo '</table><h2>' . esc_html__( 'Privacy and safety', 'ukraine-health' ) . '</h2><table class="form-table">';
+		echo '<tr><th>' . esc_html__( 'Contact details for Supporters', 'ukraine-health' ) . '</th><td><input type="number" min="0" max="720" name="contact_hours" value="' . (int) $s['contact_hours'] . '"> ' . esc_html__( 'hours before the visit the Supporter sees the Heroes’ wards and phone numbers (0 = as soon as they accept)', 'ukraine-health' ) . '</td></tr>';
+		echo '<tr><th>' . esc_html__( 'Delete contact details', 'ukraine-health' ) . '</th><td><input type="number" min="0" max="3650" name="retention_days" value="' . (int) $s['retention_days'] . '"> ' . esc_html__( 'days after a visit is completed or cancelled, or a request withdrawn (0 = never). Only anonymous counts are kept.', 'ukraine-health' ) . '</td></tr>';
+		echo '<tr><th>' . esc_html__( 'Waiting groups', 'ukraine-health' ) . '</th><td><input type="number" min="0" max="60" name="escalate_days" value="' . (int) $s['escalate_days'] . '"> ' . esc_html__( 'days a ready group may wait before coordinators are alerted (0 = off)', 'ukraine-health' ) . '</td></tr>';
+		echo '<tr><th>' . esc_html__( 'Approve Supporters', 'ukraine-health' ) . '</th><td><label><input type="checkbox" name="approve_supporters" value="1" ' . checked( $s['approve_supporters'], 1, false ) . '> ' . esc_html__( 'A coordinator approves every new Supporter before they see any Hero (Supporters you invite yourself are approved automatically)', 'ukraine-health' ) . '</label></td></tr>';
+		echo '<tr><th>' . esc_html__( 'Code of conduct', 'ukraine-health' ) . '</th><td><textarea class="large-text" rows="7" name="code_of_conduct">' . esc_textarea( $s['code_of_conduct'] ) . '</textarea><p class="description">' . esc_html__( 'One rule per line. Supporters must accept it before they can help.', 'ukraine-health' ) . '</p></td></tr>';
+		$locked = defined( 'UH_DISABLE_2FA' ) && UH_DISABLE_2FA;
+		echo '<tr><th>' . esc_html__( 'Two-step login', 'ukraine-health' ) . '</th><td><label><input type="checkbox" name="twofa" value="1" ' . checked( $s['twofa'], 1, false ) . ( $locked ? ' disabled' : '' ) . '> ' . esc_html__( 'Administrators and coordinators enter a code sent by email after their password', 'ukraine-health' ) . '</label><p class="description">' . esc_html__( 'Send yourself a test email first (button below). If login codes do not arrive you would be locked out. Emergency switch: add define( \'UH_DISABLE_2FA\', true ); to wp-config.php.', 'ukraine-health' ) . ( $locked ? ' <strong>' . esc_html__( 'Currently switched off in wp-config.php.', 'ukraine-health' ) . '</strong>' : '' ) . '</p></td></tr>';
 		echo '</table><h2>' . esc_html__( 'Coordinator notifications', 'ukraine-health' ) . '</h2><table class="form-table">';
 		echo '<tr><th>' . esc_html__( 'Email', 'ukraine-health' ) . '</th><td><input class="regular-text" type="email" name="admin_email" value="' . esc_attr( $s['admin_email'] ) . '"> <label><input type="checkbox" name="notify_admin" value="1" ' . checked( $s['notify_admin'], 1, false ) . '> ' . esc_html__( 'notify on every request', 'ukraine-health' ) . '</label></td></tr>';
-		echo '<tr><th>Telegram</th><td><p><label>' . esc_html__( 'Bot token', 'ukraine-health' ) . '<br><input class="regular-text" name="telegram_token" value="' . esc_attr( $s['telegram_token'] ) . '" autocomplete="off"></label></p><p><label>' . esc_html__( 'Coordinator chat / group ID', 'ukraine-health' ) . '<br><input class="regular-text" name="telegram_admin" value="' . esc_attr( $s['telegram_admin'] ) . '"></label></p></td></tr>';
+		echo '<tr><th>Telegram</th><td><p><label>' . esc_html__( 'Bot token', 'ukraine-health' ) . '<br><input class="regular-text" name="telegram_token" value="' . esc_attr( $s['telegram_token'] ) . '" autocomplete="off"></label></p><p><label>' . esc_html__( 'Coordinator chat / group ID', 'ukraine-health' ) . '<br><input class="regular-text" name="telegram_admin" value="' . esc_attr( $s['telegram_admin'] ) . '"></label></p><p class="description">' . ( UH_Telegram::ready() ? esc_html( sprintf( __( 'Connected as @%s. Heroes and Supporters can link their chat in one tap.', 'ukraine-health' ), $s['telegram_bot'] ) ) : esc_html__( 'Create a bot with @BotFather in Telegram, paste its token here, save, then press “Connect Telegram bot” below.', 'ukraine-health' ) ) . '</p></td></tr>';
 		echo '<tr><th>WhatsApp</th><td><select name="wa_gateway">';
 		foreach ( array( 'disabled' => __( 'Disabled', 'ukraine-health' ), 'twilio' => 'Twilio', 'meta' => 'Meta Cloud API' ) as $k => $l ) {
 			echo '<option value="' . esc_attr( $k ) . '" ' . selected( $s['wa_gateway'], $k, false ) . '>' . esc_html( $l ) . '</option>';
@@ -500,6 +559,17 @@ class UH_Admin {
 		echo '<p>Meta token <input type="password" name="meta_token" value="' . esc_attr( $s['meta_token'] ) . '" autocomplete="off"> Phone ID <input name="meta_phone_id" value="' . esc_attr( $s['meta_phone_id'] ) . '"></p></td></tr></table>';
 		submit_button();
 		echo '</form>';
+
+		echo '<div class="uh-panel"><h2>' . esc_html__( 'Tools', 'ukraine-health' ) . '</h2><p>';
+		echo '<form method="post" style="display:inline">' . $this->field( 'twofa_test' ); // phpcs:ignore
+		submit_button( __( 'Send me a test login-code email', 'ukraine-health' ), 'secondary', 'submit', false );
+		echo '</form> ';
+		if ( $s['telegram_token'] ) {
+			echo '<form method="post" style="display:inline">' . $this->field( 'telegram_connect' ); // phpcs:ignore
+			submit_button( __( 'Connect Telegram bot', 'ukraine-health' ), 'secondary', 'submit', false );
+			echo '</form>';
+		}
+		echo '</p><p class="description">' . wp_kses_post( sprintf( __( 'Personal data requests (copy or delete) are handled in <a href="%1$s">Tools → Export Personal Data</a> and <a href="%2$s">Erase Personal Data</a>. Suggested privacy policy text is in <a href="%3$s">Settings → Privacy</a>.', 'ukraine-health' ), esc_url( admin_url( 'export-personal-data.php' ) ), esc_url( admin_url( 'erase-personal-data.php' ) ), esc_url( admin_url( 'options-privacy.php?tab=policyguide' ) ) ) ) . '</p></div>';
 
 		echo '<div class="uh-panel"><h2>' . esc_html__( 'Shortcodes', 'ukraine-health' ) . '</h2><p><code>[uh_request_form]</code> <code>[uh_my_requests]</code> <code>[uh_supporter]</code> <code>[uh_register role="supporter"]</code> <code>[uh_stats]</code> <code>[uh_invite]</code></p></div></div>';
 	}
@@ -515,7 +585,9 @@ class UH_Admin {
 		$this->msg();
 		echo '<p class="description">' . esc_html__( 'Everyone joins through an invite from a member. A member is connected when their chain of inviters reaches an administrator or coordinator through accounts that are not suspended. Only connected Supporters are notified about groups and can see Heroes’ details. Suspending someone also freezes everyone below them until you re-attach those people to another member.', 'ukraine-health' ) . '</p>';
 		echo '<nav class="nav-tab-wrapper">';
-		foreach ( array( 'tree' => __( 'Tree', 'ukraine-health' ), 'review' => __( 'Needs review', 'ukraine-health' ), 'invites' => __( 'Invites', 'ukraine-health' ) ) as $k => $l ) {
+		$n_review  = count( UH_Network::pending_supporters() );
+		$n_reports = UH_Reports::open_count();
+		foreach ( array( 'tree' => __( 'Tree', 'ukraine-health' ), 'review' => __( 'Needs review', 'ukraine-health' ) . ( $n_review ? " ($n_review)" : '' ), 'reports' => __( 'Problem reports', 'ukraine-health' ) . ( $n_reports ? " ($n_reports)" : '' ), 'invites' => __( 'Invites', 'ukraine-health' ) ) as $k => $l ) {
 			echo '<a class="nav-tab' . ( $tab === $k ? ' nav-tab-active' : '' ) . '" href="' . esc_url( add_query_arg( 'tab', $k, $base ) ) . '">' . esc_html( $l ) . '</a>';
 		}
 		echo '</nav>';
@@ -528,7 +600,22 @@ class UH_Admin {
 
 		if ( 'invites' === $tab ) {
 			$this->network_invites();
+		} elseif ( 'reports' === $tab ) {
+			$this->network_reports();
 		} elseif ( 'review' === $tab ) {
+			$pending = UH_Network::pending_supporters();
+			echo '<h2>' . esc_html__( 'Supporters waiting for approval', 'ukraine-health' ) . '</h2>';
+			if ( ! $pending ) {
+				echo '<p>' . esc_html__( 'Nobody is waiting.', 'ukraine-health' ) . '</p>';
+			} else {
+				echo '<table class="widefat striped"><thead><tr><th>' . esc_html__( 'Supporter', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Invited by', 'ukraine-health' ) . '</th><th>' . esc_html__( 'About', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Code of conduct', 'ukraine-health' ) . '</th><th></th></tr></thead><tbody>';
+				foreach ( $pending as $u ) {
+					$by = get_userdata( UH_Network::inviter( $u->ID ) );
+					echo '<tr><td>' . $this->member_label( $u ) . '</td><td>' . esc_html( $by ? UH_Privacy::nickname( $by ) : '—' ) . '</td><td>' . esc_html( get_user_meta( $u->ID, 'uh_about', true ) ) . '</td><td>' . esc_html( get_user_meta( $u->ID, UH_Network::META_COC, true ) ?: '—' ) . '</td><td><form method="post" class="uh-inline-form">' . $this->field( 'net_approve' ) . '<input type="hidden" name="user_id" value="' . (int) $u->ID . '"><button class="button button-primary button-small">' . esc_html__( 'Approve', 'ukraine-health' ) . '</button></form></td></tr>'; // phpcs:ignore
+				}
+				echo '</tbody></table>';
+			}
+			echo '<h2>' . esc_html__( 'Members who are not connected', 'ukraine-health' ) . '</h2>';
 			$list = array_filter(
 				$users,
 				function ( $u ) {
@@ -595,7 +682,15 @@ class UH_Admin {
 		$state = UH_Network::is_suspended( $u->ID ) ? '<span class="uh-badge uh-cancelled">' . esc_html__( 'suspended', 'ukraine-health' ) . '</span>' : ( UH_Network::is_connected( $u->ID ) ? '' : '<span class="uh-badge uh-ready">' . esc_html__( 'not connected', 'ukraine-health' ) . '</span>' );
 		$inv   = (int) get_user_meta( $u->ID, UH_Network::META_INVITE, true );
 		$note  = $inv && ( $i = UH_Network::invite( $inv ) ) && $i->note ? ' · ' . esc_html( sprintf( __( 'invite note: “%s”', 'ukraine-health' ), $i->note ) ) : '';
-		return '<strong><a href="' . esc_url( get_edit_user_link( $u->ID ) ) . '">' . esc_html( $u->display_name ) . '</a></strong> <small>' . esc_html( $u->user_email . ' · ' . implode( ', ', $roles ) . ' · ' . mysql2date( get_option( 'date_format' ), $u->user_registered ) ) . $note . '</small> ' . $state;
+		if ( in_array( UH_Install::ROLE_SUPPORTER, (array) $u->roles, true ) && ! UH_Network::is_root( $u->ID ) ) {
+			if ( UH_Network::on_hold( $u->ID ) ) {
+				$state .= ' <span class="uh-badge uh-ready">' . esc_html__( 'on hold (report)', 'ukraine-health' ) . '</span>';
+			} elseif ( ! UH_Network::is_approved( $u->ID ) ) {
+				$state .= ' <span class="uh-badge">' . esc_html__( 'waiting for approval', 'ukraine-health' ) . '</span>';
+			}
+		}
+		$real = trim( $u->first_name . ' ' . $u->last_name );
+		return '<strong><a href="' . esc_url( get_edit_user_link( $u->ID ) ) . '">' . esc_html( UH_Privacy::nickname( $u ) ) . '</a></strong> <small>' . esc_html( ( $real ? $real . ' · ' : '' ) . $u->user_email . ' · ' . implode( ', ', $roles ) . ' · ' . mysql2date( get_option( 'date_format' ), $u->user_registered ) ) . $note . '</small> ' . $state;
 	}
 
 	private function member_actions( $u, $users ) {
@@ -652,6 +747,25 @@ class UH_Admin {
 			echo '<tr><td>' . (int) $i->id . '</td><td>' . esc_html( $by ? $by->display_name : '#' . (int) $i->inviter_id ) . '</td><td>' . esc_html( $labels[ $i->role ] ?? $i->role ) . '</td><td>' . esc_html( $i->note ) . '</td><td>' . (int) $i->uses . '/' . (int) $i->max_uses . '</td><td>' . esc_html( $i->expires_at ) . '</td><td>' . esc_html( $open ? __( 'open', 'ukraine-health' ) : ( $i->revoked ? __( 'cancelled', 'ukraine-health' ) : ( $i->uses >= $i->max_uses ? __( 'used', 'ukraine-health' ) : __( 'expired', 'ukraine-health' ) ) ) ) . '</td><td>';
 			if ( $open ) {
 				echo '<form method="post" class="uh-inline-form">' . $this->field( 'net_revoke' ) . '<input type="hidden" name="invite_id" value="' . (int) $i->id . '"><button class="button-link-delete">' . esc_html__( 'Cancel', 'ukraine-health' ) . '</button></form>'; // phpcs:ignore
+			}
+			echo '</td></tr>';
+		}
+		echo '</tbody></table>';
+	}
+
+	private function network_reports() {
+		$rows = UH_Reports::all();
+		if ( ! $rows ) {
+			echo '<p>' . esc_html__( 'No problem reports.', 'ukraine-health' ) . '</p>';
+			return;
+		}
+		echo '<p class="description">' . esc_html__( 'When a Hero reports a problem, the Supporter is put on hold at once: no new groups and no Heroes’ details. Clear the report to lift the hold, or suspend the Supporter.', 'ukraine-health' ) . '</p>';
+		echo '<table class="widefat striped"><thead><tr><th>#</th><th>' . esc_html__( 'When', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Supporter', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Visit', 'ukraine-health' ) . '</th><th>' . esc_html__( 'What happened', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Status', 'ukraine-health' ) . '</th><th></th></tr></thead><tbody>';
+		foreach ( $rows as $r ) {
+			$sup = get_userdata( (int) $r->supporter_id );
+			echo '<tr><td>' . (int) $r->id . '</td><td>' . esc_html( $r->created_at ) . '</td><td>' . ( $sup ? $this->member_label( $sup ) : '—' ) . '</td><td>' . ( $r->group_id ? '<a href="' . esc_url( admin_url( 'admin.php?page=ukraine-health-groups&view=' . (int) $r->group_id ) ) . '">#' . (int) $r->group_id . '</a>' : '' ) . '</td><td>' . nl2br( esc_html( $r->message ) ) . ( $r->resolution ? '<p><em>' . esc_html( $r->resolution ) . '</em></p>' : '' ) . '</td><td>' . esc_html( $r->status ) . '</td><td>'; // phpcs:ignore
+			if ( 'open' === $r->status ) {
+				echo '<form method="post">' . $this->field( 'report_resolve' ) . '<input type="hidden" name="report_id" value="' . (int) $r->id . '"><p><textarea name="note" rows="2" placeholder="' . esc_attr__( 'What you found / did', 'ukraine-health' ) . '"></textarea></p><p><button class="button" name="outcome" value="clear">' . esc_html__( 'Clear and lift hold', 'ukraine-health' ) . '</button> <button class="button button-link-delete" name="outcome" value="suspend" onclick="return confirm(\'' . esc_js( __( 'Suspend this Supporter?', 'ukraine-health' ) ) . '\')">' . esc_html__( 'Suspend Supporter', 'ukraine-health' ) . '</button></p></form>'; // phpcs:ignore
 			}
 			echo '</td></tr>';
 		}

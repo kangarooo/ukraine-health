@@ -1,0 +1,1875 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Ukraine Health – Hero Support 1.2.0\n"
+"Language: lv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n % 10 == 0 || n % 100 >= 11 && n % 100 <= 19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2);\n"
+"X-Domain: ukraine-health\n"
+
+#. Plugin Name of the plugin
+#: ukraine-health.php
+msgid "Ukraine Health – Hero Support"
+msgstr "Ukraine Health – atbalsts Varoņiem"
+
+#. Plugin URI of the plugin
+#: ukraine-health.php
+msgid "https://github.com/kangarooo/ukraine-health"
+msgstr ""
+
+#. Description of the plugin
+#: ukraine-health.php
+msgid "Connects Heroes (patients in rehabilitation) with Supporters (hairdressers, nail care, clothing, care products, mobility aids…). Requests are grouped per hospital and service; when a group reaches its minimum size, matching Supporters are notified (email, Telegram, WhatsApp) and can accept it with an appointment date."
+msgstr "Savieno Varoņus (pacientus rehabilitācijā) ar Atbalstītājiem (frizieri, manikīrs, apģērbs, kopšanas līdzekļi, pārvietošanās palīglīdzekļi…). Pieprasījumi tiek grupēti pēc slimnīcas un pakalpojuma; kad grupa sasniedz minimumu, atbilstošie Atbalstītāji saņem paziņojumu (e-pasts, Telegram, WhatsApp) un var to pieņemt ar vizītes datumu."
+
+#. Author of the plugin
+#: ukraine-health.php
+msgid "kangarooo"
+msgstr ""
+
+#: includes/class-uh-admin.php:31
+msgid "Dashboard"
+msgstr "Pārskats"
+
+#: includes/class-uh-admin.php:32
+#: includes/class-uh-admin.php:405
+msgid "Groups"
+msgstr "Grupas"
+
+#: includes/class-uh-admin.php:33
+msgid "Network"
+msgstr "Tīkls"
+
+#: includes/class-uh-admin.php:34
+#: includes/class-uh-admin.php:467
+msgid "Hospitals"
+msgstr "Slimnīcas"
+
+#: includes/class-uh-admin.php:35
+#: includes/class-uh-admin.php:487
+msgid "Services"
+msgstr "Pakalpojumi"
+
+#: includes/class-uh-admin.php:36
+msgid "Settings"
+msgstr "Iestatījumi"
+
+#: includes/class-uh-admin.php:52
+msgid "Saved."
+msgstr "Saglabāts."
+
+#: includes/class-uh-admin.php:53
+msgid "Deleted."
+msgstr "Dzēsts."
+
+#: includes/class-uh-admin.php:54
+msgid "Pages created. You can find them under Pages."
+msgstr "Lapas izveidotas. Tās atradīsiet sadaļā “Lapas”."
+
+#: includes/class-uh-admin.php:55
+msgid "Cannot delete: it is used by groups. Deactivate it instead."
+msgstr "Nevar dzēst: to izmanto grupas. Tā vietā deaktivizējiet."
+
+#: includes/class-uh-admin.php:56
+msgid "Could not save."
+msgstr "Neizdevās saglabāt."
+
+#: includes/class-uh-admin.php:57
+msgid "Not changed: that would put the member under someone they invited."
+msgstr "Nav mainīts: tā dalībnieks nonāktu zem kāda, ko pats uzaicinājis."
+
+#: includes/class-uh-admin.php:58
+msgid "Telegram bot connected."
+msgstr "Telegram bots pievienots."
+
+#: includes/class-uh-admin.php:59
+msgid "Could not connect the Telegram bot. Check the token and that the site is reachable over HTTPS."
+msgstr "Neizdevās pievienot Telegram botu. Pārbaudiet žetonu un to, vai vietne ir pieejama caur HTTPS."
+
+#: includes/class-uh-admin.php:60
+msgid "Test email sent. Check your inbox (and spam folder) before you switch two-step login on."
+msgstr "Testa e-pasts nosūtīts. Pārbaudiet iesūtni (un mēstuļu mapi), pirms ieslēdzat divpakāpju pieteikšanos."
+
+#: includes/class-uh-admin.php:80
+msgid "Not allowed."
+msgstr "Nav atļauts."
+
+#: includes/class-uh-admin.php:280
+msgid "Request help"
+msgstr "Lūgt palīdzību"
+
+#: includes/class-uh-admin.php:281
+#: includes/class-uh-frontend.php:880
+msgid "My requests"
+msgstr "Mani pieprasījumi"
+
+#: includes/class-uh-admin.php:282
+#: includes/class-uh-admin.php:363
+#: includes/class-uh-frontend.php:1056
+msgid "Supporters"
+msgstr "Atbalstītāji"
+
+#: includes/class-uh-admin.php:283
+msgid "Join"
+msgstr "Pievienoties"
+
+#: includes/class-uh-admin.php:352
+#, php-format
+msgid "%d open problem report"
+msgid_plural "%d open problem reports"
+msgstr[0] "%d atvērtu sūdzību"
+msgstr[1] "%d atvērta sūdzība"
+msgstr[2] "%d atvērtas sūdzības"
+
+#: includes/class-uh-admin.php:352
+msgid "Review now"
+msgstr "Pārskatīt tagad"
+
+#: includes/class-uh-admin.php:355
+#, php-format
+msgid "%d Supporter is waiting for approval"
+msgid_plural "%d Supporters are waiting for approval"
+msgstr[0] "%d Atbalstītāju gaida apstiprinājumu"
+msgstr[1] "%d Atbalstītājs gaida apstiprinājumu"
+msgstr[2] "%d Atbalstītāji gaida apstiprinājumu"
+
+#: includes/class-uh-admin.php:355
+msgid "Review"
+msgstr "Pārskatīt"
+
+#: includes/class-uh-admin.php:359
+msgid "Heroes waiting"
+msgstr "Varoņi gaida"
+
+#: includes/class-uh-admin.php:360
+msgid "Groups ready"
+msgstr "Gatavas grupas"
+
+#: includes/class-uh-admin.php:361
+#: includes/class-uh-install.php:347
+msgid "Scheduled"
+msgstr "Ieplānots"
+
+#: includes/class-uh-admin.php:362
+#: includes/class-uh-frontend.php:1053
+msgid "Heroes helped"
+msgstr "Varoņiem palīdzēts"
+
+#: includes/class-uh-admin.php:370
+msgid "Ready groups without a Supporter"
+msgstr "Gatavas grupas bez Atbalstītāja"
+
+#: includes/class-uh-admin.php:372
+msgid "None – well done!"
+msgstr "Nav – lieliski!"
+
+#: includes/class-uh-admin.php:374
+#: includes/class-uh-admin.php:412
+#: includes/class-uh-admin.php:489
+#: includes/class-uh-privacy.php:173
+msgid "Service"
+msgstr "Pakalpojums"
+
+#: includes/class-uh-admin.php:374
+#: includes/class-uh-admin.php:412
+#: includes/class-uh-frontend.php:555
+#: includes/class-uh-privacy.php:174
+msgid "Hospital"
+msgstr "Slimnīca"
+
+#: includes/class-uh-admin.php:374
+#: includes/class-uh-admin.php:412
+msgid "Heroes"
+msgstr "Varoņi"
+
+#: includes/class-uh-admin.php:374
+msgid "Matching Supporters"
+msgstr "Atbilstošie Atbalstītāji"
+
+#: includes/class-uh-admin.php:377
+msgid "Open"
+msgstr "Atvērt"
+
+#: includes/class-uh-admin.php:384
+msgid "Next step: create the public pages under Ukraine Health → Settings."
+msgstr "Nākamais solis: izveidojiet publiskās lapas sadaļā Ukraine Health → Iestatījumi."
+
+#: includes/class-uh-admin.php:387
+msgid "Recent activity"
+msgstr "Pēdējās darbības"
+
+#: includes/class-uh-admin.php:390
+msgid "guest"
+msgstr "viesis"
+
+#: includes/class-uh-admin.php:405
+msgid "Export CSV"
+msgstr "Eksportēt CSV"
+
+#: includes/class-uh-admin.php:407
+msgid "All"
+msgstr "Visas"
+
+#: includes/class-uh-admin.php:412
+#: includes/class-uh-admin.php:739
+#: includes/class-uh-admin.php:763
+#: includes/class-uh-privacy.php:180
+msgid "Status"
+msgstr "Statuss"
+
+#: includes/class-uh-admin.php:412
+#: includes/class-uh-admin.php:611
+#: includes/class-uh-admin.php:677
+#: includes/class-uh-admin.php:763
+msgid "Supporter"
+msgstr "Atbalstītājs"
+
+#: includes/class-uh-admin.php:412
+#: includes/class-uh-admin.php:453
+msgid "Appointment"
+msgstr "Vizīte"
+
+#: includes/class-uh-admin.php:415
+msgid "No groups yet."
+msgstr "Grupu vēl nav."
+
+#: includes/class-uh-admin.php:429
+msgid "All groups"
+msgstr "Visas grupas"
+
+#: includes/class-uh-admin.php:430
+#, php-format
+msgid "Supporter: %1$s · Appointment: %2$s"
+msgstr "Atbalstītājs: %1$s · Vizīte: %2$s"
+
+#: includes/class-uh-admin.php:432
+#: includes/class-uh-admin.php:469
+#: includes/class-uh-admin.php:474
+#: includes/class-uh-admin.php:494
+msgid "Name"
+msgstr "Vārds"
+
+#: includes/class-uh-admin.php:432
+#: includes/class-uh-privacy.php:178
+msgid "Ward"
+msgstr "Palāta"
+
+#: includes/class-uh-admin.php:432
+#: includes/class-uh-frontend.php:605
+#: includes/class-uh-frontend.php:800
+#: includes/class-uh-frontend.php:930
+#: includes/class-uh-privacy.php:177
+msgid "Phone"
+msgstr "Tālrunis"
+
+#: includes/class-uh-admin.php:432
+#: includes/class-uh-admin.php:489
+msgid "Sizes"
+msgstr "Izmēri"
+
+#: includes/class-uh-admin.php:432
+#: includes/class-uh-privacy.php:179
+msgid "Notes"
+msgstr "Piezīmes"
+
+#: includes/class-uh-admin.php:432
+msgid "Joined"
+msgstr "Pievienojās"
+
+#: includes/class-uh-admin.php:434
+msgid "details deleted"
+msgstr "dati dzēsti"
+
+#: includes/class-uh-admin.php:436
+msgid "Remove this Hero from the group?"
+msgstr "Izņemt šo Varoni no grupas?"
+
+#: includes/class-uh-admin.php:436
+msgid "Remove"
+msgstr "Izņemt"
+
+#: includes/class-uh-admin.php:442
+#: includes/class-uh-admin.php:479
+#: includes/class-uh-admin.php:507
+msgid "Update"
+msgstr "Atjaunināt"
+
+#: includes/class-uh-admin.php:448
+msgid "Assign Supporter"
+msgstr "Piešķirt Atbalstītāju"
+
+#: includes/class-uh-admin.php:453
+#: includes/class-uh-admin.php:739
+msgid "Note"
+msgstr "Piezīme"
+
+#: includes/class-uh-admin.php:453
+msgid "★ = offers this service at this hospital."
+msgstr "★ = sniedz šo pakalpojumu šajā slimnīcā."
+
+#: includes/class-uh-admin.php:455
+msgid "Or change status"
+msgstr "Vai mainiet statusu"
+
+#: includes/class-uh-admin.php:460
+#: includes/class-uh-admin.php:718
+msgid "Save"
+msgstr "Saglabāt"
+
+#: includes/class-uh-admin.php:469
+#: includes/class-uh-admin.php:474
+msgid "City"
+msgstr "Pilsēta"
+
+#: includes/class-uh-admin.php:469
+#: includes/class-uh-admin.php:474
+msgid "Country"
+msgstr "Valsts"
+
+#: includes/class-uh-admin.php:469
+#: includes/class-uh-admin.php:478
+#: includes/class-uh-admin.php:489
+#: includes/class-uh-admin.php:506
+msgid "Active"
+msgstr "Aktīva"
+
+#: includes/class-uh-admin.php:471
+#: includes/class-uh-admin.php:491
+msgid "Delete"
+msgstr "Dzēst"
+
+#: includes/class-uh-admin.php:473
+msgid "Edit hospital"
+msgstr "Rediģēt slimnīcu"
+
+#: includes/class-uh-admin.php:473
+msgid "Add hospital"
+msgstr "Pievienot slimnīcu"
+
+#: includes/class-uh-admin.php:474
+msgid "Address"
+msgstr "Adrese"
+
+#: includes/class-uh-admin.php:474
+msgid "Visiting hours (shown to Heroes and Supporters)"
+msgstr "Apmeklējuma laiks (redz Varoņi un Atbalstītāji)"
+
+#: includes/class-uh-admin.php:474
+msgid "Contact person / phone"
+msgstr "Kontaktpersona / tālrunis"
+
+#: includes/class-uh-admin.php:474
+msgid "Contact person email"
+msgstr "Kontaktpersonas e-pasts"
+
+#: includes/class-uh-admin.php:477
+msgid "Email the contact person when a visit is planned (service, time, number of patients, wards and the Supporter’s nickname – no patient names)"
+msgstr "Sūtīt kontaktpersonai e-pastu, kad ieplānota vizīte (pakalpojums, laiks, pacientu skaits, palātas un Atbalstītāja segvārds – bez pacientu vārdiem)"
+
+#: includes/class-uh-admin.php:479
+#: includes/class-uh-admin.php:507
+msgid "Add"
+msgstr "Pievienot"
+
+#: includes/class-uh-admin.php:489
+#: includes/class-uh-admin.php:495
+msgid "Category"
+msgstr "Kategorija"
+
+#: includes/class-uh-admin.php:489
+msgid "Min. group"
+msgstr "Min. grupa"
+
+#: includes/class-uh-admin.php:493
+msgid "Edit service"
+msgstr "Rediģēt pakalpojumu"
+
+#: includes/class-uh-admin.php:493
+msgid "Add service"
+msgstr "Pievienot pakalpojumu"
+
+#: includes/class-uh-admin.php:500
+msgid "Minimum Heroes before Supporters are notified"
+msgstr "Minimālais Varoņu skaits, pirms tiek ziņots Atbalstītājiem"
+
+#: includes/class-uh-admin.php:501
+msgid "Minutes per Hero (for calendar length)"
+msgstr "Minūtes uz vienu Varoni (kalendāra ilgumam)"
+
+#: includes/class-uh-admin.php:502
+msgid "Ask for clothing / shoe sizes"
+msgstr "Jautāt apģērba / apavu izmērus"
+
+#: includes/class-uh-admin.php:503
+msgid "Group chat link (optional)"
+msgstr "Grupas tērzēšanas saite (nav obligāta)"
+
+#: includes/class-uh-admin.php:504
+msgid "Description"
+msgstr "Apraksts"
+
+#: includes/class-uh-admin.php:505
+msgid "Sort order"
+msgstr "Kārtošanas secība"
+
+#: includes/class-uh-admin.php:513
+msgid "Ukraine Health settings"
+msgstr "Ukraine Health iestatījumi"
+
+#: includes/class-uh-admin.php:517
+msgid "Public pages"
+msgstr "Publiskās lapas"
+
+#: includes/class-uh-admin.php:528
+msgid "Re-create missing pages"
+msgstr "Izveidot trūkstošās lapas"
+
+#: includes/class-uh-admin.php:528
+msgid "Create pages"
+msgstr "Izveidot lapas"
+
+#: includes/class-uh-admin.php:530
+msgid "Sign-up is invite-only: people join through an invite link from a member (see Ukraine Health → Network). Leave WordPress’s “Anyone can register” switched off."
+msgstr "Reģistrācija tikai ar ielūgumu: cilvēki pievienojas ar dalībnieka ielūguma saiti (skatīt Ukraine Health → Tīkls). Atstājiet WordPress iestatījumu “Ikviens var reģistrēties” izslēgtu."
+
+#: includes/class-uh-admin.php:532
+#, php-format
+msgid "“Anyone can register” is on in <a href=\"%s\">Settings → General</a>. Accounts made through the WordPress sign-up form are not connected to anyone and get no access until a coordinator reviews them, but it is safer to switch it off."
+msgstr "Iestatījums “Ikviens var reģistrēties” ir ieslēgts sadaļā <a href=\"%s\">Iestatījumi → Vispārīgi</a>. Konti, kas izveidoti ar WordPress reģistrācijas formu, nav ne ar vienu saistīti un nesaņem piekļuvi, kamēr tos nepārskata koordinators, taču drošāk to izslēgt."
+
+#: includes/class-uh-admin.php:537
+msgid "Requests"
+msgstr "Pieprasījumi"
+
+#: includes/class-uh-admin.php:538
+msgid "Guests"
+msgstr "Viesi"
+
+#: includes/class-uh-admin.php:538
+msgid "Heroes can request help without an account (phone required)"
+msgstr "Varoņi var lūgt palīdzību bez konta (nepieciešams tālrunis)"
+
+#: includes/class-uh-admin.php:539
+msgid "Invite-only requests"
+msgstr "Pieprasījumi tikai ar ielūgumu"
+
+#: includes/class-uh-admin.php:539
+msgid "Heroes without a connected account need an invite code to request help (recommended)"
+msgstr "Varoņiem bez saistīta konta pieprasījumam vajadzīgs ielūguma kods (ieteicams)"
+
+#: includes/class-uh-admin.php:540
+msgid "Rate limit"
+msgstr "Biežuma ierobežojums"
+
+#: includes/class-uh-admin.php:540
+msgid "guest submissions per hour per device (0 = off)"
+msgstr "viesu pieprasījumi stundā no vienas ierīces (0 = izslēgts)"
+
+#: includes/class-uh-admin.php:541
+msgid "Messengers"
+msgstr "Saziņas lietotnes"
+
+#: includes/class-uh-admin.php:542
+msgid "Consent text"
+msgstr "Piekrišanas teksts"
+
+#: includes/class-uh-admin.php:543
+msgid "Privacy and safety"
+msgstr "Privātums un drošība"
+
+#: includes/class-uh-admin.php:544
+msgid "Contact details for Supporters"
+msgstr "Kontaktinformācija Atbalstītājiem"
+
+#: includes/class-uh-admin.php:544
+msgid "hours before the visit the Supporter sees the Heroes’ wards and phone numbers (0 = as soon as they accept)"
+msgstr "stundas pirms vizītes Atbalstītājs redz Varoņu palātas un tālruņus (0 = uzreiz pēc pieņemšanas)"
+
+#: includes/class-uh-admin.php:545
+msgid "Delete contact details"
+msgstr "Dzēst kontaktinformāciju"
+
+#: includes/class-uh-admin.php:545
+msgid "days after a visit is completed or cancelled, or a request withdrawn (0 = never). Only anonymous counts are kept."
+msgstr "dienas pēc vizītes pabeigšanas vai atcelšanas, vai pieprasījuma atsaukšanas (0 = nekad). Saglabā tikai anonīmus skaitļus."
+
+#: includes/class-uh-admin.php:546
+msgid "Waiting groups"
+msgstr "Gaidošās grupas"
+
+#: includes/class-uh-admin.php:546
+msgid "days a ready group may wait before coordinators are alerted (0 = off)"
+msgstr "dienas, ko gatava grupa var gaidīt, pirms tiek brīdināti koordinatori (0 = izslēgts)"
+
+#: includes/class-uh-admin.php:547
+msgid "Approve Supporters"
+msgstr "Apstiprināt Atbalstītājus"
+
+#: includes/class-uh-admin.php:547
+msgid "A coordinator approves every new Supporter before they see any Hero (Supporters you invite yourself are approved automatically)"
+msgstr "Koordinators apstiprina katru jauno Atbalstītāju, pirms tas redz jebkuru Varoni (jūsu pašu uzaicinātie Atbalstītāji tiek apstiprināti automātiski)"
+
+#: includes/class-uh-admin.php:548
+#: includes/class-uh-admin.php:611
+msgid "Code of conduct"
+msgstr "Uzvedības kodekss"
+
+#: includes/class-uh-admin.php:548
+msgid "One rule per line. Supporters must accept it before they can help."
+msgstr "Viens noteikums katrā rindā. Atbalstītājiem tas jāpieņem, pirms viņi var palīdzēt."
+
+#: includes/class-uh-admin.php:550
+msgid "Two-step login"
+msgstr "Divpakāpju pieteikšanās"
+
+#: includes/class-uh-admin.php:550
+msgid "Administrators and coordinators enter a code sent by email after their password"
+msgstr "Administratori un koordinatori pēc paroles ievada kodu, kas nosūtīts uz e-pastu"
+
+#: includes/class-uh-admin.php:550
+msgid "Send yourself a test email first (button below). If login codes do not arrive you would be locked out. Emergency switch: add define( 'UH_DISABLE_2FA', true ); to wp-config.php."
+msgstr "Vispirms nosūtiet sev testa e-pastu (poga zemāk). Ja pieteikšanās kodi nepienāks, jūs nevarēsiet pieteikties. Avārijas slēdzis: pievienojiet define( 'UH_DISABLE_2FA', true ); failā wp-config.php."
+
+#: includes/class-uh-admin.php:550
+msgid "Currently switched off in wp-config.php."
+msgstr "Pašlaik izslēgts failā wp-config.php."
+
+#: includes/class-uh-admin.php:551
+msgid "Coordinator notifications"
+msgstr "Koordinatoru paziņojumi"
+
+#: includes/class-uh-admin.php:552
+#: includes/class-uh-frontend.php:929
+msgid "Email"
+msgstr "E-pasts"
+
+#: includes/class-uh-admin.php:552
+msgid "notify on every request"
+msgstr "ziņot par katru pieprasījumu"
+
+#: includes/class-uh-admin.php:553
+msgid "Bot token"
+msgstr "Bota žetons"
+
+#: includes/class-uh-admin.php:553
+msgid "Coordinator chat / group ID"
+msgstr "Koordinatora tērzēšanas / grupas ID"
+
+#: includes/class-uh-admin.php:553
+#, php-format
+msgid "Connected as @%s. Heroes and Supporters can link their chat in one tap."
+msgstr "Pievienots kā @%s. Varoņi un Atbalstītāji var piesaistīt savu tērzēšanu ar vienu pieskārienu."
+
+#: includes/class-uh-admin.php:553
+msgid "Create a bot with @BotFather in Telegram, paste its token here, save, then press “Connect Telegram bot” below."
+msgstr "Izveidojiet botu ar @BotFather Telegram lietotnē, ielīmējiet šeit tā žetonu, saglabājiet un nospiediet “Pievienot Telegram botu” zemāk."
+
+#: includes/class-uh-admin.php:555
+msgid "Disabled"
+msgstr "Izslēgts"
+
+#: includes/class-uh-admin.php:563
+msgid "Tools"
+msgstr "Rīki"
+
+#: includes/class-uh-admin.php:565
+msgid "Send me a test login-code email"
+msgstr "Nosūtīt man testa e-pastu ar pieteikšanās kodu"
+
+#: includes/class-uh-admin.php:569
+msgid "Connect Telegram bot"
+msgstr "Pievienot Telegram botu"
+
+#: includes/class-uh-admin.php:572
+#, php-format
+msgid "Personal data requests (copy or delete) are handled in <a href=\"%1$s\">Tools → Export Personal Data</a> and <a href=\"%2$s\">Erase Personal Data</a>. Suggested privacy policy text is in <a href=\"%3$s\">Settings → Privacy</a>."
+msgstr "Personas datu pieprasījumi (kopija vai dzēšana) tiek apstrādāti sadaļās <a href=\"%1$s\">Rīki → Eksportēt personas datus</a> un <a href=\"%2$s\">Dzēst personas datus</a>. Ieteiktais privātuma politikas teksts ir sadaļā <a href=\"%3$s\">Iestatījumi → Privātums</a>."
+
+#: includes/class-uh-admin.php:574
+msgid "Shortcodes"
+msgstr "Īskodi"
+
+#: includes/class-uh-admin.php:584
+msgid "Network – who invited whom"
+msgstr "Tīkls – kurš ko uzaicināja"
+
+#: includes/class-uh-admin.php:586
+msgid "Everyone joins through an invite from a member. A member is connected when their chain of inviters reaches an administrator or coordinator through accounts that are not suspended. Only connected Supporters are notified about groups and can see Heroes’ details. Suspending someone also freezes everyone below them until you re-attach those people to another member."
+msgstr "Ikviens pievienojas ar dalībnieka ielūgumu. Dalībnieks ir saistīts, ja viņa uzaicinātāju ķēde caur nebloķētiem kontiem sasniedz administratoru vai koordinatoru. Tikai saistīti Atbalstītāji saņem paziņojumus par grupām un redz Varoņu datus. Kāda bloķēšana iesaldē arī visus zem viņa, līdz jūs šos cilvēkus piesaistāt citam dalībniekam."
+
+#: includes/class-uh-admin.php:590
+msgid "Tree"
+msgstr "Koks"
+
+#: includes/class-uh-admin.php:590
+msgid "Needs review"
+msgstr "Jāpārskata"
+
+#: includes/class-uh-admin.php:590
+msgid "Problem reports"
+msgstr "Sūdzības"
+
+#: includes/class-uh-admin.php:590
+msgid "Invites"
+msgstr "Ielūgumi"
+
+#: includes/class-uh-admin.php:607
+msgid "Supporters waiting for approval"
+msgstr "Atbalstītāji, kas gaida apstiprinājumu"
+
+#: includes/class-uh-admin.php:609
+msgid "Nobody is waiting."
+msgstr "Neviens negaida."
+
+#: includes/class-uh-admin.php:611
+#: includes/class-uh-admin.php:739
+msgid "Invited by"
+msgstr "Uzaicināja"
+
+#: includes/class-uh-admin.php:611
+msgid "About"
+msgstr "Par sevi"
+
+#: includes/class-uh-admin.php:614
+msgid "Approve"
+msgstr "Apstiprināt"
+
+#: includes/class-uh-admin.php:618
+msgid "Members who are not connected"
+msgstr "Nesaistītie dalībnieki"
+
+#: includes/class-uh-admin.php:626
+msgid "Everyone is connected."
+msgstr "Visi ir saistīti."
+
+#: includes/class-uh-admin.php:628
+msgid "Member"
+msgstr "Dalībnieks"
+
+#: includes/class-uh-admin.php:628
+msgid "Why"
+msgstr "Kāpēc"
+
+#: includes/class-uh-admin.php:628
+msgid "Actions"
+msgstr "Darbības"
+
+#: includes/class-uh-admin.php:632
+msgid "Suspended"
+msgstr "Bloķēts"
+
+#: includes/class-uh-admin.php:634
+msgid "Nobody invited them (e.g. signed up through the WordPress form)"
+msgstr "Neviens viņus neuzaicināja (piem., reģistrējās ar WordPress formu)"
+
+#: includes/class-uh-admin.php:637
+#, php-format
+msgid "Their inviter chain is broken (%s is suspended, deleted or not connected)"
+msgstr "Uzaicinātāju ķēde ir pārtraukta (%s ir bloķēts, dzēsts vai nav saistīts)"
+
+#: includes/class-uh-admin.php:674
+#: includes/class-uh-install.php:225
+msgid "Coordinator"
+msgstr "Koordinators"
+
+#: includes/class-uh-admin.php:680
+msgid "Hero"
+msgstr "Varonis"
+
+#: includes/class-uh-admin.php:682
+#: includes/class-uh-frontend.php:1022
+msgid "suspended"
+msgstr "bloķēts"
+
+#: includes/class-uh-admin.php:682
+msgid "not connected"
+msgstr "nav saistīts"
+
+#: includes/class-uh-admin.php:684
+#, php-format
+msgid "invite note: “%s”"
+msgstr "ielūguma piezīme: “%s”"
+
+#: includes/class-uh-admin.php:687
+msgid "on hold (report)"
+msgstr "apturēts (sūdzība)"
+
+#: includes/class-uh-admin.php:689
+msgid "waiting for approval"
+msgstr "gaida apstiprinājumu"
+
+#: includes/class-uh-admin.php:702
+msgid "Unsuspend"
+msgstr "Atbloķēt"
+
+#: includes/class-uh-admin.php:704
+msgid "Suspend this member? They are logged out and cannot log in, help or invite."
+msgstr "Bloķēt šo dalībnieku? Viņš tiks izrakstīts un nevarēs pieteikties, palīdzēt vai uzaicināt."
+
+#: includes/class-uh-admin.php:704
+msgid "Suspend"
+msgstr "Bloķēt"
+
+#: includes/class-uh-admin.php:706
+msgid "Suspend this member AND everyone they invited, directly or indirectly?"
+msgstr "Bloķēt šo dalībnieku UN visus, ko viņš uzaicinājis tieši vai netieši?"
+
+#: includes/class-uh-admin.php:706
+msgid "Suspend with branch"
+msgstr "Bloķēt ar zaru"
+
+#: includes/class-uh-admin.php:710
+msgid "Make Supporter"
+msgstr "Padarīt par Atbalstītāju"
+
+#: includes/class-uh-admin.php:712
+msgid "Re-attach under…"
+msgstr "Piesaistīt zem…"
+
+#: includes/class-uh-admin.php:726
+msgid "Invite link:"
+msgstr "Ielūguma saite:"
+
+#: includes/class-uh-admin.php:728
+msgid "Create an invite"
+msgstr "Izveidot ielūgumu"
+
+#: includes/class-uh-admin.php:729
+#: includes/class-uh-admin.php:739
+msgid "For"
+msgstr "Kam"
+
+#: includes/class-uh-admin.php:733
+msgid "Note (who is it for)"
+msgstr "Piezīme (kam tas paredzēts)"
+
+#: includes/class-uh-admin.php:733
+#: includes/class-uh-frontend.php:1006
+msgid "Uses"
+msgstr "Lietojumi"
+
+#: includes/class-uh-admin.php:733
+#: includes/class-uh-frontend.php:1007
+msgid "Valid days"
+msgstr "Derīgs dienas"
+
+#: includes/class-uh-admin.php:734
+msgid "Tip: a multi-use Hero invite can be given to hospital staff for one ward. Each person who uses it is recorded as invited by you."
+msgstr "Padoms: daudzreizēju Varoņu ielūgumu var iedot slimnīcas personālam vienai nodaļai. Katrs, kas to izmantos, tiks reģistrēts kā jūsu uzaicināts."
+
+#: includes/class-uh-admin.php:735
+msgid "Create invite"
+msgstr "Izveidot ielūgumu"
+
+#: includes/class-uh-admin.php:739
+msgid "Used"
+msgstr "Izmantots"
+
+#: includes/class-uh-admin.php:739
+msgid "Valid until"
+msgstr "Derīgs līdz"
+
+#: includes/class-uh-admin.php:742
+msgid "No invites yet."
+msgstr "Ielūgumu vēl nav."
+
+#: includes/class-uh-admin.php:747
+#: includes/class-uh-frontend.php:1033
+msgid "open"
+msgstr "atvērts"
+
+#: includes/class-uh-admin.php:747
+#: includes/class-uh-frontend.php:1033
+msgid "cancelled"
+msgstr "atcelts"
+
+#: includes/class-uh-admin.php:747
+#: includes/class-uh-frontend.php:1033
+msgid "used"
+msgstr "izmantots"
+
+#: includes/class-uh-admin.php:747
+#: includes/class-uh-frontend.php:1033
+msgid "expired"
+msgstr "beidzies"
+
+#: includes/class-uh-admin.php:749
+msgid "Cancel"
+msgstr "Atcelt"
+
+#: includes/class-uh-admin.php:759
+msgid "No problem reports."
+msgstr "Sūdzību nav."
+
+#: includes/class-uh-admin.php:762
+msgid "When a Hero reports a problem, the Supporter is put on hold at once: no new groups and no Heroes’ details. Clear the report to lift the hold, or suspend the Supporter."
+msgstr "Kad Varonis ziņo par problēmu, Atbalstītājs uzreiz tiek apturēts: nekādu jaunu grupu un Varoņu datu. Slēdziet sūdzību, lai atceltu apturēšanu, vai bloķējiet Atbalstītāju."
+
+#: includes/class-uh-admin.php:763
+msgid "When"
+msgstr "Kad"
+
+#: includes/class-uh-admin.php:763
+msgid "Visit"
+msgstr "Vizīte"
+
+#: includes/class-uh-admin.php:763
+msgid "What happened"
+msgstr "Kas notika"
+
+#: includes/class-uh-admin.php:768
+msgid "What you found / did"
+msgstr "Ko jūs noskaidrojāt / izdarījāt"
+
+#: includes/class-uh-admin.php:768
+msgid "Clear and lift hold"
+msgstr "Slēgt un atcelt apturēšanu"
+
+#: includes/class-uh-admin.php:768
+msgid "Suspend this Supporter?"
+msgstr "Bloķēt šo Atbalstītāju?"
+
+#: includes/class-uh-admin.php:768
+msgid "Suspend Supporter"
+msgstr "Bloķēt Atbalstītāju"
+
+#: includes/class-uh-cron.php:75
+#, php-format
+msgid "%d matching Supporter"
+msgid_plural "%d matching Supporters"
+msgstr[0] "%d atbilstošu Atbalstītāju"
+msgstr[1] "%d atbilstošs Atbalstītājs"
+msgstr[2] "%d atbilstoši Atbalstītāji"
+
+#: includes/class-uh-cron.php:78
+#, php-format
+msgid "%d group is still waiting for a Supporter"
+msgid_plural "%d groups are still waiting for a Supporter"
+msgstr[0] "%d grupu joprojām gaida Atbalstītāju"
+msgstr[1] "%d grupa joprojām gaida Atbalstītāju"
+msgstr[2] "%d grupas joprojām gaida Atbalstītāju"
+
+#: includes/class-uh-cron.php:79
+#, php-format
+msgid "These groups have been ready for more than %d days and nobody has accepted them yet:"
+msgstr "Šīs grupas ir gatavas jau vairāk nekā %d dienas, un neviens tās vēl nav pieņēmis:"
+
+#: includes/class-uh-frontend.php:43
+msgid "already waiting"
+msgstr "jau gaida"
+
+#: includes/class-uh-frontend.php:44
+msgid "Group is full – a Supporter will be found soon"
+msgstr "Grupa ir pilna – Atbalstītājs drīz tiks atrasts"
+
+#: includes/class-uh-frontend.php:45
+msgid "more needed to start"
+msgstr "vēl vajag, lai sāktu"
+
+#: includes/class-uh-frontend.php:381
+msgid "New Supporter to approve"
+msgstr "Jauns Atbalstītājs apstiprināšanai"
+
+#. translators: 1: nickname, 2: inviter nickname, 3: link
+#: includes/class-uh-frontend.php:384
+#, php-format
+msgid "%1$s (invited by %2$s) wants to help as a Supporter and is waiting for your approval:\n%3$s"
+msgstr "%1$s (uzaicināja %2$s) vēlas palīdzēt kā Atbalstītājs un gaida jūsu apstiprinājumu:\n%3$s"
+
+#: includes/class-uh-frontend.php:423
+msgid "Thank you! Your request was received."
+msgid_plural "Thank you! Your %d requests were received."
+msgstr[0] "Paldies! Jūsu %d pieprasījumi saņemti."
+msgstr[1] "Paldies! Jūsu pieprasījums saņemts."
+msgstr[2] "Paldies! Jūsu %d pieprasījumi saņemti."
+
+#: includes/class-uh-frontend.php:424
+msgid "Your request was withdrawn."
+msgstr "Jūsu pieprasījums atsaukts."
+
+#: includes/class-uh-frontend.php:425
+msgid "Profile saved."
+msgstr "Profils saglabāts."
+
+#: includes/class-uh-frontend.php:426
+msgid "You accepted the group. The Heroes have been notified – thank you!"
+msgstr "Jūs pieņēmāt grupu. Varoņiem ir paziņots – paldies!"
+
+#: includes/class-uh-frontend.php:427
+msgid "Group released back to the queue."
+msgstr "Grupa atgriezta rindā."
+
+#: includes/class-uh-frontend.php:428
+msgid "Marked as completed. Thank you for helping!"
+msgstr "Atzīmēts kā pabeigts. Paldies par palīdzību!"
+
+#: includes/class-uh-frontend.php:429
+msgid "Account created. Check your email to set a password."
+msgstr "Konts izveidots. Pārbaudiet e-pastu, lai iestatītu paroli."
+
+#: includes/class-uh-frontend.php:430
+msgid "Invite created. Send the link below to the person – it works once."
+msgstr "Ielūgums izveidots. Nosūtiet zemāk esošo saiti šai personai – tā darbojas vienu reizi."
+
+#: includes/class-uh-frontend.php:431
+msgid "Invite cancelled."
+msgstr "Ielūgums atcelts."
+
+#: includes/class-uh-frontend.php:432
+msgid "Thank you for telling us. A coordinator will contact you. The Supporter will not get new groups until this is reviewed."
+msgstr "Paldies, ka pastāstījāt. Koordinators ar jums sazināsies. Atbalstītājs nesaņems jaunas grupas, kamēr tas netiks pārskatīts."
+
+#: includes/class-uh-frontend.php:435
+msgid "The form expired. Please try again."
+msgstr "Formas derīgums beidzies. Lūdzu, mēģiniet vēlreiz."
+
+#: includes/class-uh-frontend.php:436
+msgid "Please log in first."
+msgstr "Lūdzu, vispirms piesakieties."
+
+#: includes/class-uh-frontend.php:437
+msgid "Too many submissions. Please try again later."
+msgstr "Pārāk daudz mēģinājumu. Lūdzu, mēģiniet vēlāk."
+
+#: includes/class-uh-frontend.php:438
+msgid "Please fill in all required fields."
+msgstr "Lūdzu, aizpildiet visus obligātos laukus."
+
+#: includes/class-uh-frontend.php:439
+msgid "Please enter a valid phone number."
+msgstr "Lūdzu, ievadiet derīgu tālruņa numuru."
+
+#: includes/class-uh-frontend.php:440
+msgid "Please agree to share your contact details."
+msgstr "Lūdzu, piekrītiet savas kontaktinformācijas kopīgošanai."
+
+#: includes/class-uh-frontend.php:441
+msgid "You are already on the list for the selected services."
+msgstr "Jūs jau esat sarakstā izvēlētajiem pakalpojumiem."
+
+#: includes/class-uh-frontend.php:442
+msgid "Request not found."
+msgstr "Pieprasījums nav atrasts."
+
+#: includes/class-uh-frontend.php:443
+msgid "You are not allowed to do that."
+msgstr "Jums nav atļauts to darīt."
+
+#: includes/class-uh-frontend.php:444
+#: includes/class-uh-matching.php:116
+msgid "This request can no longer be changed."
+msgstr "Šo pieprasījumu vairs nevar mainīt."
+
+#: includes/class-uh-frontend.php:445
+msgid "Someone else already took this group."
+msgstr "Šo grupu jau paņēma kāds cits."
+
+#: includes/class-uh-frontend.php:446
+#: includes/class-uh-matching.php:136
+msgid "Please choose an appointment date and time."
+msgstr "Lūdzu, izvēlieties vizītes datumu un laiku."
+
+#: includes/class-uh-frontend.php:447
+msgid "An account with this email already exists. Please log in."
+msgstr "Konts ar šo e-pastu jau pastāv. Lūdzu, piesakieties."
+
+#: includes/class-uh-frontend.php:448
+msgid "Registration is currently closed."
+msgstr "Reģistrācija pašlaik ir slēgta."
+
+#: includes/class-uh-frontend.php:449
+msgid "This site is invite-only. Please open the invite link you received, or ask a Supporter or coordinator you know for one."
+msgstr "Šī vietne darbojas tikai ar ielūgumiem. Atveriet saņemto ielūguma saiti vai palūdziet to kādam pazīstamam Atbalstītājam vai koordinatoram."
+
+#: includes/class-uh-frontend.php:450
+#: includes/class-uh-frontend.php:537
+#: includes/class-uh-frontend.php:900
+msgid "This invite has already been used, has expired or was cancelled. Please ask the person who invited you for a new one."
+msgstr "Šis ielūgums jau ir izmantots, beidzies vai atcelts. Palūdziet jaunu cilvēkam, kurš jūs uzaicināja."
+
+#: includes/class-uh-frontend.php:451
+msgid "This invite is not for that role. Please choose the role your invite is for."
+msgstr "Šis ielūgums nav šai lomai. Lūdzu, izvēlieties lomu, kurai ielūgums paredzēts."
+
+#: includes/class-uh-frontend.php:452
+#: includes/class-uh-frontend.php:969
+msgid "Your account is not connected to the network yet, so you cannot invite others. Please contact the coordinator."
+msgstr "Jūsu konts vēl nav saistīts ar tīklu, tāpēc jūs nevarat uzaicināt citus. Lūdzu, sazinieties ar koordinatoru."
+
+#: includes/class-uh-frontend.php:453
+msgid "You have too many unused invites. Cancel some or wait until they are used."
+msgstr "Jums ir pārāk daudz neizmantotu ielūgumu. Atceliet dažus vai pagaidiet, līdz tos izmantos."
+
+#: includes/class-uh-frontend.php:454
+msgid "Please read and accept the code of conduct."
+msgstr "Lūdzu, izlasiet un pieņemiet uzvedības kodeksu."
+
+#: includes/class-uh-frontend.php:455
+#: includes/class-uh-reports.php:49
+msgid "There is no visit to report for this request."
+msgstr "Šim pieprasījumam nav vizītes, par kuru ziņot."
+
+#: includes/class-uh-frontend.php:456
+#: includes/class-uh-reports.php:52
+msgid "You already reported this visit. A coordinator will contact you."
+msgstr "Jūs jau ziņojāt par šo vizīti. Koordinators ar jums sazināsies."
+
+#: includes/class-uh-frontend.php:457
+#: includes/class-uh-frontend.php:786
+msgid "To help as a Supporter you need a Supporter invite from a Supporter or coordinator who knows you."
+msgstr "Lai palīdzētu kā Atbalstītājs, jums vajadzīgs Atbalstītāja ielūgums no Atbalstītāja vai koordinatora, kurš jūs pazīst."
+
+#: includes/class-uh-frontend.php:463
+msgid "Something went wrong."
+msgstr "Kaut kas nogāja greizi."
+
+#: includes/class-uh-frontend.php:477
+msgid "— Choose hospital —"
+msgstr "— Izvēlieties slimnīcu —"
+
+#: includes/class-uh-frontend.php:508
+msgid "Save this private link to check or cancel your request:"
+msgstr "Saglabājiet šo privāto saiti, lai pārbaudītu vai atceltu pieprasījumu:"
+
+#: includes/class-uh-frontend.php:511
+#: includes/class-uh-frontend.php:727
+msgid "Get updates on Telegram"
+msgstr "Saņemt jaunumus Telegram"
+
+#: includes/class-uh-frontend.php:516
+#, php-format
+msgid "Please <a href=\"%s\">log in</a> to request help."
+msgstr "Lūdzu, <a href=\"%s\">piesakieties</a>, lai lūgtu palīdzību."
+
+#: includes/class-uh-frontend.php:522
+msgid "The system is not configured yet."
+msgstr "Sistēma vēl nav iestatīta."
+
+#: includes/class-uh-frontend.php:535
+msgid "Invite-only"
+msgstr "Tikai ar ielūgumu"
+
+#: includes/class-uh-frontend.php:535
+msgid "To keep Heroes safe, everyone here is invited by someone they know. Ask a Supporter, a coordinator or another Hero for an invite link, or enter your invite code below."
+msgstr "Lai Varoņi būtu drošībā, ikvienu šeit uzaicina kāds pazīstams. Palūdziet ielūguma saiti Atbalstītājam, koordinatoram vai citam Varonim, vai ievadiet ielūguma kodu zemāk."
+
+#: includes/class-uh-frontend.php:540
+#: includes/class-uh-frontend.php:914
+#, php-format
+msgid "You were invited by %s."
+msgstr "Jūs uzaicināja %s."
+
+#: includes/class-uh-frontend.php:554
+msgid "Where are you?"
+msgstr "Kur jūs atrodaties?"
+
+#: includes/class-uh-frontend.php:566
+msgid "Visiting hours"
+msgstr "Apmeklējuma laiks"
+
+#: includes/class-uh-frontend.php:569
+msgid "Ward / room"
+msgstr "Palāta / istaba"
+
+#: includes/class-uh-frontend.php:573
+msgid "What do you need?"
+msgstr "Kas jums vajadzīgs?"
+
+#: includes/class-uh-frontend.php:574
+msgid "Choose one or more. Some services start when enough people at your hospital sign up."
+msgstr "Izvēlieties vienu vai vairākus. Daži pakalpojumi sākas, kad jūsu slimnīcā pieteicies pietiekami daudz cilvēku."
+
+#: includes/class-uh-frontend.php:583
+#, php-format
+msgid "group of %d"
+msgstr "grupa no %d"
+
+#: includes/class-uh-frontend.php:591
+msgid "Your sizes"
+msgstr "Jūsu izmēri"
+
+#: includes/class-uh-frontend.php:593
+msgid "Top"
+msgstr "Augšdaļa"
+
+#: includes/class-uh-frontend.php:593
+msgid "Trousers"
+msgstr "Bikses"
+
+#: includes/class-uh-frontend.php:593
+#: includes/class-uh-install.php:316
+msgid "Shoes"
+msgstr "Apavi"
+
+#: includes/class-uh-frontend.php:593
+msgid "Jacket"
+msgstr "Jaka"
+
+#: includes/class-uh-frontend.php:599
+msgid "How can we reach you?"
+msgstr "Kā ar jums sazināties?"
+
+#: includes/class-uh-frontend.php:601
+#: includes/class-uh-frontend.php:779
+#: includes/class-uh-frontend.php:927
+#: includes/class-uh-privacy.php:175
+msgid "Nickname"
+msgstr "Segvārds"
+
+#: includes/class-uh-frontend.php:603
+msgid "What the Supporter will call you. Do not use your full name."
+msgstr "Kā jūs sauks Atbalstītājs. Nerakstiet pilnu vārdu."
+
+#: includes/class-uh-frontend.php:610
+msgid "Messenger"
+msgstr "Saziņas lietotne"
+
+#: includes/class-uh-frontend.php:611
+msgid "Phone call / SMS"
+msgstr "Zvans / SMS"
+
+#: includes/class-uh-frontend.php:621
+msgid "Email (optional, for updates)"
+msgstr "E-pasts (nav obligāts, jaunumiem)"
+
+#: includes/class-uh-frontend.php:626
+#: includes/class-uh-frontend.php:928
+msgid "Real name (optional)"
+msgstr "Īstais vārds (nav obligāts)"
+
+#: includes/class-uh-frontend.php:627
+msgid "Real name – seen only by coordinators, never by Supporters"
+msgstr "Īstais vārds – redz tikai koordinatori, nekad Atbalstītāji"
+
+#: includes/class-uh-frontend.php:631
+msgid "Notes (mobility, preferences, anything we should know)"
+msgstr "Piezīmes (pārvietošanās, vēlmes, viss, kas mums jāzina)"
+
+#: includes/class-uh-frontend.php:635
+#: includes/class-uh-frontend.php:892
+msgid "Invite code"
+msgstr "Ielūguma kods"
+
+#: includes/class-uh-frontend.php:640
+msgid "Send request"
+msgstr "Nosūtīt pieprasījumu"
+
+#: includes/class-uh-frontend.php:678
+#, php-format
+msgid "Please <a href=\"%s\">log in</a> or open the private link you received."
+msgstr "Lūdzu, <a href=\"%s\">piesakieties</a> vai atveriet saņemto privāto saiti."
+
+#: includes/class-uh-frontend.php:683
+msgid "Invite another Hero you know"
+msgstr "Uzaicināt citu pazīstamu Varoni"
+
+#: includes/class-uh-frontend.php:686
+msgid "No requests yet."
+msgstr "Pieprasījumu vēl nav."
+
+#: includes/class-uh-frontend.php:686
+msgid "Ask for help"
+msgstr "Lūgt palīdzību"
+
+#: includes/class-uh-frontend.php:697
+#, php-format
+msgid "%1$d of %2$d people signed up"
+msgstr "Pieteikušies %1$d no %2$d"
+
+#: includes/class-uh-frontend.php:703
+#, php-format
+msgid "Supporter: %s"
+msgstr "Atbalstītājs: %s"
+
+#: includes/class-uh-frontend.php:708
+msgid "You reported a problem with this visit. A coordinator will contact you."
+msgstr "Jūs ziņojāt par problēmu ar šo vizīti. Koordinators ar jums sazināsies."
+
+#: includes/class-uh-frontend.php:710
+msgid "Report a problem with this visit"
+msgstr "Ziņot par problēmu ar šo vizīti"
+
+#: includes/class-uh-frontend.php:711
+msgid "Only coordinators see this. The Supporter is paused right away and gets no new groups until a coordinator has looked at it."
+msgstr "To redz tikai koordinatori. Atbalstītājs uzreiz tiek apturēts un nesaņem jaunas grupas, kamēr koordinators to nav izskatījis."
+
+#: includes/class-uh-frontend.php:712
+msgid "What happened?"
+msgstr "Kas notika?"
+
+#: includes/class-uh-frontend.php:712
+msgid "Send to coordinator"
+msgstr "Nosūtīt koordinatoram"
+
+#: includes/class-uh-frontend.php:716
+msgid "Cancel this request?"
+msgstr "Atcelt šo pieprasījumu?"
+
+#: includes/class-uh-frontend.php:716
+msgid "Cancel request"
+msgstr "Atcelt pieprasījumu"
+
+#: includes/class-uh-frontend.php:741
+#, php-format
+msgid "Want to help? <a href=\"%1$s\">Log in</a> or <a href=\"%2$s\">sign up as a Supporter</a>."
+msgstr "Vēlaties palīdzēt? <a href=\"%1$s\">Piesakieties</a> vai <a href=\"%2$s\">reģistrējieties kā Atbalstītājs</a>."
+
+#: includes/class-uh-frontend.php:752
+msgid "Groups to help"
+msgstr "Grupas, kurām palīdzēt"
+
+#: includes/class-uh-frontend.php:752
+msgid "My schedule"
+msgstr "Mans grafiks"
+
+#: includes/class-uh-frontend.php:752
+msgid "Invite"
+msgstr "Uzaicināt"
+
+#: includes/class-uh-frontend.php:752
+msgid "My profile"
+msgstr "Mans profils"
+
+#: includes/class-uh-frontend.php:767
+msgid "Your account is not connected to the network yet (nobody has vouched for it, or the person who invited you was suspended). A coordinator needs to review it before you can help or invite others."
+msgstr "Jūsu konts vēl nav saistīts ar tīklu (neviens par to nav galvojis, vai cilvēks, kurš jūs uzaicināja, ir bloķēts). Koordinatoram tas jāpārskata, pirms varat palīdzēt vai uzaicināt citus."
+
+#: includes/class-uh-frontend.php:774
+msgid "Your Supporter account is paused while a coordinator reviews a report. You will hear from them."
+msgstr "Jūsu Atbalstītāja konts ir apturēts, kamēr koordinators izskata sūdzību. Viņi ar jums sazināsies."
+
+#: includes/class-uh-frontend.php:776
+msgid "Thank you! A coordinator will review and approve your Supporter account. Until then you will not see groups."
+msgstr "Paldies! Koordinators pārskatīs un apstiprinās jūsu Atbalstītāja kontu. Līdz tam jūs neredzēsiet grupas."
+
+#: includes/class-uh-frontend.php:779
+msgid "The only name Heroes and other members see."
+msgstr "Vienīgais vārds, ko redz Varoņi un citi dalībnieki."
+
+#: includes/class-uh-frontend.php:781
+msgid "I want to help as a Supporter"
+msgstr "Es vēlos palīdzēt kā Atbalstītājs"
+
+#: includes/class-uh-frontend.php:788
+msgid "What can you offer?"
+msgstr "Ko jūs varat piedāvāt?"
+
+#: includes/class-uh-frontend.php:793
+msgid "Which hospitals? (none = all)"
+msgstr "Kuras slimnīcas? (neviena = visas)"
+
+#: includes/class-uh-frontend.php:798
+msgid "Notifications"
+msgstr "Paziņojumi"
+
+#: includes/class-uh-frontend.php:801
+msgid "WhatsApp number"
+msgstr "WhatsApp numurs"
+
+#: includes/class-uh-frontend.php:802
+msgid "Telegram chat ID"
+msgstr "Telegram tērzēšanas ID"
+
+#: includes/class-uh-frontend.php:806
+msgid "Connect Telegram in one tap"
+msgstr "Pievienot Telegram ar vienu pieskārienu"
+
+#: includes/class-uh-frontend.php:808
+msgid "Email notifications are always on."
+msgstr "E-pasta paziņojumi vienmēr ir ieslēgti."
+
+#: includes/class-uh-frontend.php:810
+msgid "About you (shown to coordinators)"
+msgstr "Par jums (redz koordinatori)"
+
+#: includes/class-uh-frontend.php:811
+msgid "Save profile"
+msgstr "Saglabāt profilu"
+
+#: includes/class-uh-frontend.php:820
+msgid "Nothing scheduled yet."
+msgstr "Vēl nekas nav ieplānots."
+
+#: includes/class-uh-frontend.php:827
+#, php-format
+msgid "To protect the Heroes, their wards and phone numbers appear here from %s."
+msgstr "Lai aizsargātu Varoņus, viņu palātas un tālruņi šeit parādīsies no %s."
+
+#: includes/class-uh-frontend.php:837
+msgid "ward"
+msgstr "palāta"
+
+#: includes/class-uh-frontend.php:841
+msgid "Mark done"
+msgstr "Atzīmēt kā paveiktu"
+
+#: includes/class-uh-frontend.php:842
+msgid "Give this group back to the queue?"
+msgstr "Atgriezt šo grupu rindā?"
+
+#: includes/class-uh-frontend.php:842
+msgid "I can’t make it"
+msgstr "Es nevaru ierasties"
+
+#: includes/class-uh-frontend.php:851
+msgid "Choose the services you offer in your profile to see groups."
+msgstr "Izvēlieties profilā pakalpojumus, ko sniedzat, lai redzētu grupas."
+
+#: includes/class-uh-frontend.php:855
+msgid "No groups waiting right now. We will notify you when one is ready."
+msgstr "Pašlaik nav gaidošu grupu. Mēs paziņosim, kad kāda būs gatava."
+
+#: includes/class-uh-frontend.php:861
+#: includes/class-uh-notify.php:108
+#, php-format
+msgid "Visiting hours: %s"
+msgstr "Apmeklējuma laiks: %s"
+
+#: includes/class-uh-frontend.php:862
+#, php-format
+msgid "%1$d of %2$d Heroes"
+msgstr "%1$d no %2$d Varoņiem"
+
+#: includes/class-uh-frontend.php:864
+msgid "Date & time"
+msgstr "Datums un laiks"
+
+#: includes/class-uh-frontend.php:865
+msgid "Message to Heroes (optional)"
+msgstr "Ziņa Varoņiem (nav obligāta)"
+
+#: includes/class-uh-frontend.php:866
+msgid "Accept group"
+msgstr "Pieņemt grupu"
+
+#: includes/class-uh-frontend.php:866
+msgid "Accept anyway"
+msgstr "Tomēr pieņemt"
+
+#: includes/class-uh-frontend.php:880
+msgid "You are logged in."
+msgstr "Jūs esat pieteicies."
+
+#: includes/class-uh-frontend.php:880
+msgid "Supporter area"
+msgstr "Atbalstītāja sadaļa"
+
+#: includes/class-uh-frontend.php:888
+msgid "Ukraine Health is invite-only."
+msgstr "Ukraine Health darbojas tikai ar ielūgumiem."
+
+#: includes/class-uh-frontend.php:889
+msgid "To keep wounded Heroes safe, every Supporter and every Hero is invited by someone already in the network who knows them. That way we always know who vouched for whom."
+msgstr "Lai ievainotie Varoņi būtu drošībā, katru Atbalstītāju un katru Varoni uzaicina kāds no tīkla, kas viņu pazīst. Tā mēs vienmēr zinām, kurš par ko galvojis."
+
+#: includes/class-uh-frontend.php:890
+msgid "Ask a Supporter or coordinator you know for an invite link. Already have a code? Enter it here:"
+msgstr "Palūdziet ielūguma saiti pazīstamam Atbalstītājam vai koordinatoram. Jau ir kods? Ievadiet to šeit:"
+
+#: includes/class-uh-frontend.php:893
+msgid "Continue"
+msgstr "Turpināt"
+
+#: includes/class-uh-frontend.php:904
+msgid "Hero – I need help"
+msgstr "Varonis – man vajag palīdzību"
+
+#: includes/class-uh-frontend.php:905
+msgid "Supporter – I can help"
+msgstr "Atbalstītājs – es varu palīdzēt"
+
+#: includes/class-uh-frontend.php:906
+msgid "Both"
+msgstr "Abi"
+
+#: includes/class-uh-frontend.php:919
+msgid "I am joining as"
+msgstr "Es pievienojos kā"
+
+#: includes/class-uh-frontend.php:927
+msgid "The only name other members see. Do not use your full name."
+msgstr "Vienīgais vārds, ko redz citi dalībnieki. Nerakstiet pilnu vārdu."
+
+#: includes/class-uh-frontend.php:928
+msgid "Seen only by coordinators."
+msgstr "Redz tikai koordinatori."
+
+#: includes/class-uh-frontend.php:935
+msgid "Create account"
+msgstr "Izveidot kontu"
+
+#: includes/class-uh-frontend.php:936
+msgid "We will email you a link to set your password."
+msgstr "Mēs jums nosūtīsim e-pastu ar saiti paroles iestatīšanai."
+
+#: includes/class-uh-frontend.php:945
+msgid "Supporter code of conduct"
+msgstr "Atbalstītāja uzvedības kodekss"
+
+#: includes/class-uh-frontend.php:949
+msgid "I have read the code of conduct and I agree to follow it."
+msgstr "Esmu izlasījis(-usi) uzvedības kodeksu un apņemos to ievērot."
+
+#: includes/class-uh-frontend.php:960
+#, php-format
+msgid "Please <a href=\"%s\">log in</a> to invite someone."
+msgstr "Lūdzu, <a href=\"%s\">piesakieties</a>, lai kādu uzaicinātu."
+
+#: includes/class-uh-frontend.php:980
+msgid "Your invite link"
+msgstr "Jūsu ielūguma saite"
+
+#: includes/class-uh-frontend.php:981
+msgid "Send it only to the person you know – by message or in person. Anyone with the link can use it."
+msgstr "Sūtiet to tikai pazīstamai personai – ar ziņu vai klātienē. Ikviens, kam ir saite, var to izmantot."
+
+#: includes/class-uh-frontend.php:982
+#: includes/class-uh-frontend.php:1036
+msgid "Invite link"
+msgstr "Ielūguma saite"
+
+#: includes/class-uh-frontend.php:983
+#, php-format
+msgid "Code: %1$s · for: %2$s · valid until %3$s"
+msgstr "Kods: %1$s · kam: %2$s · derīgs līdz %3$s"
+
+#: includes/class-uh-frontend.php:989
+msgid "Everyone in Ukraine Health is invited by someone who knows them. You are responsible for the people you invite, so invite only people you know and trust."
+msgstr "Ikvienu Ukraine Health uzaicina kāds, kas viņu pazīst. Jūs esat atbildīgs par cilvēkiem, kurus uzaicināt, tāpēc aiciniet tikai tos, kurus pazīstat un kuriem uzticaties."
+
+#: includes/class-uh-frontend.php:993
+msgid "Invite as"
+msgstr "Uzaicināt kā"
+
+#: includes/class-uh-frontend.php:1000
+msgid "Who is it for? (only you and coordinators see this)"
+msgstr "Kam tas paredzēts? (redzat tikai jūs un koordinatori)"
+
+#: includes/class-uh-frontend.php:1001
+msgid "e.g. Olena, barber from Rīga"
+msgstr "piem., Olena, frizierīte no Rīgas"
+
+#: includes/class-uh-frontend.php:1010
+msgid "Create invite link"
+msgstr "Izveidot ielūguma saiti"
+
+#: includes/class-uh-frontend.php:1016
+msgid "People you invited"
+msgstr "Jūsu uzaicinātie"
+
+#: includes/class-uh-frontend.php:1018
+msgid "Nobody yet."
+msgstr "Vēl neviena."
+
+#: includes/class-uh-frontend.php:1030
+msgid "Your invites"
+msgstr "Jūsu ielūgumi"
+
+#: includes/class-uh-frontend.php:1034
+#, php-format
+msgid "For: %1$s · used %2$d of %3$d · until %4$s"
+msgstr "Kam: %1$s · izmantots %2$d no %3$d · līdz %4$s"
+
+#: includes/class-uh-frontend.php:1037
+msgid "Cancel invite"
+msgstr "Atcelt ielūgumu"
+
+#: includes/class-uh-frontend.php:1054
+msgid "Waiting now"
+msgstr "Gaida tagad"
+
+#: includes/class-uh-frontend.php:1055
+msgid "Visits scheduled"
+msgstr "Ieplānotās vizītes"
+
+#: includes/class-uh-i18n.php:81
+msgid "Language"
+msgstr "Valoda"
+
+#: includes/class-uh-install.php:66
+msgid "I will treat every Hero with respect and dignity.\nI will keep everything I learn about Heroes private and never share names, photos, locations or health details.\nI will not take photos or videos of Heroes or the hospital without written permission.\nI will follow the hospital's rules and staff instructions.\nI will contact Heroes only about the agreed visit and only through the ways they chose.\nI will not accept money or gifts.\nI understand a coordinator can suspend my account at any time."
+msgstr "Es izturēšos pret katru Varoni ar cieņu.\nEs paturēšu noslēpumā visu, ko uzzinu par Varoņiem, un nekad neizplatīšu vārdus, fotoattēlus, atrašanās vietas vai veselības datus.\nEs nefotografēšu un nefilmēšu Varoņus vai slimnīcu bez rakstiskas atļaujas.\nEs ievērošu slimnīcas noteikumus un personāla norādījumus.\nEs sazināšos ar Varoņiem tikai par norunāto vizīti un tikai viņu izvēlētajos veidos.\nEs nepieņemšu naudu vai dāvanas.\nEs saprotu, ka koordinators jebkurā laikā var bloķēt manu kontu."
+
+#: includes/class-uh-install.php:70
+msgid "I agree that my nickname, ward and phone number are shared with the coordinator, and with the Supporter of my visit shortly before it. My contact details are deleted automatically after the visit."
+msgstr "Es piekrītu, ka mans segvārds, palāta un tālrunis tiek nodoti koordinatoram un neilgi pirms vizītes – manas vizītes Atbalstītājam. Mana kontaktinformācija pēc vizītes tiek automātiski dzēsta."
+
+#: includes/class-uh-install.php:221
+msgid "Hero (patient)"
+msgstr "Varonis (pacients)"
+
+#: includes/class-uh-install.php:222
+msgid "Supporter (provider)"
+msgstr "Atbalstītājs (pakalpojuma sniedzējs)"
+
+#: includes/class-uh-install.php:311
+msgid "Haircut"
+msgstr "Matu griezums"
+
+#: includes/class-uh-install.php:312
+msgid "Shaving / beard trim"
+msgstr "Skūšana / bārdas apgriešana"
+
+#: includes/class-uh-install.php:313
+msgid "Manicure"
+msgstr "Manikīrs"
+
+#: includes/class-uh-install.php:314
+msgid "Pedicure"
+msgstr "Pedikīrs"
+
+#: includes/class-uh-install.php:315
+msgid "Clothing"
+msgstr "Apģērbs"
+
+#: includes/class-uh-install.php:317
+msgid "Laundry"
+msgstr "Veļas mazgāšana"
+
+#: includes/class-uh-install.php:318
+msgid "Hygiene products"
+msgstr "Higiēnas preces"
+
+#: includes/class-uh-install.php:319
+msgid "Skin care products"
+msgstr "Ādas kopšanas līdzekļi"
+
+#: includes/class-uh-install.php:320
+msgid "Crutches"
+msgstr "Kruķi"
+
+#: includes/class-uh-install.php:321
+msgid "Walking cane"
+msgstr "Spieķis"
+
+#: includes/class-uh-install.php:322
+msgid "Wheelchair"
+msgstr "Ratiņkrēsls"
+
+#: includes/class-uh-install.php:323
+msgid "Walker / rollator"
+msgstr "Staigulis / rolators"
+
+#: includes/class-uh-install.php:324
+msgid "Massage"
+msgstr "Masāža"
+
+#: includes/class-uh-install.php:325
+msgid "Psychological support"
+msgstr "Psiholoģiskais atbalsts"
+
+#: includes/class-uh-install.php:326
+msgid "Translation / paperwork help"
+msgstr "Tulkošana / palīdzība ar dokumentiem"
+
+#: includes/class-uh-install.php:334
+msgid "Beauty"
+msgstr "Skaistums"
+
+#: includes/class-uh-install.php:335
+msgid "Clothing & shoes"
+msgstr "Apģērbs un apavi"
+
+#: includes/class-uh-install.php:336
+msgid "Care products"
+msgstr "Kopšanas līdzekļi"
+
+#: includes/class-uh-install.php:337
+msgid "Mobility aids"
+msgstr "Pārvietošanās palīglīdzekļi"
+
+#: includes/class-uh-install.php:338
+msgid "Wellbeing"
+msgstr "Labsajūta"
+
+#: includes/class-uh-install.php:339
+msgid "Other"
+msgstr "Cits"
+
+#: includes/class-uh-install.php:345
+msgid "Collecting"
+msgstr "Tiek komplektēta"
+
+#: includes/class-uh-install.php:346
+msgid "Ready – needs Supporter"
+msgstr "Gatava – vajag Atbalstītāju"
+
+#: includes/class-uh-install.php:348
+msgid "Completed"
+msgstr "Pabeigta"
+
+#: includes/class-uh-install.php:349
+msgid "Cancelled"
+msgstr "Atcelta"
+
+#: includes/class-uh-matching.php:24
+msgid "Please choose a valid service and hospital."
+msgstr "Lūdzu, izvēlieties derīgu pakalpojumu un slimnīcu."
+
+#: includes/class-uh-matching.php:44
+#, php-format
+msgid "You are already on the list for %s."
+msgstr "Jūs jau esat sarakstā: %s."
+
+#: includes/class-uh-matching.php:132
+msgid "This group has already been taken or closed."
+msgstr "Šī grupa jau ir paņemta vai slēgta."
+
+#: includes/class-uh-matching.php:150
+msgid "This group has already been taken."
+msgstr "Šī grupa jau ir paņemta."
+
+#: includes/class-uh-matching.php:162
+msgid "You cannot release this group."
+msgstr "Jūs nevarat atdot šo grupu."
+
+#: includes/class-uh-matching.php:175
+msgid "You cannot complete this group."
+msgstr "Jūs nevarat pabeigt šo grupu."
+
+#: includes/class-uh-network.php:136
+msgid "You are approved as a Supporter"
+msgstr "Jūs esat apstiprināts kā Atbalstītājs"
+
+#: includes/class-uh-network.php:136
+#, php-format
+msgid "A coordinator approved you as a Supporter. You will now be told when a group of Heroes needs your help: %s"
+msgstr "Koordinators jūs apstiprināja kā Atbalstītāju. Turpmāk jūs saņemsiet ziņu, kad Varoņu grupai vajadzēs jūsu palīdzību: %s"
+
+#: includes/class-uh-network.php:197
+msgid "Hero (needs help)"
+msgstr "Varonis (vajag palīdzību)"
+
+#: includes/class-uh-network.php:198
+msgid "Supporter (gives help)"
+msgstr "Atbalstītājs (sniedz palīdzību)"
+
+#: includes/class-uh-network.php:199
+msgid "Hero or Supporter"
+msgstr "Varonis vai Atbalstītājs"
+
+#: includes/class-uh-network.php:295
+msgid "Your account is not connected to the network yet, so you cannot invite others."
+msgstr "Jūsu konts vēl nav saistīts ar tīklu, tāpēc jūs nevarat uzaicināt citus."
+
+#: includes/class-uh-network.php:298
+msgid "You cannot invite people for this role."
+msgstr "Jūs nevarat uzaicināt cilvēkus šai lomai."
+
+#: includes/class-uh-network.php:302
+msgid "You have too many unused invites. Revoke or wait for some to be used first."
+msgstr "Jums ir pārāk daudz neizmantotu ielūgumu. Atceliet dažus vai pagaidiet, līdz tos izmantos."
+
+#: includes/class-uh-network.php:431
+msgid "This account is suspended. Please contact the coordinator."
+msgstr "Šis konts ir bloķēts. Lūdzu, sazinieties ar koordinatoru."
+
+#. translators: 1: service, 2: hospital, 3: members, 4: minimum, 5: link
+#: includes/class-uh-notify.php:31
+#, php-format
+msgid "New request: %1$s at %2$s (%3$d/%4$d).\nDetails (login needed): %5$s"
+msgstr "Jauns pieprasījums: %1$s, %2$s (%3$d/%4$d).\nSīkāk (jāpiesakās): %5$s"
+
+#. translators: 1: service — hospital, 2: number of heroes, 3: link
+#: includes/class-uh-notify.php:56
+#, php-format
+msgid "A group is ready: %1$s (%2$d Heroes). Accept it and pick a date: %3$s"
+msgstr "Grupa ir gatava: %1$s (%2$d Varoņi). Pieņemiet to un izvēlieties datumu: %3$s"
+
+#: includes/class-uh-notify.php:62
+msgid "A group needs you"
+msgstr "Grupai vajag jūsu palīdzību"
+
+#: includes/class-uh-notify.php:70
+#, php-format
+msgid "Your %s group is full. We are finding a Supporter now."
+msgstr "Jūsu grupa “%s” ir pilna. Tagad meklējam Atbalstītāju."
+
+#. translators: 1: service, 2: date, 3: hospital, 4: supporter
+#: includes/class-uh-notify.php:82
+#, php-format
+msgid "Good news! %1$s is scheduled for %2$s at %3$s. Supporter: %4$s."
+msgstr "Labas ziņas! %1$s ieplānots %2$s, %3$s. Atbalstītājs: %4$s."
+
+#. translators: 1: service — hospital, 2: date, 3: address, 4: number of heroes, 5: link
+#: includes/class-uh-notify.php:100
+#, php-format
+msgid "You accepted: %1$s on %2$s\n%3$s\n%4$d Heroes. Their wards and phone numbers appear in your Supporter area shortly before the visit: %5$s"
+msgstr "Jūs pieņēmāt: %1$s, %2$s\n%3$s\nVaroņi: %4$d. Viņu palātas un tālruņi parādīsies jūsu Atbalstītāja sadaļā neilgi pirms vizītes: %5$s"
+
+#: includes/class-uh-notify.php:110
+msgid "Group confirmed"
+msgstr "Grupa apstiprināta"
+
+#. translators: 1: service, 2: date, 3: number of patients, 4: wards, 5: supporter nickname
+#: includes/class-uh-notify.php:123
+#, php-format
+msgid "A volunteer visit is planned at your hospital.\nService: %1$s\nWhen: %2$s\nPatients: %3$d\nWards: %4$s\nVolunteer: %5$s (will show ID at the entrance)\n\nPlease reply to this email if the visit is not possible."
+msgstr "Jūsu slimnīcā ieplānota brīvprātīgā vizīte.\nPakalpojums: %1$s\nKad: %2$s\nPacienti: %3$d\nPalātas: %4$s\nBrīvprātīgais: %5$s (pie ieejas uzrādīs personu apliecinošu dokumentu)\n\nLūdzu, atbildiet uz šo e-pastu, ja vizīte nav iespējama."
+
+#: includes/class-uh-notify.php:132
+#, php-format
+msgid "Planned visit: %s"
+msgstr "Ieplānota vizīte: %s"
+
+#: includes/class-uh-notify.php:141
+#, php-format
+msgid "Reminder: %1$s is planned for %2$s at %3$s."
+msgstr "Atgādinājums: %1$s ieplānots %2$s, %3$s."
+
+#: includes/class-uh-notify.php:145
+msgid "Visit reminder"
+msgstr "Atgādinājums par vizīti"
+
+#: includes/class-uh-notify.php:145
+#, php-format
+msgid "Reminder: your visit %1$s is on %2$s. The Heroes’ details are in your Supporter area: %3$s"
+msgstr "Atgādinājums: jūsu vizīte %1$s ir %2$s. Varoņu dati ir jūsu Atbalstītāja sadaļā: %3$s"
+
+#: includes/class-uh-notify.php:153
+msgid "A Hero withdrew"
+msgstr "Varonis atsauca pieprasījumu"
+
+#: includes/class-uh-notify.php:153
+#, php-format
+msgid "A Hero withdrew from %s."
+msgstr "Varonis atsauca pieprasījumu: %s."
+
+#: includes/class-uh-notify.php:190
+msgid "Your request"
+msgstr "Jūsu pieprasījums"
+
+#: includes/class-uh-privacy.php:35
+msgid "a Supporter"
+msgstr "Atbalstītājs"
+
+#: includes/class-uh-privacy.php:141
+#: includes/class-uh-privacy.php:149
+#: includes/class-uh-privacy.php:170
+msgid "Ukraine Health requests"
+msgstr "Ukraine Health pieprasījumi"
+
+#: includes/class-uh-privacy.php:176
+msgid "Real name"
+msgstr "Īstais vārds"
+
+#: includes/class-uh-privacy.php:181
+msgid "Created"
+msgstr "Izveidots"
+
+#: includes/class-uh-privacy.php:211
+msgid "Help requests (Ukraine Health)"
+msgstr "Palīdzības pieprasījumi (Ukraine Health)"
+
+#: includes/class-uh-privacy.php:212
+msgid "When a Hero asks for help we store a nickname, optionally a real name, the hospital and ward, a phone number, an optional email address, the chosen messenger, clothing sizes when needed, and any notes. This can include information about health and treatment."
+msgstr "Kad Varonis lūdz palīdzību, mēs glabājam segvārdu, pēc izvēles īsto vārdu, slimnīcu un palātu, tālruņa numuru, pēc izvēles e-pastu, izvēlēto saziņas lietotni, vajadzības gadījumā apģērba izmērus un piezīmes. Tas var ietvert informāciju par veselību un ārstēšanu."
+
+#: includes/class-uh-privacy.php:213
+msgid "Who sees it: the coordinators. The Supporter who accepted a visit sees the nickname, and the ward and phone number only shortly before the visit."
+msgstr "Kas to redz: koordinatori. Atbalstītājs, kurš pieņēma vizīti, redz segvārdu, bet palātu un tālruni – tikai neilgi pirms vizītes."
+
+#: includes/class-uh-privacy.php:213
+#, php-format
+msgid "This is currently %d hours before the visit."
+msgstr "Pašlaik tas ir %d stundas pirms vizītes."
+
+#: includes/class-uh-privacy.php:214
+#, php-format
+msgid "How long: contact details are deleted automatically %d days after the visit is completed or cancelled, or the request is withdrawn. Only anonymous counts are kept."
+msgstr "Cik ilgi: kontaktinformācija tiek automātiski dzēsta %d dienas pēc vizītes pabeigšanas vai atcelšanas, vai pieprasījuma atsaukšanas. Saglabā tikai anonīmus skaitļus."
+
+#: includes/class-uh-privacy.php:215
+msgid "Accounts: every member is invited by an existing member. We record who invited whom so that everyone can be traced to a person who vouched for them."
+msgstr "Konti: katru dalībnieku uzaicina esošs dalībnieks. Mēs reģistrējam, kurš ko uzaicināja, lai katru varētu izsekot līdz cilvēkam, kurš par viņu galvoja."
+
+#: includes/class-uh-privacy.php:216
+msgid "Messages are sent by email, and by Telegram or WhatsApp only when you connect them. You can ask for a copy of your data or for it to be deleted at any time."
+msgstr "Ziņas tiek sūtītas pa e-pastu, bet Telegram vai WhatsApp – tikai tad, ja tos pievienojat. Jūs jebkurā laikā varat lūgt savu datu kopiju vai to dzēšanu."
+
+#: includes/class-uh-reports.php:71
+msgid "Problem reported – Supporter on hold"
+msgstr "Ziņots par problēmu – Atbalstītājs apturēts"
+
+#. translators: 1: report id, 2: supporter nickname, 3: link
+#: includes/class-uh-reports.php:74
+#, php-format
+msgid "A Hero reported a problem with a visit (report #%1$d). Supporter %2$s is on hold and gets no new groups until you review it:\n%3$s"
+msgstr "Varonis ziņoja par problēmu ar vizīti (sūdzība Nr. %1$d). Atbalstītājs %2$s ir apturēts un nesaņems jaunas grupas, līdz jūs to izskatīsiet:\n%3$s"
+
+#: includes/class-uh-telegram.php:68
+msgid "Enter the bot token first."
+msgstr "Vispirms ievadiet bota žetonu."
+
+#: includes/class-uh-telegram.php:74
+msgid "Telegram did not accept the bot token."
+msgstr "Telegram nepieņēma bota žetonu."
+
+#: includes/class-uh-telegram.php:90
+msgid "Telegram could not reach this site."
+msgstr "Telegram nevarēja sasniegt šo vietni."
+
+#: includes/class-uh-telegram.php:145
+msgid "Connected. You will get updates about your request here. Send /stop to stop."
+msgstr "Pievienots. Šeit saņemsiet jaunumus par savu pieprasījumu. Nosūtiet /stop, lai apturētu."
+
+#: includes/class-uh-telegram.php:147
+#: includes/class-uh-telegram.php:155
+msgid "This link is no longer valid."
+msgstr "Šī saite vairs nav derīga."
+
+#: includes/class-uh-telegram.php:153
+msgid "Connected. You will get Ukraine Health notifications here. Send /stop to stop."
+msgstr "Pievienots. Šeit saņemsiet Ukraine Health paziņojumus. Nosūtiet /stop, lai apturētu."
+
+#: includes/class-uh-telegram.php:162
+msgid "Stopped. You will not get messages here any more."
+msgstr "Apturēts. Šeit vairs nesaņemsiet ziņas."
+
+#: includes/class-uh-telegram.php:164
+msgid "Hello! Open your Ukraine Health page and tap “Get updates on Telegram” to connect."
+msgstr "Sveiki! Atveriet savu Ukraine Health lapu un pieskarieties “Saņemt jaunumus Telegram”, lai pievienotos."
+
+#: includes/class-uh-twofa.php:94
+msgid "Your login code"
+msgstr "Jūsu pieteikšanās kods"
+
+#. translators: 1: code, 2: minutes
+#: includes/class-uh-twofa.php:97
+#, php-format
+msgid "Your login code is %1$s\nIt works for %2$d minutes.\n\nIf you did not try to log in, change your password now."
+msgstr "Jūsu pieteikšanās kods ir %1$s\nTas derīgs %2$d minūtes.\n\nJa jūs nemēģinājāt pieteikties, nekavējoties nomainiet paroli."
+
+#: includes/class-uh-twofa.php:106
+msgid "Test: login code email"
+msgstr "Tests: e-pasts ar pieteikšanās kodu"
+
+#: includes/class-uh-twofa.php:106
+msgid "This is a test. When two-step login is on, your login codes will arrive like this email. If you received it, it is safe to switch two-step login on."
+msgstr "Šis ir tests. Kad divpakāpju pieteikšanās ir ieslēgta, pieteikšanās kodi pienāks tāpat kā šis e-pasts. Ja to saņēmāt, divpakāpju pieteikšanos var droši ieslēgt."
+
+#: includes/class-uh-twofa.php:150
+msgid "That code is not right. Please try again."
+msgstr "Kods nav pareizs. Lūdzu, mēģiniet vēlreiz."
+
+#: includes/class-uh-twofa.php:152
+msgid "Login code"
+msgstr "Pieteikšanās kods"
+
+#: includes/class-uh-twofa.php:156
+msgid "We emailed you a 6-digit code. Enter it to finish logging in."
+msgstr "Mēs nosūtījām jums 6 ciparu kodu. Ievadiet to, lai pabeigtu pieteikšanos."
+
+#: includes/class-uh-twofa.php:157
+msgid "Code"
+msgstr "Kods"
+
+#: includes/class-uh-twofa.php:159
+#, php-format
+msgid "Trust this device for %d days"
+msgstr "Uzticēties šai ierīcei %d dienas"
+
+#: includes/class-uh-twofa.php:160
+msgid "Log in"
+msgstr "Pieteikties"

@@ -25,6 +25,37 @@ To keep wounded Heroes safe, nobody joins without a connection:
 
   Coordinators can suspend a member, which logs them out, blocks their login and cancels their invites. They can also suspend a member **with their whole branch**, re-attach someone under another member, or make someone a Supporter. When a member is suspended, everyone they invited is frozen until a coordinator re-attaches them.
 
+## Privacy and safety (1.2.0)
+
+A real name, a hospital and a ward together say where a wounded soldier is. So:
+
+- **Nicknames everywhere.** Heroes and Supporters see each other only by nickname. A real name is optional and visible to coordinators only. Login names are random.
+- **Contact details only when needed.** A Supporter sees a Hero's ward and phone only for their assigned visit, from *N* hours before it (48 by default) until it is marked done.
+- **No personal details in notifications.** Emails and Telegram messages to coordinators and Supporters carry no names, phones or wards, only a link to log in.
+- **Automatic deletion.** Contact details are wiped 30 days after a visit is completed or cancelled, or after a request is withdrawn. Only anonymous counts are kept. WordPress's *Export / Erase Personal Data* tools cover the plugin's data, and the suggested privacy-policy text is in *Settings → Privacy*.
+- **CSV export is for administrators only.**
+- **Supporter approval.** A new Supporter must accept the code of conduct, which you can edit in Settings. A coordinator then approves them before they see any Hero. Supporters a coordinator invites directly are approved automatically.
+- **Report a problem.** After a visit, a Hero can privately report the Supporter. The Supporter is put on hold at once, with no new groups and no Heroes' details, until a coordinator clears the report or suspends them (Network → Problem reports).
+- **Two-step login** for administrators and coordinators: a 6-digit code is emailed after the password, and a device can be trusted for 30 days. It is **off by default**. Send yourself the test email in Settings first. Emergency switch: `define( 'UH_DISABLE_2FA', true );` in `wp-config.php`.
+
+## Notifications and hospitals
+
+- **Telegram in one tap.** Create a bot with @BotFather, paste its token in Settings and press *Connect Telegram bot*. Heroes, including guests with only a phone number, and Supporters then tap *Get updates on Telegram*, and the chat is linked automatically. Sending `/stop` unlinks it.
+- **Reminders.** An hourly job reminds Heroes and the Supporter within 24 hours before a visit, and alerts coordinators when a ready group has waited longer than 3 days.
+- **Hospitals.** Each hospital has visiting hours, shown on the forms, and a contact person. That contact can be emailed when a visit is planned, with the service, the time, the number of patients, the wards and the Supporter's nickname, but no patient names.
+
+## Languages
+
+The plugin's pages are available in **English, Ukrainian and Latvian**. The language is picked from the visitor's choice (links at the top of each page, remembered in a cookie), then the member's profile language, then the browser's language. Browsers set to Russian get Ukrainian. Built-in service names are translated too. Page content written in the editor, such as the homepage, isn't translated.
+
+To update the translations after changing texts:
+
+```bash
+wp i18n make-pot . languages/ukraine-health.pot --domain=ukraine-health --exclude=languages
+```
+
+Then update `languages/ukraine-health-{uk,lv}.po` and run `wp i18n make-mo languages && wp i18n make-php languages`.
+
 ## Shortcodes
 
 | Shortcode | Purpose |

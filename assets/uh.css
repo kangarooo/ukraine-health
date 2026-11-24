@@ -84,3 +84,15 @@
 }
 .uh-copy { width: 100%; margin: .6em 0 .3em; padding: .6em .75em; font: inherit; font-family: ui-monospace, monospace; font-size: .9em; border: 1px solid var(--uh-line); border-radius: 8px; background: var(--uh-bg); }
 .uh-invite-only { border-left: 4px solid var(--uh-blue); background: #eef4fc; }
+.uh-lang { display: flex; justify-content: flex-end; gap: .9em; font-size: .85em; margin: 0 0 .8em; }
+.uh-lang a { color: var(--uh-blue); }
+.uh-lang [aria-current] { font-weight: 700; }
+.uh-btn-tg { background: #229ed9; color: #fff; }
+.uh-btn-tg:hover { background: #1b7fb0; color: #fff; }
+.uh-more { margin: .6em 0 1em; }
+.uh-more summary { cursor: pointer; color: var(--uh-blue); font-weight: 600; }
+.uh-report summary { color: var(--uh-err); }
+.uh-coc { background: var(--uh-bg); border-radius: 10px; padding: 1em 1.1em !important; }
+.uh-coc ul { margin: .3em 0 .8em 1.1em; padding: 0; }
+.uh-coc li { margin-bottom: .3em; }
+.uh-field small.uh-help { display: block; font-weight: 400; margin: .3em 0 0; }

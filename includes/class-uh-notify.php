@@ -25,19 +25,23 @@ class UH_Notify {
 			return;
 		}
 		$count = UH_Repo::member_count( $group->id );
-		$msg   = sprintf(
-			"New request: %s at %s (%d/%d)\nName: %s\nWard: %s\nPhone: %s (%s)\nNotes: %s",
+		// No names, phones or wards in messages: they stay in mailboxes and chats for good.
+		$msg = sprintf(
+			/* translators: 1: service, 2: hospital, 3: members, 4: minimum, 5: link */
+			__( "New request: %1\$s at %2\$s (%3\$d/%4\$d).\nDetails (login needed): %5\$s", 'ukraine-health' ),
 			$service->name,
 			$hospital->name,
 			$count,
 			$service->min_group,
-			$data['name'] ?? '',
-			$data['ward'] ?? '',
-			$data['phone'] ?? '',
-			$data['messenger'] ?? '',
-			$data['notes'] ?? ''
+			admin_url( 'admin.php?page=ukraine-health-groups&view=' . (int) $group->id )
 		);
-		self::email( $set['admin_email'], '[Ukraine Health] ' . $service->name . ' – ' . $hospital->name, $msg );
+		self::coordinators( $service->name . ' – ' . $hospital->name, $msg );
+	}
+
+	/** Message the coordinators (settings email + Telegram chat). Never put personal details in $msg. */
+	public static function coordinators( $subject, $msg ) {
+		$set = UH_Install::settings();
+		self::email( $set['admin_email'], '[Ukraine Health] ' . $subject, $msg );
 		if ( $set['telegram_admin'] ) {
 			self::telegram( $set['telegram_admin'], $msg );
 		}
@@ -59,10 +63,7 @@ class UH_Notify {
 		}
 		$set = UH_Install::settings();
 		if ( ! empty( $set['notify_admin'] ) ) {
-			self::email( $set['admin_email'], '[Ukraine Health] READY: ' . $label, $msg );
-			if ( $set['telegram_admin'] ) {
-				self::telegram( $set['telegram_admin'], 'READY: ' . $msg );
-			}
+			self::coordinators( 'READY: ' . $label, 'READY: ' . $msg );
 		}
 		// Let the Heroes know too.
 		foreach ( UH_Repo::group_members( $group->id ) as $r ) {
@@ -74,7 +75,7 @@ class UH_Notify {
 		list( $s, $h, $label ) = self::label( $group );
 		$supporter = get_userdata( $group->supporter_id );
 		$when      = mysql2date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $group->appointment );
-		$who       = $supporter ? $supporter->display_name : '';
+		$who       = $supporter ? UH_Privacy::nickname( $supporter ) : '';
 
 		$hero_msg = sprintf(
 			/* translators: 1: service, 2: date, 3: hospital, 4: supporter */
@@ -93,22 +94,55 @@ class UH_Notify {
 		}
 
 		if ( $supporter ) {
-			$lines = array();
-			foreach ( UH_Repo::group_members( $group->id ) as $i => $r ) {
-				$sizes   = $r->sizes ? json_decode( $r->sizes, true ) : array();
-				$lines[] = sprintf(
-					'%d. %s | %s %s | %s %s%s',
-					$i + 1,
-					$r->name ?: '—',
-					__( 'ward', 'ukraine-health' ),
-					$r->ward ?: '—',
-					$r->phone,
-					$r->messenger ? '(' . $r->messenger . ')' : '',
-					$sizes ? ' | ' . self::sizes_text( $sizes ) : ''
-				) . ( $r->notes ? "\n   " . $r->notes : '' );
+			// The Heroes' wards and phones are shown only in the Supporter area, and only shortly before the visit.
+			$msg = sprintf(
+				/* translators: 1: service — hospital, 2: date, 3: address, 4: number of heroes, 5: link */
+				__( "You accepted: %1\$s on %2\$s\n%3\$s\n%4\$d Heroes. Their wards and phone numbers appear in your Supporter area shortly before the visit: %5\$s", 'ukraine-health' ),
+				$label,
+				$when,
+				$h->address,
+				UH_Repo::member_count( $group->id ),
+				add_query_arg( 'uh_tab', 'mine', self::page_url( 'supporter' ) )
+			);
+			if ( $h->visiting_hours ) {
+				$msg .= "\n" . sprintf( __( 'Visiting hours: %s', 'ukraine-health' ), $h->visiting_hours );
 			}
-			$msg = sprintf( __( "You accepted: %1\$s on %2\$s\n%3\$s\n\nHeroes:\n%4\$s", 'ukraine-health' ), $label, $when, $h->address, implode( "\n", $lines ) );
 			self::to_user( $supporter, __( 'Group confirmed', 'ukraine-health' ), $msg, $ics );
+		}
+		self::hospital_contact( $group, $s, $h, $who, $when );
+	}
+
+	/** Tell the hospital's contact person that a visit is planned: no Hero names, only wards and the number of people. */
+	public static function hospital_contact( $group, $s, $h, $who, $when ) {
+		if ( ! $h || empty( $h->notify_contact ) || ! is_email( $h->contact_email ) ) {
+			return;
+		}
+		$wards = array_unique( array_filter( wp_list_pluck( UH_Repo::group_members( $group->id ), 'ward' ) ) );
+		$msg   = sprintf(
+			/* translators: 1: service, 2: date, 3: number of patients, 4: wards, 5: supporter nickname */
+			__( "A volunteer visit is planned at your hospital.\nService: %1\$s\nWhen: %2\$s\nPatients: %3\$d\nWards: %4\$s\nVolunteer: %5\$s (will show ID at the entrance)\n\nPlease reply to this email if the visit is not possible.", 'ukraine-health' ),
+			$s->name,
+			$when,
+			UH_Repo::member_count( $group->id ),
+			$wards ? implode( ', ', $wards ) : '—',
+			$who
+		);
+		$set     = UH_Install::settings();
+		$headers = is_email( $set['admin_email'] ) ? array( 'Reply-To: ' . $set['admin_email'] ) : array();
+		wp_mail( $h->contact_email, '[Ukraine Health] ' . sprintf( __( 'Planned visit: %s', 'ukraine-health' ), $s->name ), $msg, $headers );
+		UH_Repo::log( 'hospital_notified', $group->id );
+	}
+
+	/** Reminder the day before a visit. */
+	public static function reminder( $group ) {
+		list( $s, $h, $label ) = self::label( $group );
+		$when = mysql2date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $group->appointment );
+		foreach ( UH_Repo::group_members( $group->id ) as $r ) {
+			self::to_hero( $r, sprintf( __( 'Reminder: %1$s is planned for %2$s at %3$s.', 'ukraine-health' ), $s->name, $when, $h->name ) );
+		}
+		$sup = get_userdata( $group->supporter_id );
+		if ( $sup ) {
+			self::to_user( $sup, __( 'Visit reminder', 'ukraine-health' ), sprintf( __( 'Reminder: your visit %1$s is on %2$s. The Heroes’ details are in your Supporter area: %3$s', 'ukraine-health' ), $label, $when, add_query_arg( 'uh_tab', 'mine', self::page_url( 'supporter' ) ) ) );
 		}
 	}
 
@@ -116,7 +150,7 @@ class UH_Notify {
 		$supporter = get_userdata( $group->supporter_id );
 		if ( $supporter ) {
 			list( , , $label ) = self::label( $group );
-			self::to_user( $supporter, __( 'A Hero withdrew', 'ukraine-health' ), sprintf( __( '%1$s withdrew from %2$s.', 'ukraine-health' ), $request->name ?: '#' . $request->id, $label ) );
+			self::to_user( $supporter, __( 'A Hero withdrew', 'ukraine-health' ), sprintf( __( 'A Hero withdrew from %s.', 'ukraine-health' ), $label ) );
 		}
 	}
 
@@ -135,6 +169,12 @@ class UH_Notify {
 	}
 
 	public static function to_hero( $request, $msg, $ics = '' ) {
+		if ( ! empty( $request->wiped_at ) ) {
+			return;
+		}
+		if ( ! empty( $request->tg_chat ) ) {
+			self::telegram( $request->tg_chat, $msg );
+		}
 		$email = $request->email;
 		if ( $request->user_id ) {
 			$u = get_userdata( $request->user_id );

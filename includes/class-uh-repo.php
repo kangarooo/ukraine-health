@@ -92,7 +92,7 @@ class UH_Repo {
 			$where[] = 'g.supporter_id=%d';
 			$vals[]  = (int) $args['supporter_id'];
 		}
-		$sql = 'SELECT g.*, s.name AS service_name, s.min_group, s.category, s.chat_url, h.name AS hospital_name, h.city, h.country,
+		$sql = 'SELECT g.*, s.name AS service_name, s.min_group, s.category, s.chat_url, h.name AS hospital_name, h.city, h.country, h.visiting_hours,
 				(SELECT COUNT(*) FROM ' . self::t( 'requests' ) . " r WHERE r.group_id=g.id AND r.status<>'withdrawn') AS members
 			FROM " . self::t( 'groups' ) . ' g
 			JOIN ' . self::t( 'services' ) . ' s ON s.id=g.service_id

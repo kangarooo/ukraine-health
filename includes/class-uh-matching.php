@@ -51,6 +51,7 @@ class UH_Matching {
 				'group_id'   => $group->id,
 				'user_id'    => $user_id ?: null,
 				'name'       => $data['name'] ?? '',
+				'real_name'  => $data['real_name'] ?? '',
 				'phone'      => $data['phone'] ?? '',
 				'email'      => $data['email'] ?? '',
 				'messenger'  => $data['messenger'] ?? '',

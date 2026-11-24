@@ -28,10 +28,17 @@ class UH_Install {
 
 	public static function deactivate() {
 		wp_clear_scheduled_hook( 'uh_daily_digest' );
+		wp_clear_scheduled_hook( 'uh_hourly' );
 	}
 
 	public static function maybe_upgrade() {
 		if ( get_option( 'uh_db_version' ) !== UH_DB_VERSION ) {
+			$saved = (array) get_option( 'uh_settings', array() );
+			// The old default consent text promised to share the phone number freely; replace it if unchanged.
+			if ( isset( $saved['privacy_notice'] ) && 'Your phone number is shared only with the coordinator and the Supporter who accepts your group.' === $saved['privacy_notice'] ) {
+				unset( $saved['privacy_notice'] );
+				update_option( 'uh_settings', $saved );
+			}
 			self::activate();
 		}
 	}
@@ -52,7 +59,15 @@ class UH_Install {
 			'meta_phone_id'    => '',
 			'rate_limit'       => 5,
 			'invite_guests'    => 1,
-			'privacy_notice'   => __( 'Your phone number is shared only with the coordinator and the Supporter who accepts your group.', 'ukraine-health' ),
+			'contact_hours'    => 48,
+			'retention_days'   => 30,
+			'escalate_days'    => 3,
+			'approve_supporters' => 1,
+			'code_of_conduct'  => __( "I will treat every Hero with respect and dignity.\nI will keep everything I learn about Heroes private and never share names, photos, locations or health details.\nI will not take photos or videos of Heroes or the hospital without written permission.\nI will follow the hospital's rules and staff instructions.\nI will contact Heroes only about the agreed visit and only through the ways they chose.\nI will not accept money or gifts.\nI understand a coordinator can suspend my account at any time.", 'ukraine-health' ),
+			'telegram_bot'     => '',
+			'telegram_secret'  => '',
+			'twofa'            => 0,
+			'privacy_notice'   => __( 'I agree that my nickname, ward and phone number are shared with the coordinator, and with the Supporter of my visit shortly before it. My contact details are deleted automatically after the visit.', 'ukraine-health' ),
 		);
 	}
 
@@ -74,6 +89,9 @@ class UH_Install {
 			city VARCHAR(128) NOT NULL DEFAULT '',
 			address VARCHAR(255) NOT NULL DEFAULT '',
 			contact VARCHAR(255) NOT NULL DEFAULT '',
+			contact_email VARCHAR(191) NOT NULL DEFAULT '',
+			visiting_hours VARCHAR(255) NOT NULL DEFAULT '',
+			notify_contact TINYINT(1) NOT NULL DEFAULT 0,
 			active TINYINT(1) NOT NULL DEFAULT 1,
 			PRIMARY KEY  (id),
 			KEY country (country)
@@ -110,6 +128,8 @@ class UH_Install {
 			ready_at DATETIME NULL,
 			assigned_at DATETIME NULL,
 			completed_at DATETIME NULL,
+			reminded_at DATETIME NULL,
+			escalated_at DATETIME NULL,
 			PRIMARY KEY  (id),
 			KEY svc_hosp_status (service_id, hospital_id, status),
 			KEY supporter_id (supporter_id)
@@ -122,7 +142,10 @@ class UH_Install {
 			group_id BIGINT UNSIGNED NOT NULL,
 			user_id BIGINT UNSIGNED NULL,
 			name VARCHAR(128) NOT NULL DEFAULT '',
+			real_name VARCHAR(128) NOT NULL DEFAULT '',
 			phone VARCHAR(32) NOT NULL DEFAULT '',
+			tg_chat VARCHAR(32) NOT NULL DEFAULT '',
+			tg_code VARCHAR(32) NOT NULL DEFAULT '',
 			email VARCHAR(191) NOT NULL DEFAULT '',
 			messenger VARCHAR(32) NOT NULL DEFAULT '',
 			ward VARCHAR(64) NOT NULL DEFAULT '',
@@ -132,12 +155,14 @@ class UH_Install {
 			token CHAR(32) NOT NULL,
 			invited_by BIGINT UNSIGNED NULL,
 			invite_id BIGINT UNSIGNED NULL,
+			wiped_at DATETIME NULL,
 			created_at DATETIME NOT NULL,
 			PRIMARY KEY  (id),
 			KEY group_id (group_id),
 			KEY user_id (user_id),
 			KEY token (token),
-			KEY invited_by (invited_by)
+			KEY invited_by (invited_by),
+			KEY tg_code (tg_code)
 		) $c;"
 		);
 
@@ -156,6 +181,24 @@ class UH_Install {
 			PRIMARY KEY  (id),
 			UNIQUE KEY code (code),
 			KEY inviter_id (inviter_id)
+		) $c;"
+		);
+
+		dbDelta(
+			"CREATE TABLE {$p}reports (
+			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+			group_id BIGINT UNSIGNED NULL,
+			request_id BIGINT UNSIGNED NULL,
+			supporter_id BIGINT UNSIGNED NULL,
+			reporter_id BIGINT UNSIGNED NULL,
+			message TEXT NULL,
+			status VARCHAR(20) NOT NULL DEFAULT 'open',
+			resolution TEXT NULL,
+			created_at DATETIME NOT NULL,
+			resolved_at DATETIME NULL,
+			PRIMARY KEY  (id),
+			KEY supporter_id (supporter_id),
+			KEY status (status)
 		) $c;"
 		);
 
@@ -255,6 +298,35 @@ class UH_Install {
 				);
 			}
 		}
+	}
+
+	/**
+	 * Translated label for a built-in service name. Service names live in the database,
+	 * so the default ones are listed here for translation; names a coordinator adds stay as typed.
+	 */
+	public static function svc( $name ) {
+		static $map = null;
+		if ( null === $map ) {
+			$map = array(
+				'Haircut'                      => __( 'Haircut', 'ukraine-health' ),
+				'Shaving / beard trim'         => __( 'Shaving / beard trim', 'ukraine-health' ),
+				'Manicure'                     => __( 'Manicure', 'ukraine-health' ),
+				'Pedicure'                     => __( 'Pedicure', 'ukraine-health' ),
+				'Clothing'                     => __( 'Clothing', 'ukraine-health' ),
+				'Shoes'                        => __( 'Shoes', 'ukraine-health' ),
+				'Laundry'                      => __( 'Laundry', 'ukraine-health' ),
+				'Hygiene products'             => __( 'Hygiene products', 'ukraine-health' ),
+				'Skin care products'           => __( 'Skin care products', 'ukraine-health' ),
+				'Crutches'                     => __( 'Crutches', 'ukraine-health' ),
+				'Walking cane'                 => __( 'Walking cane', 'ukraine-health' ),
+				'Wheelchair'                   => __( 'Wheelchair', 'ukraine-health' ),
+				'Walker / rollator'            => __( 'Walker / rollator', 'ukraine-health' ),
+				'Massage'                      => __( 'Massage', 'ukraine-health' ),
+				'Psychological support'        => __( 'Psychological support', 'ukraine-health' ),
+				'Translation / paperwork help' => __( 'Translation / paperwork help', 'ukraine-health' ),
+			);
+		}
+		return $map[ $name ] ?? $name;
 	}
 
 	public static function categories() {

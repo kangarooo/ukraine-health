@@ -72,6 +72,9 @@ class UH_Frontend {
 			case 'withdraw':
 				$this->do_withdraw();
 				break;
+			case 'report':
+				$this->do_report();
+				break;
 			case 'profile':
 				$this->do_profile();
 				break;
@@ -158,7 +161,8 @@ class UH_Frontend {
 
 		$data = array(
 			'user_id'   => $uid,
-			'name'      => sanitize_text_field( wp_unslash( $_POST['name'] ?? '' ) ),
+			'name'      => UH_Privacy::clean_nickname( wp_unslash( $_POST['name'] ?? '' ) ),
+			'real_name' => mb_substr( sanitize_text_field( wp_unslash( $_POST['real_name'] ?? '' ) ), 0, 128 ),
 			'phone'     => $phone,
 			'email'     => sanitize_email( wp_unslash( $_POST['email'] ?? '' ) ),
 			'messenger' => sanitize_text_field( wp_unslash( $_POST['messenger'] ?? '' ) ),
@@ -225,6 +229,25 @@ class UH_Frontend {
 		$this->back( is_wp_error( $res ) ? array( 'uh_err' => 'locked' ) : array( 'uh_ok' => 'withdrawn' ) );
 	}
 
+	/** A Hero reports a problem with a visit (logged in, or with the private link). */
+	private function do_report() {
+		$req = UH_Repo::request( absint( $_POST['request_id'] ?? 0 ) );
+		$tok = sanitize_text_field( wp_unslash( $_POST['token'] ?? '' ) );
+		if ( ! $req ) {
+			$this->back( array( 'uh_err' => 'notfound' ) );
+		}
+		$owns = ( $req->user_id && (int) $req->user_id === get_current_user_id() ) || ( $tok && hash_equals( $req->token, $tok ) );
+		if ( ! $owns ) {
+			$this->back( array( 'uh_err' => 'forbidden' ) );
+		}
+		$msg = sanitize_textarea_field( wp_unslash( $_POST['message'] ?? '' ) );
+		if ( '' === trim( $msg ) ) {
+			$this->back( array( 'uh_err' => 'missing' ) );
+		}
+		$res = UH_Reports::create( $req, $msg );
+		$this->back( is_wp_error( $res ) ? array( 'uh_err' => $res->get_error_code() ) : array( 'uh_ok' => 'reported' ) );
+	}
+
 	private function do_profile() {
 		if ( ! is_user_logged_in() ) {
 			$this->back( array( 'uh_err' => 'login' ) );
@@ -236,6 +259,10 @@ class UH_Frontend {
 		update_user_meta( $uid, 'uh_whatsapp', sanitize_text_field( wp_unslash( $_POST['whatsapp'] ?? '' ) ) );
 		update_user_meta( $uid, 'uh_telegram', sanitize_text_field( wp_unslash( $_POST['telegram'] ?? '' ) ) );
 		update_user_meta( $uid, 'uh_about', sanitize_textarea_field( wp_unslash( $_POST['about'] ?? '' ) ) );
+		$nick = UH_Privacy::clean_nickname( wp_unslash( $_POST['nickname'] ?? '' ) );
+		if ( '' !== $nick ) {
+			wp_update_user( array( 'ID' => $uid, 'nickname' => $nick, 'display_name' => $nick ) );
+		}
 		$u = wp_get_current_user();
 		if ( ! empty( $_POST['is_supporter'] ) ) {
 			// Only people invited as Supporters (or allowed by a coordinator) can become one.
@@ -243,7 +270,14 @@ class UH_Frontend {
 				if ( ! UH_Network::may_become_supporter( $uid ) ) {
 					$this->back( array( 'uh_err' => 'need_supporter_invite' ) );
 				}
+				if ( empty( $_POST['coc'] ) && ! get_user_meta( $uid, UH_Network::META_COC, true ) ) {
+					$this->back( array( 'uh_err' => 'coc', 'uh_tab' => 'profile' ) );
+				}
 				$u->add_role( UH_Install::ROLE_SUPPORTER );
+				if ( ! get_user_meta( $uid, UH_Network::META_COC, true ) ) {
+					update_user_meta( $uid, UH_Network::META_COC, current_time( 'mysql' ) );
+				}
+				self::tell_coordinators_new_supporter( $uid );
 			}
 		} elseif ( in_array( UH_Install::ROLE_SUPPORTER, $u->roles, true ) ) {
 			$u->remove_role( UH_Install::ROLE_SUPPORTER );
@@ -280,9 +314,13 @@ class UH_Frontend {
 		// Invite-only: the invite replaces WordPress's "Anyone can register" switch.
 		$invite = UH_Network::invite_by_code( wp_unslash( $_POST['invite'] ?? '' ) );
 		$email  = sanitize_email( wp_unslash( $_POST['email'] ?? '' ) );
-		$name   = sanitize_text_field( wp_unslash( $_POST['name'] ?? '' ) );
+		$name   = UH_Privacy::clean_nickname( wp_unslash( $_POST['name'] ?? '' ) );
+		$real   = mb_substr( sanitize_text_field( wp_unslash( $_POST['real_name'] ?? '' ) ), 0, 128 );
 		$role   = sanitize_key( $_POST['role'] ?? '' );
-		if ( ! is_email( $email ) || ! in_array( $role, array( 'hero', 'supporter', 'both' ), true ) ) {
+		if ( 'hero' !== $role && empty( $_POST['coc'] ) ) {
+			$this->back( array( 'uh_err' => 'coc', 'uh_invite' => $invite ? $invite->code : '' ) );
+		}
+		if ( ! is_email( $email ) || '' === $name || ! in_array( $role, array( 'hero', 'supporter', 'both' ), true ) ) {
 			$this->back( array( 'uh_err' => 'missing', 'uh_invite' => $invite ? $invite->code : '' ) );
 		}
 		$why = UH_Network::invalid_reason( $invite, $role );
@@ -295,18 +333,15 @@ class UH_Frontend {
 		if ( ! UH_Network::consume( $invite ) ) {
 			$this->back( array( 'uh_err' => 'invite_used' ) );
 		}
-		$login = sanitize_user( current( explode( '@', $email ) ), true );
-		$base  = $login ?: 'user';
-		$i     = 1;
-		while ( username_exists( $login ) ) {
-			$login = $base . $i++;
-		}
+		// The login name says nothing about the person; others only ever see the nickname.
 		$uid = wp_insert_user(
 			array(
-				'user_login'   => $login,
+				'user_login'   => UH_Privacy::random_login(),
 				'user_email'   => $email,
-				'display_name' => $name ?: $login,
-				'first_name'   => $name,
+				'nickname'     => $name,
+				'display_name' => $name,
+				'first_name'   => $real,
+				'locale'       => 'en_US' !== UH_I18n::current() ? UH_I18n::current() : '',
 				'user_pass'    => wp_generate_password( 20 ),
 				'role'         => 'supporter' === $role ? UH_Install::ROLE_SUPPORTER : UH_Install::ROLE_HERO,
 			)
@@ -319,6 +354,10 @@ class UH_Frontend {
 		}
 		UH_Network::attach( $uid, $invite );
 		update_user_meta( $uid, 'uh_phone', sanitize_text_field( wp_unslash( $_POST['phone'] ?? '' ) ) );
+		if ( 'hero' !== $role ) {
+			update_user_meta( $uid, UH_Network::META_COC, current_time( 'mysql' ) );
+			self::tell_coordinators_new_supporter( $uid );
+		}
 		wp_new_user_notification( $uid, null, 'user' ); // Sends "set your password" link.
 		$this->back( array( 'uh_ok' => 'registered' ) );
 	}
@@ -330,6 +369,24 @@ class UH_Frontend {
 	/** A Supporter who is connected to the network (or a coordinator). */
 	public static function is_supporter() {
 		return is_user_logged_in() && UH_Network::can_support( get_current_user_id() );
+	}
+
+	/** Ask coordinators to approve a new Supporter (no personal details in the message). */
+	public static function tell_coordinators_new_supporter( $uid ) {
+		if ( UH_Network::is_approved( $uid ) ) {
+			return;
+		}
+		$by = UH_Network::inviter( $uid );
+		UH_Notify::coordinators(
+			__( 'New Supporter to approve', 'ukraine-health' ),
+			sprintf(
+				/* translators: 1: nickname, 2: inviter nickname, 3: link */
+				__( "%1\$s (invited by %2\$s) wants to help as a Supporter and is waiting for your approval:\n%3\$s", 'ukraine-health' ),
+				UH_Privacy::nickname( $uid ),
+				$by ? UH_Privacy::nickname( $by ) : '—',
+				admin_url( 'admin.php?page=ukraine-health-network&tab=review' )
+			)
+		);
 	}
 
 	private function do_invite_create() {
@@ -372,6 +429,7 @@ class UH_Frontend {
 			'registered' => __( 'Account created. Check your email to set a password.', 'ukraine-health' ),
 			'invite'         => __( 'Invite created. Send the link below to the person – it works once.', 'ukraine-health' ),
 			'invite_revoked' => __( 'Invite cancelled.', 'ukraine-health' ),
+			'reported'       => __( 'Thank you for telling us. A coordinator will contact you. The Supporter will not get new groups until this is reviewed.', 'ukraine-health' ),
 		);
 		$errs = array(
 			'nonce'      => __( 'The form expired. Please try again.', 'ukraine-health' ),
@@ -393,6 +451,9 @@ class UH_Frontend {
 			'invite_role'           => __( 'This invite is not for that role. Please choose the role your invite is for.', 'ukraine-health' ),
 			'not_connected'         => __( 'Your account is not connected to the network yet, so you cannot invite others. Please contact the coordinator.', 'ukraine-health' ),
 			'too_many'              => __( 'You have too many unused invites. Cancel some or wait until they are used.', 'ukraine-health' ),
+			'coc'                   => __( 'Please read and accept the code of conduct.', 'ukraine-health' ),
+			'report_none'           => __( 'There is no visit to report for this request.', 'ukraine-health' ),
+			'report_dup'            => __( 'You already reported this visit. A coordinator will contact you.', 'ukraine-health' ),
 			'need_supporter_invite' => __( 'To help as a Supporter you need a Supporter invite from a Supporter or coordinator who knows you.', 'ukraine-health' ),
 		);
 		if ( $ok && isset( $oks[ $ok ] ) ) {
@@ -440,11 +501,15 @@ class UH_Frontend {
 	public function sc_request_form() {
 		$this->enqueue();
 		$set = UH_Install::settings();
-		$out = '<div class="uh uh-request">' . $this->notice();
+		$out = '<div class="uh uh-request">' . UH_I18n::switcher() . $this->notice();
 
 		if ( isset( $_GET['uh_ok'] ) && ! empty( $_GET['uh_token'] ) ) {
 			$link = add_query_arg( 'uh_token', sanitize_text_field( wp_unslash( $_GET['uh_token'] ) ), UH_Notify::page_url( 'status' ) );
 			$out .= '<p class="uh-card">' . esc_html__( 'Save this private link to check or cancel your request:', 'ukraine-health' ) . '<br><a href="' . esc_url( $link ) . '">' . esc_html( $link ) . '</a></p>';
+			$tg   = UH_Telegram::request_link( UH_Repo::request_by_token( sanitize_text_field( wp_unslash( $_GET['uh_token'] ) ) ) );
+			if ( $tg ) {
+				$out .= '<p><a class="uh-btn uh-btn-tg" href="' . esc_url( $tg ) . '" target="_blank" rel="noopener">' . esc_html__( 'Get updates on Telegram', 'ukraine-health' ) . '</a></p>';
+			}
 		}
 
 		if ( ! is_user_logged_in() && empty( $set['allow_guests'] ) ) {
@@ -472,7 +537,7 @@ class UH_Frontend {
 			$out .= '<div class="uh-notice uh-err" role="alert">' . esc_html__( 'This invite has already been used, has expired or was cancelled. Please ask the person who invited you for a new one.', 'ukraine-health' ) . '</div>';
 		} elseif ( $need_code && $code_inv ) {
 			$by   = get_userdata( (int) $code_inv->inviter_id );
-			$out .= '<div class="uh-notice uh-ok" role="status">' . esc_html( sprintf( __( 'You were invited by %s.', 'ukraine-health' ), $by ? $by->display_name : '—' ) ) . '</div>';
+			$out .= '<div class="uh-notice uh-ok" role="status">' . esc_html( sprintf( __( 'You were invited by %s.', 'ukraine-health' ), $by ? UH_Privacy::nickname( $by ) : '—' ) ) . '</div>';
 		}
 		$cats  = UH_Install::categories();
 		$by    = array();
@@ -490,6 +555,17 @@ class UH_Frontend {
 			<label class="uh-field"><?php esc_html_e( 'Hospital', 'ukraine-health' ); ?> *
 				<?php echo $this->hospital_select( 'hospital', $uid ? (int) get_user_meta( $uid, 'uh_hospital', true ) : 0 ); // phpcs:ignore ?>
 			</label>
+			<?php
+			$vh = array();
+			foreach ( $hospitals as $h ) {
+				if ( $h->visiting_hours ) {
+					$vh[] = $h->name . ': ' . $h->visiting_hours;
+				}
+			}
+			if ( $vh ) {
+				echo '<p class="uh-help">' . esc_html__( 'Visiting hours', 'ukraine-health' ) . ' — ' . esc_html( implode( ' · ', $vh ) ) . '</p>';
+			}
+			?>
 			<label class="uh-field"><?php esc_html_e( 'Ward / room', 'ukraine-health' ); ?>
 				<input type="text" name="ward" maxlength="64" value="<?php echo esc_attr( $uid ? get_user_meta( $uid, 'uh_ward', true ) : '' ); ?>">
 			</label>
@@ -502,7 +578,7 @@ class UH_Frontend {
 				<?php foreach ( $list as $s ) : ?>
 					<label class="uh-tile" data-service="<?php echo (int) $s->id; ?>" data-min="<?php echo (int) $s->min_group; ?>" data-sizes="<?php echo (int) $s->needs_sizes; ?>">
 						<input type="checkbox" name="services[]" value="<?php echo (int) $s->id; ?>">
-						<span class="uh-tile-name"><?php echo esc_html( $s->name ); ?></span>
+						<span class="uh-tile-name"><?php echo esc_html( UH_Install::svc( $s->name ) ); ?></span>
 						<?php if ( $s->min_group > 1 ) : ?>
 							<span class="uh-tile-min"><?php echo esc_html( sprintf( __( 'group of %d', 'ukraine-health' ), $s->min_group ) ); ?></span>
 						<?php endif; ?>
@@ -522,8 +598,9 @@ class UH_Frontend {
 
 			<h3><span class="uh-step">3</span> <?php esc_html_e( 'How can we reach you?', 'ukraine-health' ); ?></h3>
 			<div class="uh-row">
-				<label class="uh-field"><?php esc_html_e( 'Name', 'ukraine-health' ); ?>
-					<input type="text" name="name" maxlength="128" value="<?php echo esc_attr( $user ? $user->display_name : '' ); ?>">
+				<label class="uh-field"><?php esc_html_e( 'Nickname', 'ukraine-health' ); ?> *
+					<input type="text" name="name" maxlength="40" required autocomplete="nickname" value="<?php echo esc_attr( $user ? UH_Privacy::nickname( $user ) : '' ); ?>">
+					<small class="uh-help"><?php esc_html_e( 'What the Supporter will call you. Do not use your full name.', 'ukraine-health' ); ?></small>
 				</label>
 				<label class="uh-field"><?php esc_html_e( 'Phone', 'ukraine-health' ); ?> <?php echo $uid ? '' : '*'; ?>
 					<input type="tel" name="phone" maxlength="20" placeholder="+380… / +371…" <?php echo $uid ? '' : 'required'; ?> value="<?php echo esc_attr( $uid ? get_user_meta( $uid, 'uh_phone', true ) : '' ); ?>">
@@ -546,6 +623,11 @@ class UH_Frontend {
 				</label>
 				<?php endif; ?>
 			</div>
+			<details class="uh-more"><summary><?php esc_html_e( 'Real name (optional)', 'ukraine-health' ); ?></summary>
+				<label class="uh-field"><?php esc_html_e( 'Real name – seen only by coordinators, never by Supporters', 'ukraine-health' ); ?>
+					<input type="text" name="real_name" maxlength="128" autocomplete="name">
+				</label>
+			</details>
 			<label class="uh-field"><?php esc_html_e( 'Notes (mobility, preferences, anything we should know)', 'ukraine-health' ); ?>
 				<textarea name="notes" rows="3" maxlength="1000"></textarea>
 			</label>
@@ -567,7 +649,7 @@ class UH_Frontend {
 
 	public function sc_my_requests() {
 		$this->enqueue();
-		$out   = '<div class="uh uh-mine">' . $this->notice();
+		$out   = '<div class="uh uh-mine">' . UH_I18n::switcher() . $this->notice();
 		$token = sanitize_text_field( wp_unslash( $_GET['uh_token'] ?? '' ) );
 		$rows  = array();
 		if ( $token ) {
@@ -607,22 +689,44 @@ class UH_Frontend {
 		$out .= '<div class="uh-list">';
 		foreach ( $rows as $r ) {
 			$status = 'withdrawn' === $r->status ? 'cancelled' : $r->group_status;
-			$out   .= '<div class="uh-card"><div class="uh-card-head"><strong>' . esc_html( $r->service_name ) . '</strong> ' . self::badge( $status ) . '</div>';
+			$out   .= '<div class="uh-card"><div class="uh-card-head"><strong>' . esc_html( UH_Install::svc( $r->service_name ) ) . '</strong> ' . self::badge( $status ) . '</div>';
 			$out   .= '<div class="uh-meta">' . esc_html( $r->hospital_name ) . '</div>';
 			if ( in_array( $r->group_status, array( 'open', 'ready' ), true ) && 'withdrawn' !== $r->status ) {
 				$pct  = min( 100, round( 100 * $r->members / max( 1, $r->min_group ) ) );
 				$out .= '<div class="uh-progress" role="progressbar" aria-valuenow="' . (int) $r->members . '" aria-valuemax="' . (int) $r->min_group . '"><span style="width:' . (int) $pct . '%"></span></div>';
 				$out .= '<div class="uh-meta">' . esc_html( sprintf( __( '%1$d of %2$d people signed up', 'ukraine-health' ), $r->members, $r->min_group ) ) . '</div>';
 			}
+			$grp = UH_Repo::group( $r->group_id );
 			if ( 'assigned' === $r->group_status && 'withdrawn' !== $r->status ) {
 				$out .= '<div class="uh-when">📅 ' . esc_html( self::fmt_date( $r->appointment ) ) . '</div>';
+				if ( $grp && $grp->supporter_id ) {
+					$out .= '<div class="uh-meta">' . esc_html( sprintf( __( 'Supporter: %s', 'ukraine-health' ), UH_Privacy::nickname( (int) $grp->supporter_id ) ) ) . '</div>';
+				}
+			}
+			if ( $grp && $grp->supporter_id && in_array( $r->group_status, array( 'assigned', 'completed' ), true ) && 'withdrawn' !== $r->status && ! $r->wiped_at ) {
+				if ( UH_Reports::exists_for_request( $r->id ) ) {
+					$out .= '<div class="uh-meta">' . esc_html__( 'You reported a problem with this visit. A coordinator will contact you.', 'ukraine-health' ) . '</div>';
+				} else {
+					$out .= '<details class="uh-more uh-report"><summary>' . esc_html__( 'Report a problem with this visit', 'ukraine-health' ) . '</summary><form method="post">' . $this->hidden( 'report' ) . '<input type="hidden" name="request_id" value="' . (int) $r->id . '"><input type="hidden" name="token" value="' . esc_attr( $token ? $r->token : '' ) . '">';
+					$out .= '<p class="uh-help">' . esc_html__( 'Only coordinators see this. The Supporter is paused right away and gets no new groups until a coordinator has looked at it.', 'ukraine-health' ) . '</p>';
+					$out .= '<label class="uh-field">' . esc_html__( 'What happened?', 'ukraine-health' ) . ' <textarea name="message" rows="3" maxlength="3000" required></textarea></label><button class="uh-btn uh-btn-primary">' . esc_html__( 'Send to coordinator', 'ukraine-health' ) . '</button></form></details>';
+				}
 			}
 			if ( in_array( $r->group_status, array( 'open', 'ready', 'assigned' ), true ) && 'withdrawn' !== $r->status ) {
 				$out .= '<form method="post" class="uh-inline">' . $this->hidden( 'withdraw' ) . '<input type="hidden" name="request_id" value="' . (int) $r->id . '"><input type="hidden" name="token" value="' . esc_attr( $token ? $r->token : '' ) . '"><button class="uh-btn uh-btn-link" onclick="return confirm(\'' . esc_js( __( 'Cancel this request?', 'ukraine-health' ) ) . '\')">' . esc_html__( 'Cancel request', 'ukraine-health' ) . '</button></form>';
 			}
 			$out .= '</div>';
 		}
-		return $out . '</div>' . $invite_link . '</div>';
+		$tg = '';
+		if ( $token && $rows ) {
+			$tg = UH_Telegram::request_link( UH_Repo::request( (int) $rows[0]->id ) );
+		} elseif ( is_user_logged_in() && ! get_user_meta( get_current_user_id(), 'uh_telegram', true ) ) {
+			$tg = UH_Telegram::user_link( get_current_user_id() );
+		}
+		if ( $tg ) {
+			$tg = '<p><a class="uh-btn uh-btn-tg" href="' . esc_url( $tg ) . '" target="_blank" rel="noopener">' . esc_html__( 'Get updates on Telegram', 'ukraine-health' ) . '</a></p>';
+		}
+		return $out . '</div>' . $tg . $invite_link . '</div>';
 	}
 
 	/* =====================================================================
@@ -631,7 +735,7 @@ class UH_Frontend {
 
 	public function sc_supporter() {
 		$this->enqueue();
-		$out = '<div class="uh uh-supporter">' . $this->notice();
+		$out = '<div class="uh uh-supporter">' . UH_I18n::switcher() . $this->notice();
 		if ( ! is_user_logged_in() ) {
 			$reg = UH_Notify::page_url( 'register' );
 			return $out . '<p>' . sprintf( wp_kses_post( __( 'Want to help? <a href="%1$s">Log in</a> or <a href="%2$s">sign up as a Supporter</a>.', 'ukraine-health' ) ), esc_url( wp_login_url( get_permalink() ) ), esc_url( $reg ) ) . '</p></div>';
@@ -665,14 +769,25 @@ class UH_Frontend {
 			?>
 			<form method="post" class="uh-form">
 				<?php echo $this->hidden( 'profile' ); // phpcs:ignore ?>
+				<?php
+				if ( $has_role && $connected && UH_Network::on_hold( $uid ) ) {
+					echo '<div class="uh-notice uh-err" role="alert">' . esc_html__( 'Your Supporter account is paused while a coordinator reviews a report. You will hear from them.', 'ukraine-health' ) . '</div>';
+				} elseif ( $has_role && $connected && ! UH_Network::is_approved( $uid ) ) {
+					echo '<div class="uh-notice uh-ok" role="status">' . esc_html__( 'Thank you! A coordinator will review and approve your Supporter account. Until then you will not see groups.', 'ukraine-health' ) . '</div>';
+				}
+				?>
+				<label class="uh-field"><?php esc_html_e( 'Nickname', 'ukraine-health' ); ?> * <input type="text" name="nickname" maxlength="40" required value="<?php echo esc_attr( UH_Privacy::nickname( $uid ) ); ?>"><small class="uh-help"><?php esc_html_e( 'The only name Heroes and other members see.', 'ukraine-health' ); ?></small></label>
 				<?php if ( $may_help ) : ?>
 				<label class="uh-check"><input type="checkbox" name="is_supporter" value="1" <?php checked( $has_role ); ?>> <strong><?php esc_html_e( 'I want to help as a Supporter', 'ukraine-health' ); ?></strong></label>
+				<?php if ( ! get_user_meta( $uid, UH_Network::META_COC, true ) ) : ?>
+				<?php echo self::code_of_conduct(); // phpcs:ignore ?>
+				<?php endif; ?>
 				<?php else : ?>
 				<p class="uh-help"><?php esc_html_e( 'To help as a Supporter you need a Supporter invite from a Supporter or coordinator who knows you.', 'ukraine-health' ); ?></p>
 				<?php endif; ?>
 				<fieldset><legend><?php esc_html_e( 'What can you offer?', 'ukraine-health' ); ?></legend><div class="uh-tiles">
 				<?php foreach ( UH_Repo::services() as $s ) : ?>
-					<label class="uh-tile"><input type="checkbox" name="services[]" value="<?php echo (int) $s->id; ?>" <?php checked( in_array( (int) $s->id, $my_svc, true ) ); ?>> <span class="uh-tile-name"><?php echo esc_html( $s->name ); ?></span><span class="uh-tile-min"><?php echo esc_html( $cats[ $s->category ] ?? '' ); ?></span></label>
+					<label class="uh-tile"><input type="checkbox" name="services[]" value="<?php echo (int) $s->id; ?>" <?php checked( in_array( (int) $s->id, $my_svc, true ) ); ?>> <span class="uh-tile-name"><?php echo esc_html( UH_Install::svc( $s->name ) ); ?></span><span class="uh-tile-min"><?php echo esc_html( $cats[ $s->category ] ?? '' ); ?></span></label>
 				<?php endforeach; ?>
 				</div></fieldset>
 				<fieldset><legend><?php esc_html_e( 'Which hospitals? (none = all)', 'ukraine-health' ); ?></legend>
@@ -686,6 +801,10 @@ class UH_Frontend {
 					<label class="uh-field"><?php esc_html_e( 'WhatsApp number', 'ukraine-health' ); ?> <input type="tel" name="whatsapp" value="<?php echo esc_attr( get_user_meta( $uid, 'uh_whatsapp', true ) ); ?>"></label>
 					<label class="uh-field"><?php esc_html_e( 'Telegram chat ID', 'ukraine-health' ); ?> <input type="text" name="telegram" value="<?php echo esc_attr( get_user_meta( $uid, 'uh_telegram', true ) ); ?>"></label>
 				</div>
+				<?php $tgl = UH_Telegram::user_link( $uid ); ?>
+				<?php if ( $tgl ) : ?>
+				<p><a class="uh-btn uh-btn-tg" href="<?php echo esc_url( $tgl ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Connect Telegram in one tap', 'ukraine-health' ); ?></a></p>
+				<?php endif; ?>
 				<p class="uh-help"><?php esc_html_e( 'Email notifications are always on.', 'ukraine-health' ); ?></p>
 				</fieldset>
 				<label class="uh-field"><?php esc_html_e( 'About you (shown to coordinators)', 'ukraine-health' ); ?><textarea name="about" rows="3"><?php echo esc_textarea( get_user_meta( $uid, 'uh_about', true ) ); ?></textarea></label>
@@ -701,11 +820,15 @@ class UH_Frontend {
 				return $out . '<p>' . esc_html__( 'Nothing scheduled yet.', 'ukraine-health' ) . '</p></div>';
 			}
 			foreach ( $groups as $g ) {
-				$out .= '<div class="uh-card"><div class="uh-card-head"><strong>' . esc_html( $g->service_name ) . '</strong> ' . self::badge( $g->status ) . '</div>';
+				$out .= '<div class="uh-card"><div class="uh-card-head"><strong>' . esc_html( UH_Install::svc( $g->service_name ) ) . '</strong> ' . self::badge( $g->status ) . '</div>';
 				$out .= '<div class="uh-meta">' . esc_html( $g->hospital_name . ', ' . $g->city ) . ' · 📅 ' . esc_html( self::fmt_date( $g->appointment ) ) . '</div>';
+				$open = UH_Privacy::contact_open( $g );
+				if ( 'assigned' === $g->status && ! $open ) {
+					$out .= '<p class="uh-help">' . esc_html( sprintf( __( 'To protect the Heroes, their wards and phone numbers appear here from %s.', 'ukraine-health' ), self::fmt_date( UH_Privacy::contact_opens_at( $g ) ) ) ) . '</p>';
+				}
 				$out .= '<ol class="uh-members">';
 				foreach ( UH_Repo::group_members( $g->id ) as $m ) {
-					if ( 'assigned' !== $g->status ) {
+					if ( ! $open ) {
 						// After the visit the Supporter no longer needs the Heroes' contact details.
 						$out .= '<li><strong>' . esc_html( $m->name ?: '—' ) . '</strong></li>';
 						continue;
@@ -734,8 +857,8 @@ class UH_Frontend {
 		$min_dt = wp_date( 'Y-m-d\TH:i', time() + HOUR_IN_SECONDS );
 		foreach ( $groups as $g ) {
 			$pct  = min( 100, round( 100 * $g->members / max( 1, $g->min_group ) ) );
-			$out .= '<div class="uh-card ' . ( 'ready' === $g->status ? 'uh-card-ready' : '' ) . '"><div class="uh-card-head"><strong>' . esc_html( $g->service_name ) . '</strong> ' . self::badge( $g->status ) . '</div>';
-			$out .= '<div class="uh-meta">' . esc_html( $g->hospital_name . ', ' . $g->city ) . '</div>';
+			$out .= '<div class="uh-card ' . ( 'ready' === $g->status ? 'uh-card-ready' : '' ) . '"><div class="uh-card-head"><strong>' . esc_html( UH_Install::svc( $g->service_name ) ) . '</strong> ' . self::badge( $g->status ) . '</div>';
+			$out .= '<div class="uh-meta">' . esc_html( $g->hospital_name . ', ' . $g->city ) . ( $g->visiting_hours ? ' · ' . esc_html( sprintf( __( 'Visiting hours: %s', 'ukraine-health' ), $g->visiting_hours ) ) : '' ) . '</div>';
 			$out .= '<div class="uh-progress"><span style="width:' . (int) $pct . '%"></span></div><div class="uh-meta">' . esc_html( sprintf( __( '%1$d of %2$d Heroes', 'ukraine-health' ), $g->members, $g->min_group ) ) . '</div>';
 			$out .= '<form method="post" class="uh-accept">' . $this->hidden( 'accept' ) . '<input type="hidden" name="group_id" value="' . (int) $g->id . '">';
 			$out .= '<label class="uh-field uh-small">' . esc_html__( 'Date & time', 'ukraine-health' ) . ' <input type="datetime-local" name="appointment" min="' . esc_attr( $min_dt ) . '" required></label>';
@@ -752,7 +875,7 @@ class UH_Frontend {
 	public function sc_register( $atts ) {
 		$this->enqueue();
 		$atts = shortcode_atts( array( 'role' => 'hero' ), $atts );
-		$out  = '<div class="uh uh-register">' . $this->notice();
+		$out  = '<div class="uh uh-register">' . UH_I18n::switcher() . $this->notice();
 		if ( is_user_logged_in() ) {
 			return $out . '<p>' . esc_html__( 'You are logged in.', 'ukraine-health' ) . ' <a href="' . esc_url( UH_Notify::page_url( 'supporter' ) ) . '">' . esc_html__( 'Supporter area', 'ukraine-health' ) . '</a> · <a href="' . esc_url( UH_Notify::page_url( 'status' ) ) . '">' . esc_html__( 'My requests', 'ukraine-health' ) . '</a></p></div>';
 		}
@@ -788,7 +911,7 @@ class UH_Frontend {
 		$pick = isset( $choices[ $atts['role'] ] ) ? $atts['role'] : key( $choices );
 		ob_start();
 		?>
-		<div class="uh-notice uh-ok" role="status"><?php echo esc_html( sprintf( __( 'You were invited by %s.', 'ukraine-health' ), $by ? $by->display_name : '—' ) ); ?></div>
+		<div class="uh-notice uh-ok" role="status"><?php echo esc_html( sprintf( __( 'You were invited by %s.', 'ukraine-health' ), $by ? UH_Privacy::nickname( $by ) : '—' ) ); ?></div>
 		<form method="post" class="uh-form">
 			<?php echo $this->hidden( 'register' ); // phpcs:ignore ?>
 			<input type="hidden" name="invite" value="<?php echo esc_attr( $inv->code ); ?>">
@@ -801,15 +924,29 @@ class UH_Frontend {
 				</div>
 			</fieldset>
 			<div class="uh-row">
-				<label class="uh-field"><?php esc_html_e( 'Name', 'ukraine-health' ); ?> * <input type="text" name="name" required maxlength="128"></label>
+				<label class="uh-field"><?php esc_html_e( 'Nickname', 'ukraine-health' ); ?> * <input type="text" name="name" required maxlength="40" autocomplete="nickname"><small class="uh-help"><?php esc_html_e( 'The only name other members see. Do not use your full name.', 'ukraine-health' ); ?></small></label>
+				<label class="uh-field"><?php esc_html_e( 'Real name (optional)', 'ukraine-health' ); ?> <input type="text" name="real_name" maxlength="128" autocomplete="name"><small class="uh-help"><?php esc_html_e( 'Seen only by coordinators.', 'ukraine-health' ); ?></small></label>
 				<label class="uh-field"><?php esc_html_e( 'Email', 'ukraine-health' ); ?> * <input type="email" name="email" required maxlength="191"></label>
 				<label class="uh-field"><?php esc_html_e( 'Phone', 'ukraine-health' ); ?> <input type="tel" name="phone" maxlength="20"></label>
 			</div>
+			<?php if ( 'hero' !== $inv->role ) : ?>
+			<div class="uh-coc-wrap" data-uh-coc><?php echo self::code_of_conduct( 'hero' === $pick ); // phpcs:ignore ?></div>
+			<?php endif; ?>
 			<p><button class="uh-btn uh-btn-primary"><?php esc_html_e( 'Create account', 'ukraine-health' ); ?></button></p>
 			<p class="uh-help"><?php esc_html_e( 'We will email you a link to set your password.', 'ukraine-health' ); ?></p>
 		</form>
 		<?php
 		return $out . ob_get_clean() . '</div>';
+	}
+
+	/** The Supporter code of conduct with its required checkbox. */
+	public static function code_of_conduct( $hidden = false ) {
+		$lines = array_filter( array_map( 'trim', explode( "\n", (string) UH_Install::settings()['code_of_conduct'] ) ) );
+		$out   = '<fieldset class="uh-coc"' . ( $hidden ? ' hidden' : '' ) . '><legend>' . esc_html__( 'Supporter code of conduct', 'ukraine-health' ) . '</legend><ul>';
+		foreach ( $lines as $l ) {
+			$out .= '<li>' . esc_html( $l ) . '</li>';
+		}
+		return $out . '</ul><label class="uh-check"><input type="checkbox" name="coc" value="1"' . ( $hidden ? '' : ' required' ) . '> <strong>' . esc_html__( 'I have read the code of conduct and I agree to follow it.', 'ukraine-health' ) . '</strong></label></fieldset>';
 	}
 
 	/* =====================================================================
@@ -818,7 +955,7 @@ class UH_Frontend {
 
 	public function sc_invite() {
 		$this->enqueue();
-		$out = '<div class="uh uh-invite">' . $this->notice();
+		$out = '<div class="uh uh-invite">' . UH_I18n::switcher() . $this->notice();
 		if ( ! is_user_logged_in() ) {
 			return $out . '<p>' . sprintf( wp_kses_post( __( 'Please <a href="%s">log in</a> to invite someone.', 'ukraine-health' ) ), esc_url( wp_login_url( get_permalink() ) ) ) . '</p></div>';
 		}
@@ -882,7 +1019,7 @@ class UH_Frontend {
 		} else {
 			$out .= '<ul class="uh-members">';
 			foreach ( $people as $p ) {
-				$out .= '<li><strong>' . esc_html( $p->display_name ) . '</strong> · ' . esc_html( mysql2date( get_option( 'date_format' ), $p->user_registered ) ) . ( UH_Network::is_suspended( $p->ID ) ? ' · <em>' . esc_html__( 'suspended', 'ukraine-health' ) . '</em>' : '' ) . '</li>';
+				$out .= '<li><strong>' . esc_html( UH_Privacy::nickname( $p ) ) . '</strong> · ' . esc_html( mysql2date( get_option( 'date_format' ), $p->user_registered ) ) . ( UH_Network::is_suspended( $p->ID ) ? ' · <em>' . esc_html__( 'suspended', 'ukraine-health' ) . '</em>' : '' ) . '</li>';
 			}
 			$out .= '</ul>';
 		}
