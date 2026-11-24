@@ -183,7 +183,7 @@ class UH_Repo {
 			'groups_ready'   => (int) $wpdb->get_var( "SELECT COUNT(*) FROM $g WHERE status='ready'" ),
 			'scheduled'      => (int) $wpdb->get_var( "SELECT COUNT(*) FROM $g WHERE status='assigned'" ),
 			'helped'         => (int) $wpdb->get_var( "SELECT COUNT(*) FROM $r r JOIN $g g ON g.id=r.group_id WHERE r.status<>'withdrawn' AND g.status='completed'" ),
-			'supporters'     => count( get_users( array( 'role' => UH_Install::ROLE_SUPPORTER, 'fields' => 'ID' ) ) ),
+			'supporters'     => count( array_filter( get_users( array( 'role' => UH_Install::ROLE_SUPPORTER, 'fields' => 'ID' ) ), array( 'UH_Network', 'can_support' ) ) ),
 		);
 	}
 
@@ -194,6 +194,9 @@ class UH_Repo {
 		$out   = array();
 		$users = get_users( array( 'role__in' => array( UH_Install::ROLE_SUPPORTER ) ) );
 		foreach ( $users as $u ) {
+			if ( ! UH_Network::can_support( $u->ID ) ) {
+				continue; // Suspended or not connected to the network.
+			}
 			$svc  = array_map( 'intval', (array) get_user_meta( $u->ID, 'uh_services', true ) );
 			$hosp = array_map( 'intval', (array) get_user_meta( $u->ID, 'uh_hospitals', true ) );
 			$hosp = array_filter( $hosp );

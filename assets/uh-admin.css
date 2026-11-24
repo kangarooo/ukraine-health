@@ -11,3 +11,10 @@
 .uh-admin .uh-badge.uh-completed { background: #e7f5ea; color: #1e7e34; }
 .uh-admin form { margin: 0; }
 @media (max-width: 960px) { .uh-admin .uh-cols { grid-template-columns: 1fr; } }
+.uh-admin .uh-tree { margin-top: 16px; }
+.uh-admin .uh-node { margin: 4px 0 4px 18px; border-left: 2px solid #c3d4ea; padding-left: 10px; }
+.uh-admin .uh-tree > .uh-node { margin-left: 0; }
+.uh-admin .uh-node summary { cursor: pointer; padding: 6px 0; }
+.uh-admin .uh-node-actions { display: inline-flex; flex-wrap: wrap; gap: 6px; margin-left: 8px; vertical-align: middle; }
+.uh-admin .uh-inline-form { display: inline-flex; gap: 4px; align-items: center; }
+.uh-admin .uh-badge.uh-cancelled { background: #f1f1f1; color: #777; }

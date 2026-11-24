@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin screens: Dashboard, Groups, Hospitals, Services, Settings.
+ * Admin screens: Dashboard, Groups, Network, Hospitals, Services, Settings.
  *
  * @package UkraineHealth
  */
@@ -30,6 +30,7 @@ class UH_Admin {
 		add_menu_page( 'Ukraine Health', 'Ukraine Health', $cap, 'ukraine-health', array( $this, 'page_dashboard' ), 'dashicons-heart', 26 );
 		add_submenu_page( 'ukraine-health', __( 'Dashboard', 'ukraine-health' ), __( 'Dashboard', 'ukraine-health' ), $cap, 'ukraine-health', array( $this, 'page_dashboard' ) );
 		add_submenu_page( 'ukraine-health', __( 'Groups', 'ukraine-health' ), __( 'Groups', 'ukraine-health' ), $cap, 'ukraine-health-groups', array( $this, 'page_groups' ) );
+		add_submenu_page( 'ukraine-health', __( 'Network', 'ukraine-health' ), __( 'Network', 'ukraine-health' ), $cap, 'ukraine-health-network', array( $this, 'page_network' ) );
 		add_submenu_page( 'ukraine-health', __( 'Hospitals', 'ukraine-health' ), __( 'Hospitals', 'ukraine-health' ), $cap, 'ukraine-health-hospitals', array( $this, 'page_hospitals' ) );
 		add_submenu_page( 'ukraine-health', __( 'Services', 'ukraine-health' ), __( 'Services', 'ukraine-health' ), $cap, 'ukraine-health-services', array( $this, 'page_services' ) );
 		add_submenu_page( 'ukraine-health', __( 'Settings', 'ukraine-health' ), __( 'Settings', 'ukraine-health' ), 'manage_options', 'ukraine-health-settings', array( $this, 'page_settings' ) );
@@ -53,8 +54,9 @@ class UH_Admin {
 				'pages'   => __( 'Pages created. You can find them under Pages.', 'ukraine-health' ),
 				'inuse'   => __( 'Cannot delete: it is used by groups. Deactivate it instead.', 'ukraine-health' ),
 				'error'   => __( 'Could not save.', 'ukraine-health' ),
+				'loop'    => __( 'Not changed: that would put the member under someone they invited.', 'ukraine-health' ),
 			);
-			echo '<div class="notice notice-' . ( in_array( $m, array( 'inuse', 'error' ), true ) ? 'error' : 'success' ) . ' is-dismissible"><p>' . esc_html( $text[ $m ] ?? $m ) . '</p></div>';
+			echo '<div class="notice notice-' . ( in_array( $m, array( 'inuse', 'error', 'loop' ), true ) ? 'error' : 'success' ) . ' is-dismissible"><p>' . esc_html( $text[ $m ] ?? $m ) . '</p></div>';
 		}
 	}
 
@@ -165,6 +167,40 @@ class UH_Admin {
 				$this->redirect( 'ukraine-health-groups', 'saved', array( 'view' => $req ? $req->group_id : 0 ) );
 				break;
 
+			case 'net_suspend':
+			case 'net_suspend_branch':
+				$uid = absint( $p['user_id'] ?? 0 );
+				if ( $uid && $uid !== get_current_user_id() && ! user_can( $uid, 'manage_options' ) ) {
+					UH_Network::suspend( $uid, 'net_suspend_branch' === $a );
+				}
+				$this->redirect( 'ukraine-health-network' );
+				break;
+
+			case 'net_unsuspend':
+				UH_Network::unsuspend( absint( $p['user_id'] ?? 0 ) );
+				$this->redirect( 'ukraine-health-network' );
+				break;
+
+			case 'net_reattach':
+				$ok = UH_Network::reattach( absint( $p['user_id'] ?? 0 ), absint( $p['inviter_id'] ?? 0 ) );
+				$this->redirect( 'ukraine-health-network', $ok ? 'saved' : 'loop' );
+				break;
+
+			case 'net_allow_supporter':
+				UH_Network::allow_supporter( absint( $p['user_id'] ?? 0 ) );
+				$this->redirect( 'ukraine-health-network' );
+				break;
+
+			case 'net_revoke':
+				UH_Network::revoke( absint( $p['invite_id'] ?? 0 ), get_current_user_id() );
+				$this->redirect( 'ukraine-health-network', 'saved', array( 'tab' => 'invites' ) );
+				break;
+
+			case 'net_invite':
+				$res = UH_Network::create_invite( get_current_user_id(), sanitize_key( $p['role'] ?? 'supporter' ), $p['note'] ?? '', absint( $p['max_uses'] ?? 1 ), absint( $p['days'] ?? 14 ) );
+				$this->redirect( 'ukraine-health-network', is_wp_error( $res ) ? 'error' : 'saved', array( 'tab' => 'invites', 'new' => is_wp_error( $res ) ? 0 : (int) $res->id ) );
+				break;
+
 			case 'settings':
 				if ( ! current_user_can( 'manage_options' ) ) {
 					wp_die();
@@ -177,6 +213,7 @@ class UH_Admin {
 				$s['admin_email']    = sanitize_email( $p['admin_email'] ?? '' );
 				$s['notify_admin']   = empty( $p['notify_admin'] ) ? 0 : 1;
 				$s['allow_guests']   = empty( $p['allow_guests'] ) ? 0 : 1;
+				$s['invite_guests']  = empty( $p['invite_guests'] ) ? 0 : 1;
 				$s['rate_limit']     = absint( $p['rate_limit'] ?? 5 );
 				$s['messengers']     = array_values( array_filter( array_map( 'trim', explode( ',', sanitize_text_field( $p['messengers'] ?? '' ) ) ) ) );
 				$s['privacy_notice'] = sanitize_textarea_field( $p['privacy_notice'] ?? '' );
@@ -355,7 +392,9 @@ class UH_Admin {
 		echo '<h2>' . esc_html__( 'Update', 'ukraine-health' ) . '</h2><form method="post" class="uh-admin-form">' . $this->field( 'group_update' ) . '<input type="hidden" name="group_id" value="' . (int) $g->id . '">'; // phpcs:ignore
 		if ( in_array( $g->status, array( 'open', 'ready' ), true ) ) {
 			$cands = UH_Repo::matching_supporters( $g->service_id, $g->hospital_id );
-			$all   = get_users( array( 'role__in' => array( UH_Install::ROLE_SUPPORTER ) ) );
+			$all   = array_filter( get_users( array( 'role__in' => array( UH_Install::ROLE_SUPPORTER ) ) ), function ( $u ) {
+				return UH_Network::can_support( $u->ID );
+			} );
 			echo '<p><label>' . esc_html__( 'Assign Supporter', 'ukraine-health' ) . ' <select name="supporter_id"><option value="">—</option>';
 			foreach ( $all as $u ) {
 				$match = in_array( $u->ID, wp_list_pluck( $cands, 'ID' ), true );
@@ -437,14 +476,16 @@ class UH_Admin {
 		echo '<form method="post">' . $this->field( 'create_pages' ); // phpcs:ignore
 		submit_button( $pages ? __( 'Re-create missing pages', 'ukraine-health' ) : __( 'Create pages', 'ukraine-health' ), 'secondary', 'submit', false );
 		echo '</form>';
-		if ( ! get_option( 'users_can_register' ) ) {
-			echo '<p class="description">' . wp_kses_post( sprintf( __( 'Note: account sign-up is off. Turn on “Anyone can register” in <a href="%s">Settings → General</a> so Supporters can join.', 'ukraine-health' ), esc_url( admin_url( 'options-general.php' ) ) ) ) . '</p>';
+		echo '<p class="description">' . esc_html__( 'Sign-up is invite-only: people join through an invite link from a member (see Ukraine Health → Network). Leave WordPress’s “Anyone can register” switched off.', 'ukraine-health' ) . '</p>';
+		if ( get_option( 'users_can_register' ) ) {
+			echo '<p class="description" style="color:#b32d2e">' . wp_kses_post( sprintf( __( '“Anyone can register” is on in <a href="%s">Settings → General</a>. Accounts made through the WordPress sign-up form are not connected to anyone and get no access until a coordinator reviews them, but it is safer to switch it off.', 'ukraine-health' ), esc_url( admin_url( 'options-general.php' ) ) ) ) . '</p>';
 		}
 		echo '</div>';
 
 		echo '<form method="post" class="uh-panel">' . $this->field( 'settings' ); // phpcs:ignore
 		echo '<h2>' . esc_html__( 'Requests', 'ukraine-health' ) . '</h2><table class="form-table">';
 		echo '<tr><th>' . esc_html__( 'Guests', 'ukraine-health' ) . '</th><td><label><input type="checkbox" name="allow_guests" value="1" ' . checked( $s['allow_guests'], 1, false ) . '> ' . esc_html__( 'Heroes can request help without an account (phone required)', 'ukraine-health' ) . '</label></td></tr>';
+		echo '<tr><th>' . esc_html__( 'Invite-only requests', 'ukraine-health' ) . '</th><td><label><input type="checkbox" name="invite_guests" value="1" ' . checked( $s['invite_guests'], 1, false ) . '> ' . esc_html__( 'Heroes without a connected account need an invite code to request help (recommended)', 'ukraine-health' ) . '</label></td></tr>';
 		echo '<tr><th>' . esc_html__( 'Rate limit', 'ukraine-health' ) . '</th><td><input type="number" min="0" name="rate_limit" value="' . (int) $s['rate_limit'] . '"> ' . esc_html__( 'guest submissions per hour per device (0 = off)', 'ukraine-health' ) . '</td></tr>';
 		echo '<tr><th>' . esc_html__( 'Messengers', 'ukraine-health' ) . '</th><td><input class="regular-text" name="messengers" value="' . esc_attr( implode( ', ', $s['messengers'] ) ) . '"></td></tr>';
 		echo '<tr><th>' . esc_html__( 'Consent text', 'ukraine-health' ) . '</th><td><textarea class="large-text" rows="2" name="privacy_notice">' . esc_textarea( $s['privacy_notice'] ) . '</textarea></td></tr>';
@@ -460,6 +501,160 @@ class UH_Admin {
 		submit_button();
 		echo '</form>';
 
-		echo '<div class="uh-panel"><h2>' . esc_html__( 'Shortcodes', 'ukraine-health' ) . '</h2><p><code>[uh_request_form]</code> <code>[uh_my_requests]</code> <code>[uh_supporter]</code> <code>[uh_register role="supporter"]</code> <code>[uh_stats]</code></p></div></div>';
+		echo '<div class="uh-panel"><h2>' . esc_html__( 'Shortcodes', 'ukraine-health' ) . '</h2><p><code>[uh_request_form]</code> <code>[uh_my_requests]</code> <code>[uh_supporter]</code> <code>[uh_register role="supporter"]</code> <code>[uh_stats]</code> <code>[uh_invite]</code></p></div></div>';
+	}
+
+	/* =====================================================================
+	 * Network: who invited whom
+	 * ===================================================================== */
+
+	public function page_network() {
+		$tab  = sanitize_key( $_GET['tab'] ?? 'tree' );
+		$base = admin_url( 'admin.php?page=ukraine-health-network' );
+		echo '<div class="wrap uh-admin"><h1>' . esc_html__( 'Network – who invited whom', 'ukraine-health' ) . '</h1>';
+		$this->msg();
+		echo '<p class="description">' . esc_html__( 'Everyone joins through an invite from a member. A member is connected when their chain of inviters reaches an administrator or coordinator through accounts that are not suspended. Only connected Supporters are notified about groups and can see Heroes’ details. Suspending someone also freezes everyone below them until you re-attach those people to another member.', 'ukraine-health' ) . '</p>';
+		echo '<nav class="nav-tab-wrapper">';
+		foreach ( array( 'tree' => __( 'Tree', 'ukraine-health' ), 'review' => __( 'Needs review', 'ukraine-health' ), 'invites' => __( 'Invites', 'ukraine-health' ) ) as $k => $l ) {
+			echo '<a class="nav-tab' . ( $tab === $k ? ' nav-tab-active' : '' ) . '" href="' . esc_url( add_query_arg( 'tab', $k, $base ) ) . '">' . esc_html( $l ) . '</a>';
+		}
+		echo '</nav>';
+
+		$users = get_users( array( 'orderby' => 'registered', 'order' => 'ASC', 'number' => 2000 ) );
+		$kids  = array();
+		foreach ( $users as $u ) {
+			$kids[ UH_Network::inviter( $u->ID ) ][] = $u;
+		}
+
+		if ( 'invites' === $tab ) {
+			$this->network_invites();
+		} elseif ( 'review' === $tab ) {
+			$list = array_filter(
+				$users,
+				function ( $u ) {
+					return ! UH_Network::is_connected( $u->ID );
+				}
+			);
+			if ( ! $list ) {
+				echo '<p>' . esc_html__( 'Everyone is connected.', 'ukraine-health' ) . '</p>';
+			} else {
+				echo '<table class="widefat striped"><thead><tr><th>' . esc_html__( 'Member', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Why', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Actions', 'ukraine-health' ) . '</th></tr></thead><tbody>';
+				foreach ( $list as $u ) {
+					$inv = UH_Network::inviter( $u->ID );
+					if ( UH_Network::is_suspended( $u->ID ) ) {
+						$why = __( 'Suspended', 'ukraine-health' );
+					} elseif ( ! $inv ) {
+						$why = __( 'Nobody invited them (e.g. signed up through the WordPress form)', 'ukraine-health' );
+					} else {
+						$by  = get_userdata( $inv );
+						$why = sprintf( __( 'Their inviter chain is broken (%s is suspended, deleted or not connected)', 'ukraine-health' ), $by ? $by->display_name : '#' . $inv );
+					}
+					echo '<tr><td>' . $this->member_label( $u ) . '</td><td>' . esc_html( $why ) . '</td><td>' . $this->member_actions( $u, $users ) . '</td></tr>'; // phpcs:ignore
+				}
+				echo '</tbody></table>';
+			}
+		} else {
+			$roots = array_filter(
+				$users,
+				function ( $u ) {
+					return UH_Network::is_root( $u->ID ) && ! UH_Network::inviter( $u->ID );
+				}
+			);
+			echo '<div class="uh-tree">';
+			foreach ( $roots as $r ) {
+				$this->tree_node( $r, $kids, $users, 0, array() );
+			}
+			echo '</div>';
+		}
+		echo '</div>';
+	}
+
+	private function tree_node( $u, $kids, $users, $depth, $seen ) {
+		if ( isset( $seen[ $u->ID ] ) || $depth > 30 ) {
+			return;
+		}
+		$seen[ $u->ID ] = true;
+		echo '<details class="uh-node" ' . ( $depth < 2 ? 'open' : '' ) . '><summary>' . $this->member_label( $u ) . ' <span class="uh-node-actions">' . $this->member_actions( $u, $users ) . '</span></summary>'; // phpcs:ignore
+		foreach ( $kids[ $u->ID ] ?? array() as $k ) {
+			$this->tree_node( $k, $kids, $users, $depth + 1, $seen );
+		}
+		echo '</details>';
+	}
+
+	private function member_label( $u ) {
+		$roles = array();
+		if ( UH_Network::is_root( $u->ID ) ) {
+			$roles[] = __( 'Coordinator', 'ukraine-health' );
+		}
+		if ( in_array( UH_Install::ROLE_SUPPORTER, (array) $u->roles, true ) ) {
+			$roles[] = __( 'Supporter', 'ukraine-health' );
+		}
+		if ( in_array( UH_Install::ROLE_HERO, (array) $u->roles, true ) ) {
+			$roles[] = __( 'Hero', 'ukraine-health' );
+		}
+		$state = UH_Network::is_suspended( $u->ID ) ? '<span class="uh-badge uh-cancelled">' . esc_html__( 'suspended', 'ukraine-health' ) . '</span>' : ( UH_Network::is_connected( $u->ID ) ? '' : '<span class="uh-badge uh-ready">' . esc_html__( 'not connected', 'ukraine-health' ) . '</span>' );
+		$inv   = (int) get_user_meta( $u->ID, UH_Network::META_INVITE, true );
+		$note  = $inv && ( $i = UH_Network::invite( $inv ) ) && $i->note ? ' · ' . esc_html( sprintf( __( 'invite note: “%s”', 'ukraine-health' ), $i->note ) ) : '';
+		return '<strong><a href="' . esc_url( get_edit_user_link( $u->ID ) ) . '">' . esc_html( $u->display_name ) . '</a></strong> <small>' . esc_html( $u->user_email . ' · ' . implode( ', ', $roles ) . ' · ' . mysql2date( get_option( 'date_format' ), $u->user_registered ) ) . $note . '</small> ' . $state;
+	}
+
+	private function member_actions( $u, $users ) {
+		if ( (int) $u->ID === get_current_user_id() || user_can( $u->ID, 'manage_options' ) ) {
+			return '';
+		}
+		$out = '';
+		if ( UH_Network::is_suspended( $u->ID ) ) {
+			$out .= '<form method="post" class="uh-inline-form">' . $this->field( 'net_unsuspend' ) . '<input type="hidden" name="user_id" value="' . (int) $u->ID . '"><button class="button button-small">' . esc_html__( 'Unsuspend', 'ukraine-health' ) . '</button></form>';
+		} else {
+			$out .= '<form method="post" class="uh-inline-form" onsubmit="return confirm(\'' . esc_js( __( 'Suspend this member? They are logged out and cannot log in, help or invite.', 'ukraine-health' ) ) . '\')">' . $this->field( 'net_suspend' ) . '<input type="hidden" name="user_id" value="' . (int) $u->ID . '"><button class="button button-small">' . esc_html__( 'Suspend', 'ukraine-health' ) . '</button></form>';
+			if ( UH_Network::invitees( $u->ID ) ) {
+				$out .= '<form method="post" class="uh-inline-form" onsubmit="return confirm(\'' . esc_js( __( 'Suspend this member AND everyone they invited, directly or indirectly?', 'ukraine-health' ) ) . '\')">' . $this->field( 'net_suspend_branch' ) . '<input type="hidden" name="user_id" value="' . (int) $u->ID . '"><button class="button button-small button-link-delete">' . esc_html__( 'Suspend with branch', 'ukraine-health' ) . '</button></form>';
+			}
+		}
+		if ( ! in_array( UH_Install::ROLE_SUPPORTER, (array) $u->roles, true ) ) {
+			$out .= '<form method="post" class="uh-inline-form">' . $this->field( 'net_allow_supporter' ) . '<input type="hidden" name="user_id" value="' . (int) $u->ID . '"><button class="button button-small">' . esc_html__( 'Make Supporter', 'ukraine-health' ) . '</button></form>';
+		}
+		$out .= '<form method="post" class="uh-inline-form">' . $this->field( 'net_reattach' ) . '<input type="hidden" name="user_id" value="' . (int) $u->ID . '"><select name="inviter_id" required><option value="">' . esc_html__( 'Re-attach under…', 'ukraine-health' ) . '</option>';
+		foreach ( $users as $o ) {
+			if ( $o->ID !== $u->ID && UH_Network::is_connected( $o->ID ) ) {
+				$out .= '<option value="' . (int) $o->ID . '" ' . selected( UH_Network::inviter( $u->ID ), $o->ID, false ) . '>' . esc_html( $o->display_name ) . '</option>';
+			}
+		}
+		$out .= '</select> <button class="button button-small">' . esc_html__( 'Save', 'ukraine-health' ) . '</button></form>';
+		return $out;
+	}
+
+	private function network_invites() {
+		$labels = UH_Network::roles();
+		$new    = absint( $_GET['new'] ?? 0 );
+		if ( $new && ( $inv = UH_Network::invite( $new ) ) ) {
+			echo '<div class="notice notice-success inline"><p><strong>' . esc_html__( 'Invite link:', 'ukraine-health' ) . '</strong> <input type="text" class="large-text code" readonly onclick="this.select()" value="' . esc_attr( UH_Network::invite_url( $inv ) ) . '"></p></div>';
+		}
+		echo '<div class="uh-panel"><h2>' . esc_html__( 'Create an invite', 'ukraine-health' ) . '</h2><form method="post">' . $this->field( 'net_invite' ); // phpcs:ignore
+		echo '<p><label>' . esc_html__( 'For', 'ukraine-health' ) . ' <select name="role">';
+		foreach ( $labels as $k => $l ) {
+			echo '<option value="' . esc_attr( $k ) . '">' . esc_html( $l ) . '</option>';
+		}
+		echo '</select></label> <label>' . esc_html__( 'Note (who is it for)', 'ukraine-health' ) . ' <input type="text" name="note" required maxlength="128"></label> <label>' . esc_html__( 'Uses', 'ukraine-health' ) . ' <input type="number" name="max_uses" min="1" max="' . (int) UH_Network::MANAGER_MAX_USES . '" value="1" style="width:5em"></label> <label>' . esc_html__( 'Valid days', 'ukraine-health' ) . ' <input type="number" name="days" min="1" max="' . (int) UH_Network::MANAGER_MAX_DAYS . '" value="14" style="width:5em"></label></p>';
+		echo '<p class="description">' . esc_html__( 'Tip: a multi-use Hero invite can be given to hospital staff for one ward. Each person who uses it is recorded as invited by you.', 'ukraine-health' ) . '</p>';
+		submit_button( __( 'Create invite', 'ukraine-health' ), 'primary', 'submit', false );
+		echo '</form></div>';
+
+		$now = strtotime( current_time( 'mysql' ) );
+		echo '<table class="widefat striped"><thead><tr><th>#</th><th>' . esc_html__( 'Invited by', 'ukraine-health' ) . '</th><th>' . esc_html__( 'For', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Note', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Used', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Valid until', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Status', 'ukraine-health' ) . '</th><th></th></tr></thead><tbody>';
+		$rows = UH_Network::all_invites();
+		if ( ! $rows ) {
+			echo '<tr><td colspan="8">' . esc_html__( 'No invites yet.', 'ukraine-health' ) . '</td></tr>';
+		}
+		foreach ( $rows as $i ) {
+			$by   = get_userdata( (int) $i->inviter_id );
+			$open = ! $i->revoked && $i->uses < $i->max_uses && strtotime( $i->expires_at ) > $now;
+			echo '<tr><td>' . (int) $i->id . '</td><td>' . esc_html( $by ? $by->display_name : '#' . (int) $i->inviter_id ) . '</td><td>' . esc_html( $labels[ $i->role ] ?? $i->role ) . '</td><td>' . esc_html( $i->note ) . '</td><td>' . (int) $i->uses . '/' . (int) $i->max_uses . '</td><td>' . esc_html( $i->expires_at ) . '</td><td>' . esc_html( $open ? __( 'open', 'ukraine-health' ) : ( $i->revoked ? __( 'cancelled', 'ukraine-health' ) : ( $i->uses >= $i->max_uses ? __( 'used', 'ukraine-health' ) : __( 'expired', 'ukraine-health' ) ) ) ) . '</td><td>';
+			if ( $open ) {
+				echo '<form method="post" class="uh-inline-form">' . $this->field( 'net_revoke' ) . '<input type="hidden" name="invite_id" value="' . (int) $i->id . '"><button class="button-link-delete">' . esc_html__( 'Cancel', 'ukraine-health' ) . '</button></form>'; // phpcs:ignore
+			}
+			echo '</td></tr>';
+		}
+		echo '</tbody></table>';
 	}
 }

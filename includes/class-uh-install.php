@@ -51,6 +51,7 @@ class UH_Install {
 			'meta_token'       => '',
 			'meta_phone_id'    => '',
 			'rate_limit'       => 5,
+			'invite_guests'    => 1,
 			'privacy_notice'   => __( 'Your phone number is shared only with the coordinator and the Supporter who accepts your group.', 'ukraine-health' ),
 		);
 	}
@@ -129,11 +130,32 @@ class UH_Install {
 			notes TEXT NULL,
 			status VARCHAR(20) NOT NULL DEFAULT 'waiting',
 			token CHAR(32) NOT NULL,
+			invited_by BIGINT UNSIGNED NULL,
+			invite_id BIGINT UNSIGNED NULL,
 			created_at DATETIME NOT NULL,
 			PRIMARY KEY  (id),
 			KEY group_id (group_id),
 			KEY user_id (user_id),
-			KEY token (token)
+			KEY token (token),
+			KEY invited_by (invited_by)
+		) $c;"
+		);
+
+		dbDelta(
+			"CREATE TABLE {$p}invites (
+			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+			code VARCHAR(32) NOT NULL,
+			inviter_id BIGINT UNSIGNED NOT NULL,
+			role VARCHAR(16) NOT NULL DEFAULT 'hero',
+			note VARCHAR(128) NOT NULL DEFAULT '',
+			max_uses INT UNSIGNED NOT NULL DEFAULT 1,
+			uses INT UNSIGNED NOT NULL DEFAULT 0,
+			revoked TINYINT(1) NOT NULL DEFAULT 0,
+			expires_at DATETIME NOT NULL,
+			created_at DATETIME NOT NULL,
+			PRIMARY KEY  (id),
+			UNIQUE KEY code (code),
+			KEY inviter_id (inviter_id)
 		) $c;"
 		);
 

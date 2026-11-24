@@ -59,6 +59,8 @@ class UH_Matching {
 				'notes'      => $data['notes'] ?? '',
 				'status'     => 'waiting',
 				'token'      => $token,
+				'invited_by' => ! empty( $data['invited_by'] ) ? (int) $data['invited_by'] : null,
+				'invite_id'  => ! empty( $data['invite_id'] ) ? (int) $data['invite_id'] : null,
 				'created_at' => current_time( 'mysql' ),
 			)
 		);

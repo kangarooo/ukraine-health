@@ -82,3 +82,5 @@
 	.uh-tiles { grid-template-columns: 1fr 1fr; }
 	.uh-btn-primary { width: 100%; }
 }
+.uh-copy { width: 100%; margin: .6em 0 .3em; padding: .6em .75em; font: inherit; font-family: ui-monospace, monospace; font-size: .9em; border: 1px solid var(--uh-line); border-radius: 8px; background: var(--uh-bg); }
+.uh-invite-only { border-left: 4px solid var(--uh-blue); background: #eef4fc; }
