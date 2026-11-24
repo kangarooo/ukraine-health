@@ -29,13 +29,7 @@ class UH_Admin {
 				'uh-admin-maps',
 				'UHMaps',
 				array(
-					'locale'    => substr( get_user_locale(), 0, 2 ),
-					'searching' => __( 'Searching OpenStreetMap…', 'ukraine-health' ),
-					'noMatch'   => __( 'No place found. Try another spelling, add the city, or type the details yourself.', 'ukraine-health' ),
-					'failed'    => __( 'OpenStreetMap could not be reached. Please try again in a moment.', 'ukraine-health' ),
-					'pick'      => __( 'Use this', 'ukraine-health' ),
-					'hospital'  => __( 'hospital', 'ukraine-health' ),
-					'picked'    => __( 'Filled in from OpenStreetMap. Check the details before you save.', 'ukraine-health' ),
+					'locale' => substr( get_user_locale(), 0, 2 ),
 				)
 			);
 		}
@@ -111,13 +105,18 @@ class UH_Admin {
 					'visiting_hours' => sanitize_text_field( $p['visiting_hours'] ?? '' ),
 					'notify_contact' => empty( $p['notify_contact'] ) ? 0 : 1,
 					'place_id'       => preg_replace( '#[^a-z0-9:/]#', '', (string) ( $p['place_id'] ?? '' ) ), // e.g. "osm:way/123".
-					'maps_url'       => esc_url_raw( $p['maps_url'] ?? '' ),
-					'lat'            => is_numeric( $p['lat'] ?? '' ) ? max( -90, min( 90, (float) $p['lat'] ) ) : null,
-					'lng'            => is_numeric( $p['lng'] ?? '' ) ? max( -180, min( 180, (float) $p['lng'] ) ) : null,
+					'maps_url'       => self::google_maps_link( $p['maps_url'] ?? '' ),
+					'lat'            => null,
+					'lng'            => null,
 					'active'  => empty( $p['active'] ) ? 0 : 1,
 				);
 				if ( '' === $row['name'] ) {
 					$this->redirect( 'ukraine-health-hospitals', 'error' );
+				}
+				// A full Google Maps link contains the place's coordinates (…@56.93,24.06,… or …!3d56.93!4d24.06…).
+				if ( preg_match( '/!3d(-?\d{1,2}\.\d+)!4d(-?\d{1,3}\.\d+)/', $row['maps_url'], $m ) || preg_match( '/@(-?\d{1,2}\.\d+),(-?\d{1,3}\.\d+)/', $row['maps_url'], $m ) ) {
+					$row['lat'] = max( -90, min( 90, (float) $m[1] ) );
+					$row['lng'] = max( -180, min( 180, (float) $m[2] ) );
 				}
 				$id = absint( $p['id'] ?? 0 );
 				$id ? $wpdb->update( UH_Repo::t( 'hospitals' ), $row, array( 'id' => $id ) ) : $wpdb->insert( UH_Repo::t( 'hospitals' ), $row );
@@ -291,6 +290,14 @@ class UH_Admin {
 				$this->redirect( 'ukraine-health-settings', 'pages' );
 				break;
 		}
+	}
+
+	/** Accept only links to Google Maps (full or short share links); anything else is dropped. */
+	public static function google_maps_link( $raw ) {
+		$url  = esc_url_raw( trim( (string) $raw ) );
+		$host = strtolower( (string) wp_parse_url( $url, PHP_URL_HOST ) );
+		$ok   = preg_match( '/(^|\.)google\.[a-z.]{2,6}$/', $host ) && 0 === strpos( (string) wp_parse_url( $url, PHP_URL_PATH ), '/maps' );
+		return ( $ok || in_array( $host, array( 'maps.app.goo.gl', 'goo.gl' ), true ) ) && 0 === strpos( $url, 'https://' ) ? $url : '';
 	}
 
 	/** Creates the front-end pages once (skips any that already exist). */
@@ -495,13 +502,11 @@ class UH_Admin {
 			echo '<p><a class="button" href="' . esc_url( admin_url( 'admin.php?page=ukraine-health-hospitals' ) ) . '">+ ' . esc_html__( 'Add a new hospital instead', 'ukraine-health' ) . '</a></p>';
 		}
 		echo '<form method="post" id="uh-hospital-form">' . $this->field( 'hospital_save' ) . '<input type="hidden" name="id" value="' . (int) ( $e->id ?? 0 ) . '">'; // phpcs:ignore
-		echo '<div class="uh-finder"><p><label><strong>' . esc_html__( 'Find the hospital on OpenStreetMap', 'ukraine-health' ) . '</strong><br><input type="search" class="regular-text" id="uh-maps-q" placeholder="' . esc_attr__( 'e.g. Stradiņa slimnīca Rīga', 'ukraine-health' ) . '" value="' . esc_attr( $e ? trim( $e->name . ' ' . $e->city ) : '' ) . '" autocomplete="off"></label> <button type="button" class="button" id="uh-maps-search">' . esc_html__( 'Search', 'ukraine-health' ) . '</button></p>';
-		echo '<p class="description">' . esc_html__( 'Pick the right place from the results: its official name, address, city and country are filled in and it is pinned on the map. No account or key needed.', 'ukraine-health' ) . '</p>';
-		echo '<p class="uh-maps-msg" aria-live="polite"></p><ul class="uh-maps-results" id="uh-maps-results"></ul><div class="uh-maps-frame" id="uh-maps-frame"' . ( $e && null !== $e->lat ? ' data-lat="' . esc_attr( $e->lat ) . '" data-lng="' . esc_attr( $e->lng ) . '"' : '' ) . '></div>';
-		echo '<p><a id="uh-maps-open" href="' . esc_url( $e ? UH_Repo::maps_url( $e ) : 'https://www.openstreetmap.org/' ) . '" target="_blank" rel="noopener">' . esc_html__( 'Open in OpenStreetMap', 'ukraine-health' ) . ' ↗</a> <span class="uh-maps-attrib">© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a></span></p></div>';
-		foreach ( array( 'place_id', 'maps_url', 'lat', 'lng' ) as $k ) {
-			echo '<input type="hidden" name="' . esc_attr( $k ) . '" value="' . esc_attr( $e->$k ?? '' ) . '">';
-		}
+		echo '<div class="uh-finder"><p><label><strong>' . esc_html__( 'Find the hospital on Google Maps', 'ukraine-health' ) . '</strong><br><input type="search" class="regular-text" id="uh-maps-q" placeholder="' . esc_attr__( 'e.g. Stradiņa slimnīca Rīga', 'ukraine-health' ) . '" value="' . esc_attr( $e ? trim( $e->name . ' ' . $e->city ) : '' ) . '" autocomplete="off"></label> <button type="button" class="button" id="uh-maps-search">' . esc_html__( 'Search on Google Maps', 'ukraine-health' ) . '</button></p>';
+		echo '<p class="description">' . esc_html__( 'The Google map below shows what Google finds. Copy the exact name and address into the fields. For a precise map link, open the place in Google Maps, press Share → Copy link and paste it into “Google Maps link”.', 'ukraine-health' ) . '</p>';
+		echo '<div class="uh-maps-frame" id="uh-maps-frame"' . ( $e ? ' data-q="' . esc_attr( trim( $e->name . ', ' . $e->address . ', ' . $e->city, ' ,' ) ) . '"' : '' ) . '></div>';
+		echo '<p><a id="uh-maps-open" href="' . esc_url( $e ? UH_Repo::maps_url( $e ) : 'https://www.google.com/maps' ) . '" target="_blank" rel="noopener">' . esc_html__( 'Open in Google Maps', 'ukraine-health' ) . ' ↗</a></p>';
+		echo '<p><label>' . esc_html__( 'Google Maps link (optional)', 'ukraine-health' ) . '<br><input class="regular-text" type="url" name="maps_url" placeholder="https://maps.app.goo.gl/…" value="' . esc_attr( $e->maps_url ?? '' ) . '"></label></p></div>';
 		foreach ( array( 'name' => __( 'Name', 'ukraine-health' ), 'country' => __( 'Country', 'ukraine-health' ), 'city' => __( 'City', 'ukraine-health' ), 'address' => __( 'Address', 'ukraine-health' ), 'visiting_hours' => __( 'Visiting hours (shown to Heroes and Supporters)', 'ukraine-health' ), 'contact' => __( 'Contact person / phone', 'ukraine-health' ), 'contact_email' => __( 'Contact person email', 'ukraine-health' ) ) as $k => $l ) {
 			echo '<p><label>' . esc_html( $l ) . '<br><input class="regular-text" type="text" name="' . esc_attr( $k ) . '" value="' . esc_attr( $e->$k ?? ( 'country' === $k ? 'Latvia' : '' ) ) . '" ' . ( 'name' === $k ? 'required' : '' ) . '></label></p>';
 		}

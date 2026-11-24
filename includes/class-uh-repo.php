@@ -24,21 +24,16 @@ class UH_Repo {
 		return $wpdb->get_results( 'SELECT * FROM ' . self::t( 'hospitals' ) . " $where ORDER BY country, city, name" ); // phpcs:ignore
 	}
 
-	/** OpenStreetMap link for a hospital: a pin at its saved location, else a search for its name and address. */
+	/** Google Maps link for a hospital: the saved Google Maps link, else a Google Maps search for its name and address. */
 	public static function maps_url( $h ) {
 		if ( ! $h ) {
 			return '';
 		}
-		if ( isset( $h->lat, $h->lng ) && '' !== (string) $h->lat && '' !== (string) $h->lng ) {
-			$lat = (float) $h->lat;
-			$lng = (float) $h->lng;
-			return sprintf( 'https://www.openstreetmap.org/?mlat=%1$.6F&mlon=%2$.6F#map=17/%1$.6F/%2$.6F', $lat, $lng );
-		}
-		if ( ! empty( $h->maps_url ) ) {
+		if ( ! empty( $h->maps_url ) && false === strpos( $h->maps_url, 'openstreetmap.org' ) ) {
 			return $h->maps_url;
 		}
 		$q = trim( $h->name . ', ' . $h->address . ', ' . $h->city . ', ' . $h->country, ' ,' );
-		return 'https://www.openstreetmap.org/search?query=' . rawurlencode( $q );
+		return 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $q );
 	}
 
 	public static function hospital( $id ) {

@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Ukraine Health – Hero Support 1.3.0\n"
+"Project-Id-Version: Ukraine Health – Hero Support 1.3.1\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -871,12 +871,6 @@ msgstr "vēl vajag, lai sāktu"
 msgid "New Supporter to approve"
 msgstr "Jauns Atbalstītājs apstiprināšanai"
 
-#. translators: 1: nickname, 2: inviter nickname, 3: link
-#: includes/class-uh-frontend.php:384
-#, php-format
-msgid "%1$s (invited by %2$s) wants to help as a Supporter and is waiting for your approval:\n%3$s"
-msgstr "%1$s (uzaicināja %2$s) vēlas palīdzēt kā Atbalstītājs un gaida jūsu apstiprinājumu:\n%3$s"
-
 #: includes/class-uh-frontend.php:423
 msgid "Thank you! Your request was received."
 msgid_plural "Thank you! Your %d requests were received."
@@ -1487,10 +1481,6 @@ msgstr "Ieplānotās vizītes"
 msgid "Language"
 msgstr "Valoda"
 
-#: includes/class-uh-install.php:66
-msgid "I will treat every Hero with respect and dignity.\nI will keep everything I learn about Heroes private and never share names, photos, locations or health details.\nI will not take photos or videos of Heroes or the hospital without written permission.\nI will follow the hospital's rules and staff instructions.\nI will contact Heroes only about the agreed visit and only through the ways they chose.\nI will not accept money or gifts.\nI understand a coordinator can suspend my account at any time."
-msgstr "Es izturēšos pret katru Varoni ar cieņu.\nEs paturēšu noslēpumā visu, ko uzzinu par Varoņiem, un nekad neizplatīšu vārdus, fotoattēlus, atrašanās vietas vai veselības datus.\nEs nefotografēšu un nefilmēšu Varoņus vai slimnīcu bez rakstiskas atļaujas.\nEs ievērošu slimnīcas noteikumus un personāla norādījumus.\nEs sazināšos ar Varoņiem tikai par norunāto vizīti un tikai viņu izvēlētajos veidos.\nEs nepieņemšu naudu vai dāvanas.\nEs saprotu, ka koordinators jebkurā laikā var bloķēt manu kontu."
-
 #: includes/class-uh-install.php:70
 msgid "I agree that my nickname, ward and phone number are shared with the coordinator, and with the Supporter of my visit shortly before it. My contact details are deleted automatically after the visit."
 msgstr "Es piekrītu, ka mans segvārds, palāta un tālrunis tiek nodoti koordinatoram un neilgi pirms vizītes – manas vizītes Atbalstītājam. Mana kontaktinformācija pēc vizītes tiek automātiski dzēsta."
@@ -1665,12 +1655,6 @@ msgstr "Jums ir pārāk daudz neizmantotu ielūgumu. Atceliet dažus vai pagaidi
 msgid "This account is suspended. Please contact the coordinator."
 msgstr "Šis konts ir bloķēts. Lūdzu, sazinieties ar koordinatoru."
 
-#. translators: 1: service, 2: hospital, 3: members, 4: minimum, 5: link
-#: includes/class-uh-notify.php:31
-#, php-format
-msgid "New request: %1$s at %2$s (%3$d/%4$d).\nDetails (login needed): %5$s"
-msgstr "Jauns pieprasījums: %1$s, %2$s (%3$d/%4$d).\nSīkāk (jāpiesakās): %5$s"
-
 #. translators: 1: service — hospital, 2: number of heroes, 3: link
 #: includes/class-uh-notify.php:56
 #, php-format
@@ -1692,21 +1676,9 @@ msgstr "Jūsu grupa “%s” ir pilna. Tagad meklējam Atbalstītāju."
 msgid "Good news! %1$s is scheduled for %2$s at %3$s. Supporter: %4$s."
 msgstr "Labas ziņas! %1$s ieplānots %2$s, %3$s. Atbalstītājs: %4$s."
 
-#. translators: 1: service — hospital, 2: date, 3: address, 4: number of heroes, 5: link
-#: includes/class-uh-notify.php:100
-#, php-format
-msgid "You accepted: %1$s on %2$s\n%3$s\n%4$d Heroes. Their wards and phone numbers appear in your Supporter area shortly before the visit: %5$s"
-msgstr "Jūs pieņēmāt: %1$s, %2$s\n%3$s\nVaroņi: %4$d. Viņu palātas un tālruņi parādīsies jūsu Atbalstītāja sadaļā neilgi pirms vizītes: %5$s"
-
 #: includes/class-uh-notify.php:110
 msgid "Group confirmed"
 msgstr "Grupa apstiprināta"
-
-#. translators: 1: service, 2: date, 3: number of patients, 4: wards, 5: supporter nickname
-#: includes/class-uh-notify.php:123
-#, php-format
-msgid "A volunteer visit is planned at your hospital.\nService: %1$s\nWhen: %2$s\nPatients: %3$d\nWards: %4$s\nVolunteer: %5$s (will show ID at the entrance)\n\nPlease reply to this email if the visit is not possible."
-msgstr "Jūsu slimnīcā ieplānota brīvprātīgā vizīte.\nPakalpojums: %1$s\nKad: %2$s\nPacienti: %3$d\nPalātas: %4$s\nBrīvprātīgais: %5$s (pie ieejas uzrādīs personu apliecinošu dokumentu)\n\nLūdzu, atbildiet uz šo e-pastu, ja vizīte nav iespējama."
 
 #: includes/class-uh-notify.php:132
 #, php-format
@@ -1792,12 +1764,6 @@ msgstr "Ziņas tiek sūtītas pa e-pastu, bet Telegram vai WhatsApp – tikai ta
 msgid "Problem reported – Supporter on hold"
 msgstr "Ziņots par problēmu – Atbalstītājs apturēts"
 
-#. translators: 1: report id, 2: supporter nickname, 3: link
-#: includes/class-uh-reports.php:74
-#, php-format
-msgid "A Hero reported a problem with a visit (report #%1$d). Supporter %2$s is on hold and gets no new groups until you review it:\n%3$s"
-msgstr "Varonis ziņoja par problēmu ar vizīti (sūdzība Nr. %1$d). Atbalstītājs %2$s ir apturēts un nesaņems jaunas grupas, līdz jūs to izskatīsiet:\n%3$s"
-
 #: includes/class-uh-telegram.php:68
 msgid "Enter the bot token first."
 msgstr "Vispirms ievadiet bota žetonu."
@@ -1835,12 +1801,6 @@ msgstr "Sveiki! Atveriet savu Ukraine Health lapu un pieskarieties “Saņemt ja
 msgid "Your login code"
 msgstr "Jūsu pieteikšanās kods"
 
-#. translators: 1: code, 2: minutes
-#: includes/class-uh-twofa.php:97
-#, php-format
-msgid "Your login code is %1$s\nIt works for %2$d minutes.\n\nIf you did not try to log in, change your password now."
-msgstr "Jūsu pieteikšanās kods ir %1$s\nTas derīgs %2$d minūtes.\n\nJa jūs nemēģinājāt pieteikties, nekavējoties nomainiet paroli."
-
 #: includes/class-uh-twofa.php:106
 msgid "Test: login code email"
 msgstr "Tests: e-pasts ar pieteikšanās kodu"
@@ -1874,30 +1834,6 @@ msgstr "Uzticēties šai ierīcei %d dienas"
 msgid "Log in"
 msgstr "Pieteikties"
 
-#: includes/class-uh-admin.php:33
-msgid "Searching OpenStreetMap…"
-msgstr "Meklē OpenStreetMap…"
-
-#: includes/class-uh-admin.php:34
-msgid "No place found. Try another spelling, add the city, or type the details yourself."
-msgstr "Vieta nav atrasta. Mēģiniet citu rakstību, pievienojiet pilsētu vai ievadiet datus paši."
-
-#: includes/class-uh-admin.php:35
-msgid "OpenStreetMap could not be reached. Please try again in a moment."
-msgstr "Neizdevās sazināties ar OpenStreetMap. Lūdzu, mēģiniet vēlreiz pēc brīža."
-
-#: includes/class-uh-admin.php:36
-msgid "Use this"
-msgstr "Izvēlēties"
-
-#: includes/class-uh-admin.php:37
-msgid "hospital"
-msgstr "slimnīca"
-
-#: includes/class-uh-admin.php:38
-msgid "Filled in from OpenStreetMap. Check the details before you save."
-msgstr "Aizpildīts no OpenStreetMap. Pārbaudiet datus pirms saglabāšanas."
-
 #: includes/class-uh-admin.php:491
 #: includes/class-uh-frontend.php:500
 msgid "Map"
@@ -1908,21 +1844,25 @@ msgid "Add a new hospital instead"
 msgstr "Tā vietā pievienot jaunu slimnīcu"
 
 #: includes/class-uh-admin.php:498
-msgid "Find the hospital on OpenStreetMap"
-msgstr "Atrast slimnīcu OpenStreetMap"
-
-#: includes/class-uh-admin.php:498
 msgid "e.g. Stradiņa slimnīca Rīga"
 msgstr "piem., Stradiņa slimnīca Rīga"
 
-#: includes/class-uh-admin.php:498
-msgid "Search"
-msgstr "Meklēt"
+#: includes/class-uh-admin.php:505
+msgid "Find the hospital on Google Maps"
+msgstr "Atrast slimnīcu Google Maps"
 
-#: includes/class-uh-admin.php:499
-msgid "Pick the right place from the results: its official name, address, city and country are filled in and it is pinned on the map. No account or key needed."
-msgstr "Izvēlieties pareizo vietu no rezultātiem: tās oficiālais nosaukums, adrese, pilsēta un valsts tiks aizpildīti, un vieta tiks atzīmēta kartē. Konts vai atslēga nav vajadzīga."
+#: includes/class-uh-admin.php:505
+msgid "Search on Google Maps"
+msgstr "Meklēt Google Maps"
 
-#: includes/class-uh-admin.php:501
-msgid "Open in OpenStreetMap"
-msgstr "Atvērt OpenStreetMap"
+#: includes/class-uh-admin.php:506
+msgid "The Google map below shows what Google finds. Copy the exact name and address into the fields. For a precise map link, open the place in Google Maps, press Share → Copy link and paste it into “Google Maps link”."
+msgstr "Google karte zemāk rāda, ko atrod Google. Nokopējiet precīzo nosaukumu un adresi laukos. Precīzai saitei atveriet vietu Google Maps, nospiediet “Kopīgot” → “Kopēt saiti” un ielīmējiet to laukā “Google Maps saite”."
+
+#: includes/class-uh-admin.php:508
+msgid "Open in Google Maps"
+msgstr "Atvērt Google Maps"
+
+#: includes/class-uh-admin.php:509
+msgid "Google Maps link (optional)"
+msgstr "Google Maps saite (nav obligāta)"

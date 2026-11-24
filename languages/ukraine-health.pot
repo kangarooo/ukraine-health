@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-24T05:07:14+00:00\n"
+"POT-Creation-Date: 2026-11-24T08:40:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: ukraine-health\n"
@@ -34,256 +34,232 @@ msgstr ""
 msgid "kangarooo"
 msgstr ""
 
-#: includes/class-uh-admin.php:33
-msgid "Searching OpenStreetMap…"
-msgstr ""
-
-#: includes/class-uh-admin.php:34
-msgid "No place found. Try another spelling, add the city, or type the details yourself."
-msgstr ""
-
-#: includes/class-uh-admin.php:35
-msgid "OpenStreetMap could not be reached. Please try again in a moment."
-msgstr ""
-
-#: includes/class-uh-admin.php:36
-msgid "Use this"
-msgstr ""
-
-#: includes/class-uh-admin.php:37
-msgid "hospital"
-msgstr ""
-
-#: includes/class-uh-admin.php:38
-msgid "Filled in from OpenStreetMap. Check the details before you save."
-msgstr ""
-
-#: includes/class-uh-admin.php:47
+#: includes/class-uh-admin.php:41
 msgid "Dashboard"
 msgstr ""
 
-#: includes/class-uh-admin.php:48
-#: includes/class-uh-admin.php:425
+#: includes/class-uh-admin.php:42
+#: includes/class-uh-admin.php:432
 msgid "Groups"
 msgstr ""
 
-#: includes/class-uh-admin.php:49
+#: includes/class-uh-admin.php:43
 msgid "Network"
 msgstr ""
 
-#: includes/class-uh-admin.php:50
-#: includes/class-uh-admin.php:487
+#: includes/class-uh-admin.php:44
+#: includes/class-uh-admin.php:494
 msgid "Hospitals"
 msgstr ""
 
-#: includes/class-uh-admin.php:51
-#: includes/class-uh-admin.php:518
+#: includes/class-uh-admin.php:45
+#: includes/class-uh-admin.php:523
 msgid "Services"
 msgstr ""
 
-#: includes/class-uh-admin.php:52
+#: includes/class-uh-admin.php:46
 msgid "Settings"
 msgstr ""
 
-#: includes/class-uh-admin.php:68
+#: includes/class-uh-admin.php:62
 msgid "Saved."
 msgstr ""
 
-#: includes/class-uh-admin.php:69
+#: includes/class-uh-admin.php:63
 msgid "Deleted."
 msgstr ""
 
-#: includes/class-uh-admin.php:70
+#: includes/class-uh-admin.php:64
 msgid "Pages created. You can find them under Pages."
 msgstr ""
 
-#: includes/class-uh-admin.php:71
+#: includes/class-uh-admin.php:65
 msgid "Cannot delete: it is used by groups. Deactivate it instead."
 msgstr ""
 
-#: includes/class-uh-admin.php:72
+#: includes/class-uh-admin.php:66
 msgid "Could not save."
 msgstr ""
 
-#: includes/class-uh-admin.php:73
+#: includes/class-uh-admin.php:67
 msgid "Not changed: that would put the member under someone they invited."
 msgstr ""
 
-#: includes/class-uh-admin.php:74
+#: includes/class-uh-admin.php:68
 msgid "Telegram bot connected."
 msgstr ""
 
-#: includes/class-uh-admin.php:75
+#: includes/class-uh-admin.php:69
 msgid "Could not connect the Telegram bot. Check the token and that the site is reachable over HTTPS."
 msgstr ""
 
-#: includes/class-uh-admin.php:76
+#: includes/class-uh-admin.php:70
 msgid "Test email sent. Check your inbox (and spam folder) before you switch two-step login on."
 msgstr ""
 
-#: includes/class-uh-admin.php:96
+#: includes/class-uh-admin.php:90
 msgid "Not allowed."
 msgstr ""
 
-#: includes/class-uh-admin.php:300
+#: includes/class-uh-admin.php:307
 msgid "Request help"
 msgstr ""
 
-#: includes/class-uh-admin.php:301
+#: includes/class-uh-admin.php:308
 #: includes/class-uh-frontend.php:895
 msgid "My requests"
 msgstr ""
 
-#: includes/class-uh-admin.php:302
-#: includes/class-uh-admin.php:383
+#: includes/class-uh-admin.php:309
+#: includes/class-uh-admin.php:390
 #: includes/class-uh-frontend.php:1071
 msgid "Supporters"
 msgstr ""
 
-#: includes/class-uh-admin.php:303
+#: includes/class-uh-admin.php:310
 msgid "Join"
 msgstr ""
 
-#: includes/class-uh-admin.php:372
+#: includes/class-uh-admin.php:379
 #, php-format
 msgid "%d open problem report"
 msgid_plural "%d open problem reports"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-uh-admin.php:372
+#: includes/class-uh-admin.php:379
 msgid "Review now"
 msgstr ""
 
-#: includes/class-uh-admin.php:375
+#: includes/class-uh-admin.php:382
 #, php-format
 msgid "%d Supporter is waiting for approval"
 msgid_plural "%d Supporters are waiting for approval"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-uh-admin.php:375
+#: includes/class-uh-admin.php:382
 msgid "Review"
 msgstr ""
 
-#: includes/class-uh-admin.php:379
+#: includes/class-uh-admin.php:386
 msgid "Heroes waiting"
 msgstr ""
 
-#: includes/class-uh-admin.php:380
+#: includes/class-uh-admin.php:387
 msgid "Groups ready"
 msgstr ""
 
-#: includes/class-uh-admin.php:381
+#: includes/class-uh-admin.php:388
 #: includes/class-uh-install.php:351
 msgid "Scheduled"
 msgstr ""
 
-#: includes/class-uh-admin.php:382
+#: includes/class-uh-admin.php:389
 #: includes/class-uh-frontend.php:1068
 msgid "Heroes helped"
 msgstr ""
 
-#: includes/class-uh-admin.php:390
+#: includes/class-uh-admin.php:397
 msgid "Ready groups without a Supporter"
 msgstr ""
 
-#: includes/class-uh-admin.php:392
+#: includes/class-uh-admin.php:399
 msgid "None – well done!"
 msgstr ""
 
-#: includes/class-uh-admin.php:394
-#: includes/class-uh-admin.php:432
-#: includes/class-uh-admin.php:520
+#: includes/class-uh-admin.php:401
+#: includes/class-uh-admin.php:439
+#: includes/class-uh-admin.php:525
 #: includes/class-uh-privacy.php:173
 msgid "Service"
 msgstr ""
 
-#: includes/class-uh-admin.php:394
-#: includes/class-uh-admin.php:432
+#: includes/class-uh-admin.php:401
+#: includes/class-uh-admin.php:439
 #: includes/class-uh-frontend.php:570
 #: includes/class-uh-privacy.php:174
 msgid "Hospital"
 msgstr ""
 
-#: includes/class-uh-admin.php:394
-#: includes/class-uh-admin.php:432
+#: includes/class-uh-admin.php:401
+#: includes/class-uh-admin.php:439
 msgid "Heroes"
 msgstr ""
 
-#: includes/class-uh-admin.php:394
+#: includes/class-uh-admin.php:401
 msgid "Matching Supporters"
 msgstr ""
 
-#: includes/class-uh-admin.php:397
+#: includes/class-uh-admin.php:404
 msgid "Open"
 msgstr ""
 
-#: includes/class-uh-admin.php:404
+#: includes/class-uh-admin.php:411
 msgid "Next step: create the public pages under Ukraine Health → Settings."
 msgstr ""
 
-#: includes/class-uh-admin.php:407
+#: includes/class-uh-admin.php:414
 msgid "Recent activity"
 msgstr ""
 
-#: includes/class-uh-admin.php:410
+#: includes/class-uh-admin.php:417
 msgid "guest"
 msgstr ""
 
-#: includes/class-uh-admin.php:425
+#: includes/class-uh-admin.php:432
 msgid "Export CSV"
 msgstr ""
 
-#: includes/class-uh-admin.php:427
+#: includes/class-uh-admin.php:434
 msgid "All"
 msgstr ""
 
-#: includes/class-uh-admin.php:432
-#: includes/class-uh-admin.php:770
-#: includes/class-uh-admin.php:794
+#: includes/class-uh-admin.php:439
+#: includes/class-uh-admin.php:775
+#: includes/class-uh-admin.php:799
 #: includes/class-uh-privacy.php:180
 msgid "Status"
 msgstr ""
 
-#: includes/class-uh-admin.php:432
-#: includes/class-uh-admin.php:642
-#: includes/class-uh-admin.php:708
-#: includes/class-uh-admin.php:794
+#: includes/class-uh-admin.php:439
+#: includes/class-uh-admin.php:647
+#: includes/class-uh-admin.php:713
+#: includes/class-uh-admin.php:799
 msgid "Supporter"
 msgstr ""
 
-#: includes/class-uh-admin.php:432
-#: includes/class-uh-admin.php:473
+#: includes/class-uh-admin.php:439
+#: includes/class-uh-admin.php:480
 msgid "Appointment"
 msgstr ""
 
-#: includes/class-uh-admin.php:435
+#: includes/class-uh-admin.php:442
 msgid "No groups yet."
 msgstr ""
 
-#: includes/class-uh-admin.php:449
+#: includes/class-uh-admin.php:456
 msgid "All groups"
 msgstr ""
 
-#: includes/class-uh-admin.php:450
+#: includes/class-uh-admin.php:457
 #, php-format
 msgid "Supporter: %1$s · Appointment: %2$s"
 msgstr ""
 
-#: includes/class-uh-admin.php:452
-#: includes/class-uh-admin.php:489
-#: includes/class-uh-admin.php:505
-#: includes/class-uh-admin.php:525
+#: includes/class-uh-admin.php:459
+#: includes/class-uh-admin.php:496
+#: includes/class-uh-admin.php:510
+#: includes/class-uh-admin.php:530
 msgid "Name"
 msgstr ""
 
-#: includes/class-uh-admin.php:452
+#: includes/class-uh-admin.php:459
 #: includes/class-uh-privacy.php:178
 msgid "Ward"
 msgstr ""
 
-#: includes/class-uh-admin.php:452
+#: includes/class-uh-admin.php:459
 #: includes/class-uh-frontend.php:620
 #: includes/class-uh-frontend.php:815
 #: includes/class-uh-frontend.php:945
@@ -291,603 +267,607 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: includes/class-uh-admin.php:452
-#: includes/class-uh-admin.php:520
+#: includes/class-uh-admin.php:459
+#: includes/class-uh-admin.php:525
 msgid "Sizes"
 msgstr ""
 
-#: includes/class-uh-admin.php:452
+#: includes/class-uh-admin.php:459
 #: includes/class-uh-privacy.php:179
 msgid "Notes"
 msgstr ""
 
-#: includes/class-uh-admin.php:452
+#: includes/class-uh-admin.php:459
 msgid "Joined"
 msgstr ""
 
-#: includes/class-uh-admin.php:454
+#: includes/class-uh-admin.php:461
 msgid "details deleted"
 msgstr ""
 
-#: includes/class-uh-admin.php:456
+#: includes/class-uh-admin.php:463
 msgid "Remove this Hero from the group?"
 msgstr ""
 
-#: includes/class-uh-admin.php:456
+#: includes/class-uh-admin.php:463
 msgid "Remove"
 msgstr ""
 
-#: includes/class-uh-admin.php:462
-#: includes/class-uh-admin.php:510
-#: includes/class-uh-admin.php:538
+#: includes/class-uh-admin.php:469
+#: includes/class-uh-admin.php:515
+#: includes/class-uh-admin.php:543
 msgid "Update"
 msgstr ""
 
-#: includes/class-uh-admin.php:468
+#: includes/class-uh-admin.php:475
 msgid "Assign Supporter"
 msgstr ""
 
-#: includes/class-uh-admin.php:473
-#: includes/class-uh-admin.php:770
+#: includes/class-uh-admin.php:480
+#: includes/class-uh-admin.php:775
 msgid "Note"
 msgstr ""
 
-#: includes/class-uh-admin.php:473
+#: includes/class-uh-admin.php:480
 msgid "★ = offers this service at this hospital."
 msgstr ""
 
-#: includes/class-uh-admin.php:475
+#: includes/class-uh-admin.php:482
 msgid "Or change status"
 msgstr ""
 
-#: includes/class-uh-admin.php:480
-#: includes/class-uh-admin.php:749
+#: includes/class-uh-admin.php:487
+#: includes/class-uh-admin.php:754
 msgid "Save"
 msgstr ""
 
-#: includes/class-uh-admin.php:489
-#: includes/class-uh-admin.php:505
+#: includes/class-uh-admin.php:496
+#: includes/class-uh-admin.php:510
 msgid "City"
 msgstr ""
 
-#: includes/class-uh-admin.php:489
-#: includes/class-uh-admin.php:505
+#: includes/class-uh-admin.php:496
+#: includes/class-uh-admin.php:510
 msgid "Country"
 msgstr ""
 
-#: includes/class-uh-admin.php:489
-#: includes/class-uh-admin.php:509
-#: includes/class-uh-admin.php:520
-#: includes/class-uh-admin.php:537
+#: includes/class-uh-admin.php:496
+#: includes/class-uh-admin.php:514
+#: includes/class-uh-admin.php:525
+#: includes/class-uh-admin.php:542
 msgid "Active"
 msgstr ""
 
-#: includes/class-uh-admin.php:491
+#: includes/class-uh-admin.php:498
 #: includes/class-uh-frontend.php:500
 msgid "Map"
 msgstr ""
 
-#: includes/class-uh-admin.php:491
-#: includes/class-uh-admin.php:522
+#: includes/class-uh-admin.php:498
+#: includes/class-uh-admin.php:527
 msgid "Delete"
 msgstr ""
 
-#: includes/class-uh-admin.php:493
+#: includes/class-uh-admin.php:500
 msgid "Edit hospital"
 msgstr ""
 
-#: includes/class-uh-admin.php:493
+#: includes/class-uh-admin.php:500
 msgid "Add hospital"
 msgstr ""
 
-#: includes/class-uh-admin.php:495
+#: includes/class-uh-admin.php:502
 msgid "Add a new hospital instead"
 msgstr ""
 
-#: includes/class-uh-admin.php:498
-msgid "Find the hospital on OpenStreetMap"
+#: includes/class-uh-admin.php:505
+msgid "Find the hospital on Google Maps"
 msgstr ""
 
-#: includes/class-uh-admin.php:498
+#: includes/class-uh-admin.php:505
 msgid "e.g. Stradiņa slimnīca Rīga"
 msgstr ""
 
-#: includes/class-uh-admin.php:498
-msgid "Search"
-msgstr ""
-
-#: includes/class-uh-admin.php:499
-msgid "Pick the right place from the results: its official name, address, city and country are filled in and it is pinned on the map. No account or key needed."
-msgstr ""
-
-#: includes/class-uh-admin.php:501
-msgid "Open in OpenStreetMap"
-msgstr ""
-
 #: includes/class-uh-admin.php:505
-msgid "Address"
+msgid "Search on Google Maps"
 msgstr ""
 
-#: includes/class-uh-admin.php:505
-msgid "Visiting hours (shown to Heroes and Supporters)"
-msgstr ""
-
-#: includes/class-uh-admin.php:505
-msgid "Contact person / phone"
-msgstr ""
-
-#: includes/class-uh-admin.php:505
-msgid "Contact person email"
+#: includes/class-uh-admin.php:506
+msgid "The Google map below shows what Google finds. Copy the exact name and address into the fields. For a precise map link, open the place in Google Maps, press Share → Copy link and paste it into “Google Maps link”."
 msgstr ""
 
 #: includes/class-uh-admin.php:508
-msgid "Email the contact person when a visit is planned (service, time, number of patients, wards and the Supporter’s nickname – no patient names)"
+msgid "Open in Google Maps"
+msgstr ""
+
+#: includes/class-uh-admin.php:509
+msgid "Google Maps link (optional)"
 msgstr ""
 
 #: includes/class-uh-admin.php:510
-#: includes/class-uh-admin.php:538
+msgid "Address"
+msgstr ""
+
+#: includes/class-uh-admin.php:510
+msgid "Visiting hours (shown to Heroes and Supporters)"
+msgstr ""
+
+#: includes/class-uh-admin.php:510
+msgid "Contact person / phone"
+msgstr ""
+
+#: includes/class-uh-admin.php:510
+msgid "Contact person email"
+msgstr ""
+
+#: includes/class-uh-admin.php:513
+msgid "Email the contact person when a visit is planned (service, time, number of patients, wards and the Supporter’s nickname – no patient names)"
+msgstr ""
+
+#: includes/class-uh-admin.php:515
+#: includes/class-uh-admin.php:543
 msgid "Add"
 msgstr ""
 
-#: includes/class-uh-admin.php:520
-#: includes/class-uh-admin.php:526
+#: includes/class-uh-admin.php:525
+#: includes/class-uh-admin.php:531
 msgid "Category"
 msgstr ""
 
-#: includes/class-uh-admin.php:520
+#: includes/class-uh-admin.php:525
 msgid "Min. group"
 msgstr ""
 
-#: includes/class-uh-admin.php:524
+#: includes/class-uh-admin.php:529
 msgid "Edit service"
 msgstr ""
 
-#: includes/class-uh-admin.php:524
+#: includes/class-uh-admin.php:529
 msgid "Add service"
 msgstr ""
 
-#: includes/class-uh-admin.php:531
+#: includes/class-uh-admin.php:536
 msgid "Minimum Heroes before Supporters are notified"
 msgstr ""
 
-#: includes/class-uh-admin.php:532
+#: includes/class-uh-admin.php:537
 msgid "Minutes per Hero (for calendar length)"
 msgstr ""
 
-#: includes/class-uh-admin.php:533
+#: includes/class-uh-admin.php:538
 msgid "Ask for clothing / shoe sizes"
 msgstr ""
 
-#: includes/class-uh-admin.php:534
+#: includes/class-uh-admin.php:539
 msgid "Group chat link (optional)"
 msgstr ""
 
-#: includes/class-uh-admin.php:535
+#: includes/class-uh-admin.php:540
 msgid "Description"
 msgstr ""
 
-#: includes/class-uh-admin.php:536
+#: includes/class-uh-admin.php:541
 msgid "Sort order"
 msgstr ""
 
-#: includes/class-uh-admin.php:544
+#: includes/class-uh-admin.php:549
 msgid "Ukraine Health settings"
 msgstr ""
 
-#: includes/class-uh-admin.php:548
+#: includes/class-uh-admin.php:553
 msgid "Public pages"
 msgstr ""
 
-#: includes/class-uh-admin.php:559
+#: includes/class-uh-admin.php:564
 msgid "Re-create missing pages"
 msgstr ""
 
-#: includes/class-uh-admin.php:559
+#: includes/class-uh-admin.php:564
 msgid "Create pages"
 msgstr ""
 
-#: includes/class-uh-admin.php:561
+#: includes/class-uh-admin.php:566
 msgid "Sign-up is invite-only: people join through an invite link from a member (see Ukraine Health → Network). Leave WordPress’s “Anyone can register” switched off."
 msgstr ""
 
-#: includes/class-uh-admin.php:563
+#: includes/class-uh-admin.php:568
 #, php-format
 msgid "“Anyone can register” is on in <a href=\"%s\">Settings → General</a>. Accounts made through the WordPress sign-up form are not connected to anyone and get no access until a coordinator reviews them, but it is safer to switch it off."
 msgstr ""
 
-#: includes/class-uh-admin.php:568
+#: includes/class-uh-admin.php:573
 msgid "Requests"
 msgstr ""
 
-#: includes/class-uh-admin.php:569
+#: includes/class-uh-admin.php:574
 msgid "Guests"
 msgstr ""
 
-#: includes/class-uh-admin.php:569
+#: includes/class-uh-admin.php:574
 msgid "Heroes can request help without an account (phone required)"
 msgstr ""
 
-#: includes/class-uh-admin.php:570
+#: includes/class-uh-admin.php:575
 msgid "Invite-only requests"
 msgstr ""
 
-#: includes/class-uh-admin.php:570
+#: includes/class-uh-admin.php:575
 msgid "Heroes without a connected account need an invite code to request help (recommended)"
 msgstr ""
 
-#: includes/class-uh-admin.php:571
+#: includes/class-uh-admin.php:576
 msgid "Rate limit"
 msgstr ""
 
-#: includes/class-uh-admin.php:571
+#: includes/class-uh-admin.php:576
 msgid "guest submissions per hour per device (0 = off)"
 msgstr ""
 
-#: includes/class-uh-admin.php:572
+#: includes/class-uh-admin.php:577
 msgid "Messengers"
 msgstr ""
 
-#: includes/class-uh-admin.php:573
+#: includes/class-uh-admin.php:578
 msgid "Consent text"
 msgstr ""
 
-#: includes/class-uh-admin.php:574
+#: includes/class-uh-admin.php:579
 msgid "Privacy and safety"
 msgstr ""
 
-#: includes/class-uh-admin.php:575
+#: includes/class-uh-admin.php:580
 msgid "Contact details for Supporters"
 msgstr ""
 
-#: includes/class-uh-admin.php:575
+#: includes/class-uh-admin.php:580
 msgid "hours before the visit the Supporter sees the Heroes’ wards and phone numbers (0 = as soon as they accept)"
 msgstr ""
 
-#: includes/class-uh-admin.php:576
+#: includes/class-uh-admin.php:581
 msgid "Delete contact details"
 msgstr ""
 
-#: includes/class-uh-admin.php:576
+#: includes/class-uh-admin.php:581
 msgid "days after a visit is completed or cancelled, or a request withdrawn (0 = never). Only anonymous counts are kept."
 msgstr ""
 
-#: includes/class-uh-admin.php:577
+#: includes/class-uh-admin.php:582
 msgid "Waiting groups"
 msgstr ""
 
-#: includes/class-uh-admin.php:577
+#: includes/class-uh-admin.php:582
 msgid "days a ready group may wait before coordinators are alerted (0 = off)"
 msgstr ""
 
-#: includes/class-uh-admin.php:578
+#: includes/class-uh-admin.php:583
 msgid "Approve Supporters"
 msgstr ""
 
-#: includes/class-uh-admin.php:578
+#: includes/class-uh-admin.php:583
 msgid "A coordinator approves every new Supporter before they see any Hero (Supporters you invite yourself are approved automatically)"
 msgstr ""
 
-#: includes/class-uh-admin.php:579
-#: includes/class-uh-admin.php:642
+#: includes/class-uh-admin.php:584
+#: includes/class-uh-admin.php:647
 msgid "Code of conduct"
 msgstr ""
 
-#: includes/class-uh-admin.php:579
+#: includes/class-uh-admin.php:584
 msgid "One rule per line. Supporters must accept it before they can help."
 msgstr ""
 
-#: includes/class-uh-admin.php:581
+#: includes/class-uh-admin.php:586
 msgid "Two-step login"
 msgstr ""
 
-#: includes/class-uh-admin.php:581
+#: includes/class-uh-admin.php:586
 msgid "Administrators and coordinators enter a code sent by email after their password"
 msgstr ""
 
-#: includes/class-uh-admin.php:581
+#: includes/class-uh-admin.php:586
 msgid "Send yourself a test email first (button below). If login codes do not arrive you would be locked out. Emergency switch: add define( 'UH_DISABLE_2FA', true ); to wp-config.php."
 msgstr ""
 
-#: includes/class-uh-admin.php:581
+#: includes/class-uh-admin.php:586
 msgid "Currently switched off in wp-config.php."
 msgstr ""
 
-#: includes/class-uh-admin.php:582
+#: includes/class-uh-admin.php:587
 msgid "Coordinator notifications"
 msgstr ""
 
-#: includes/class-uh-admin.php:583
+#: includes/class-uh-admin.php:588
 #: includes/class-uh-frontend.php:944
 msgid "Email"
 msgstr ""
 
-#: includes/class-uh-admin.php:583
+#: includes/class-uh-admin.php:588
 msgid "notify on every request"
 msgstr ""
 
-#: includes/class-uh-admin.php:584
+#: includes/class-uh-admin.php:589
 msgid "Bot token"
 msgstr ""
 
-#: includes/class-uh-admin.php:584
+#: includes/class-uh-admin.php:589
 msgid "Coordinator chat / group ID"
 msgstr ""
 
-#: includes/class-uh-admin.php:584
+#: includes/class-uh-admin.php:589
 #, php-format
 msgid "Connected as @%s. Heroes and Supporters can link their chat in one tap."
 msgstr ""
 
-#: includes/class-uh-admin.php:584
+#: includes/class-uh-admin.php:589
 msgid "Create a bot with @BotFather in Telegram, paste its token here, save, then press “Connect Telegram bot” below."
 msgstr ""
 
-#: includes/class-uh-admin.php:586
+#: includes/class-uh-admin.php:591
 msgid "Disabled"
 msgstr ""
 
-#: includes/class-uh-admin.php:594
+#: includes/class-uh-admin.php:599
 msgid "Tools"
 msgstr ""
 
-#: includes/class-uh-admin.php:596
+#: includes/class-uh-admin.php:601
 msgid "Send me a test login-code email"
 msgstr ""
 
-#: includes/class-uh-admin.php:600
+#: includes/class-uh-admin.php:605
 msgid "Connect Telegram bot"
 msgstr ""
 
-#: includes/class-uh-admin.php:603
+#: includes/class-uh-admin.php:608
 #, php-format
 msgid "Personal data requests (copy or delete) are handled in <a href=\"%1$s\">Tools → Export Personal Data</a> and <a href=\"%2$s\">Erase Personal Data</a>. Suggested privacy policy text is in <a href=\"%3$s\">Settings → Privacy</a>."
 msgstr ""
 
-#: includes/class-uh-admin.php:605
+#: includes/class-uh-admin.php:610
 msgid "Shortcodes"
 msgstr ""
 
-#: includes/class-uh-admin.php:615
+#: includes/class-uh-admin.php:620
 msgid "Network – who invited whom"
 msgstr ""
 
-#: includes/class-uh-admin.php:617
+#: includes/class-uh-admin.php:622
 msgid "Everyone joins through an invite from a member. A member is connected when their chain of inviters reaches an administrator or coordinator through accounts that are not suspended. Only connected Supporters are notified about groups and can see Heroes’ details. Suspending someone also freezes everyone below them until you re-attach those people to another member."
 msgstr ""
 
-#: includes/class-uh-admin.php:621
+#: includes/class-uh-admin.php:626
 msgid "Tree"
 msgstr ""
 
-#: includes/class-uh-admin.php:621
+#: includes/class-uh-admin.php:626
 msgid "Needs review"
 msgstr ""
 
-#: includes/class-uh-admin.php:621
+#: includes/class-uh-admin.php:626
 msgid "Problem reports"
 msgstr ""
 
-#: includes/class-uh-admin.php:621
+#: includes/class-uh-admin.php:626
 msgid "Invites"
 msgstr ""
 
-#: includes/class-uh-admin.php:638
+#: includes/class-uh-admin.php:643
 msgid "Supporters waiting for approval"
 msgstr ""
 
-#: includes/class-uh-admin.php:640
+#: includes/class-uh-admin.php:645
 msgid "Nobody is waiting."
 msgstr ""
 
-#: includes/class-uh-admin.php:642
-#: includes/class-uh-admin.php:770
+#: includes/class-uh-admin.php:647
+#: includes/class-uh-admin.php:775
 msgid "Invited by"
 msgstr ""
 
-#: includes/class-uh-admin.php:642
+#: includes/class-uh-admin.php:647
 msgid "About"
 msgstr ""
 
-#: includes/class-uh-admin.php:645
+#: includes/class-uh-admin.php:650
 msgid "Approve"
 msgstr ""
 
-#: includes/class-uh-admin.php:649
+#: includes/class-uh-admin.php:654
 msgid "Members who are not connected"
 msgstr ""
 
-#: includes/class-uh-admin.php:657
+#: includes/class-uh-admin.php:662
 msgid "Everyone is connected."
 msgstr ""
 
-#: includes/class-uh-admin.php:659
+#: includes/class-uh-admin.php:664
 msgid "Member"
 msgstr ""
 
-#: includes/class-uh-admin.php:659
+#: includes/class-uh-admin.php:664
 msgid "Why"
 msgstr ""
 
-#: includes/class-uh-admin.php:659
+#: includes/class-uh-admin.php:664
 msgid "Actions"
 msgstr ""
 
-#: includes/class-uh-admin.php:663
+#: includes/class-uh-admin.php:668
 msgid "Suspended"
 msgstr ""
 
-#: includes/class-uh-admin.php:665
+#: includes/class-uh-admin.php:670
 msgid "Nobody invited them (e.g. signed up through the WordPress form)"
 msgstr ""
 
-#: includes/class-uh-admin.php:668
+#: includes/class-uh-admin.php:673
 #, php-format
 msgid "Their inviter chain is broken (%s is suspended, deleted or not connected)"
 msgstr ""
 
-#: includes/class-uh-admin.php:705
+#: includes/class-uh-admin.php:710
 #: includes/class-uh-install.php:229
 msgid "Coordinator"
 msgstr ""
 
-#: includes/class-uh-admin.php:711
+#: includes/class-uh-admin.php:716
 msgid "Hero"
 msgstr ""
 
-#: includes/class-uh-admin.php:713
+#: includes/class-uh-admin.php:718
 #: includes/class-uh-frontend.php:1037
 msgid "suspended"
 msgstr ""
 
-#: includes/class-uh-admin.php:713
+#: includes/class-uh-admin.php:718
 msgid "not connected"
 msgstr ""
 
-#: includes/class-uh-admin.php:715
+#: includes/class-uh-admin.php:720
 #, php-format
 msgid "invite note: “%s”"
 msgstr ""
 
-#: includes/class-uh-admin.php:718
+#: includes/class-uh-admin.php:723
 msgid "on hold (report)"
 msgstr ""
 
-#: includes/class-uh-admin.php:720
+#: includes/class-uh-admin.php:725
 msgid "waiting for approval"
 msgstr ""
 
-#: includes/class-uh-admin.php:733
+#: includes/class-uh-admin.php:738
 msgid "Unsuspend"
 msgstr ""
 
-#: includes/class-uh-admin.php:735
+#: includes/class-uh-admin.php:740
 msgid "Suspend this member? They are logged out and cannot log in, help or invite."
 msgstr ""
 
-#: includes/class-uh-admin.php:735
+#: includes/class-uh-admin.php:740
 msgid "Suspend"
 msgstr ""
 
-#: includes/class-uh-admin.php:737
+#: includes/class-uh-admin.php:742
 msgid "Suspend this member AND everyone they invited, directly or indirectly?"
 msgstr ""
 
-#: includes/class-uh-admin.php:737
+#: includes/class-uh-admin.php:742
 msgid "Suspend with branch"
 msgstr ""
 
-#: includes/class-uh-admin.php:741
+#: includes/class-uh-admin.php:746
 msgid "Make Supporter"
 msgstr ""
 
-#: includes/class-uh-admin.php:743
+#: includes/class-uh-admin.php:748
 msgid "Re-attach under…"
 msgstr ""
 
-#: includes/class-uh-admin.php:757
+#: includes/class-uh-admin.php:762
 msgid "Invite link:"
 msgstr ""
 
-#: includes/class-uh-admin.php:759
+#: includes/class-uh-admin.php:764
 msgid "Create an invite"
 msgstr ""
 
-#: includes/class-uh-admin.php:760
-#: includes/class-uh-admin.php:770
+#: includes/class-uh-admin.php:765
+#: includes/class-uh-admin.php:775
 msgid "For"
 msgstr ""
 
-#: includes/class-uh-admin.php:764
+#: includes/class-uh-admin.php:769
 msgid "Note (who is it for)"
 msgstr ""
 
-#: includes/class-uh-admin.php:764
+#: includes/class-uh-admin.php:769
 #: includes/class-uh-frontend.php:1021
 msgid "Uses"
 msgstr ""
 
-#: includes/class-uh-admin.php:764
+#: includes/class-uh-admin.php:769
 #: includes/class-uh-frontend.php:1022
 msgid "Valid days"
 msgstr ""
 
-#: includes/class-uh-admin.php:765
+#: includes/class-uh-admin.php:770
 msgid "Tip: a multi-use Hero invite can be given to hospital staff for one ward. Each person who uses it is recorded as invited by you."
 msgstr ""
 
-#: includes/class-uh-admin.php:766
+#: includes/class-uh-admin.php:771
 msgid "Create invite"
 msgstr ""
 
-#: includes/class-uh-admin.php:770
+#: includes/class-uh-admin.php:775
 msgid "Used"
 msgstr ""
 
-#: includes/class-uh-admin.php:770
+#: includes/class-uh-admin.php:775
 msgid "Valid until"
 msgstr ""
 
-#: includes/class-uh-admin.php:773
+#: includes/class-uh-admin.php:778
 msgid "No invites yet."
 msgstr ""
 
-#: includes/class-uh-admin.php:778
+#: includes/class-uh-admin.php:783
 #: includes/class-uh-frontend.php:1048
 msgid "open"
 msgstr ""
 
-#: includes/class-uh-admin.php:778
+#: includes/class-uh-admin.php:783
 #: includes/class-uh-frontend.php:1048
 msgid "cancelled"
 msgstr ""
 
-#: includes/class-uh-admin.php:778
+#: includes/class-uh-admin.php:783
 #: includes/class-uh-frontend.php:1048
 msgid "used"
 msgstr ""
 
-#: includes/class-uh-admin.php:778
+#: includes/class-uh-admin.php:783
 #: includes/class-uh-frontend.php:1048
 msgid "expired"
 msgstr ""
 
-#: includes/class-uh-admin.php:780
+#: includes/class-uh-admin.php:785
 msgid "Cancel"
 msgstr ""
 
-#: includes/class-uh-admin.php:790
+#: includes/class-uh-admin.php:795
 msgid "No problem reports."
 msgstr ""
 
-#: includes/class-uh-admin.php:793
+#: includes/class-uh-admin.php:798
 msgid "When a Hero reports a problem, the Supporter is put on hold at once: no new groups and no Heroes’ details. Clear the report to lift the hold, or suspend the Supporter."
 msgstr ""
 
-#: includes/class-uh-admin.php:794
+#: includes/class-uh-admin.php:799
 msgid "When"
 msgstr ""
 
-#: includes/class-uh-admin.php:794
+#: includes/class-uh-admin.php:799
 msgid "Visit"
 msgstr ""
 
-#: includes/class-uh-admin.php:794
+#: includes/class-uh-admin.php:799
 msgid "What happened"
 msgstr ""
 
-#: includes/class-uh-admin.php:799
+#: includes/class-uh-admin.php:804
 msgid "What you found / did"
 msgstr ""
 
-#: includes/class-uh-admin.php:799
+#: includes/class-uh-admin.php:804
 msgid "Clear and lift hold"
 msgstr ""
 
-#: includes/class-uh-admin.php:799
+#: includes/class-uh-admin.php:804
 msgid "Suspend this Supporter?"
 msgstr ""
 
-#: includes/class-uh-admin.php:799
+#: includes/class-uh-admin.php:804
 msgid "Suspend Supporter"
 msgstr ""
 
