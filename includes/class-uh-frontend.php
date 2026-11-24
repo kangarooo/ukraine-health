@@ -485,6 +485,21 @@ class UH_Frontend {
 		return $html . '</select>';
 	}
 
+	/** "Map" link for a group row (has hospital_name, hospital_address, city, place_id, maps_url). */
+	private static function map_link( $g ) {
+		$h = (object) array(
+			'name'     => $g->hospital_name,
+			'address'  => $g->hospital_address ?? '',
+			'city'     => $g->city,
+			'country'  => $g->country ?? '',
+			'place_id' => $g->place_id ?? '',
+			'maps_url' => $g->maps_url ?? '',
+			'lat'      => $g->lat ?? null,
+			'lng'      => $g->lng ?? null,
+		);
+		return '<a href="' . esc_url( UH_Repo::maps_url( $h ) ) . '" target="_blank" rel="noopener">' . esc_html__( 'Map', 'ukraine-health' ) . '</a>';
+	}
+
 	private static function fmt_date( $mysql ) {
 		return $mysql ? mysql2date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $mysql ) : '—';
 	}
@@ -821,7 +836,7 @@ class UH_Frontend {
 			}
 			foreach ( $groups as $g ) {
 				$out .= '<div class="uh-card"><div class="uh-card-head"><strong>' . esc_html( UH_Install::svc( $g->service_name ) ) . '</strong> ' . self::badge( $g->status ) . '</div>';
-				$out .= '<div class="uh-meta">' . esc_html( $g->hospital_name . ', ' . $g->city ) . ' · 📅 ' . esc_html( self::fmt_date( $g->appointment ) ) . '</div>';
+				$out .= '<div class="uh-meta">' . esc_html( $g->hospital_name . ', ' . $g->city ) . ' · 📅 ' . esc_html( self::fmt_date( $g->appointment ) ) . ' · ' . self::map_link( $g ) . '</div>';
 				$open = UH_Privacy::contact_open( $g );
 				if ( 'assigned' === $g->status && ! $open ) {
 					$out .= '<p class="uh-help">' . esc_html( sprintf( __( 'To protect the Heroes, their wards and phone numbers appear here from %s.', 'ukraine-health' ), self::fmt_date( UH_Privacy::contact_opens_at( $g ) ) ) ) . '</p>';
@@ -858,7 +873,7 @@ class UH_Frontend {
 		foreach ( $groups as $g ) {
 			$pct  = min( 100, round( 100 * $g->members / max( 1, $g->min_group ) ) );
 			$out .= '<div class="uh-card ' . ( 'ready' === $g->status ? 'uh-card-ready' : '' ) . '"><div class="uh-card-head"><strong>' . esc_html( UH_Install::svc( $g->service_name ) ) . '</strong> ' . self::badge( $g->status ) . '</div>';
-			$out .= '<div class="uh-meta">' . esc_html( $g->hospital_name . ', ' . $g->city ) . ( $g->visiting_hours ? ' · ' . esc_html( sprintf( __( 'Visiting hours: %s', 'ukraine-health' ), $g->visiting_hours ) ) : '' ) . '</div>';
+			$out .= '<div class="uh-meta">' . esc_html( $g->hospital_name . ', ' . $g->city ) . ( $g->visiting_hours ? ' · ' . esc_html( sprintf( __( 'Visiting hours: %s', 'ukraine-health' ), $g->visiting_hours ) ) : '' ) . ' · ' . self::map_link( $g ) . '</div>';
 			$out .= '<div class="uh-progress"><span style="width:' . (int) $pct . '%"></span></div><div class="uh-meta">' . esc_html( sprintf( __( '%1$d of %2$d Heroes', 'ukraine-health' ), $g->members, $g->min_group ) ) . '</div>';
 			$out .= '<form method="post" class="uh-accept">' . $this->hidden( 'accept' ) . '<input type="hidden" name="group_id" value="' . (int) $g->id . '">';
 			$out .= '<label class="uh-field uh-small">' . esc_html__( 'Date & time', 'ukraine-health' ) . ' <input type="datetime-local" name="appointment" min="' . esc_attr( $min_dt ) . '" required></label>';

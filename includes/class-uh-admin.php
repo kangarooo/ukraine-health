@@ -23,6 +23,22 @@ class UH_Admin {
 		if ( false !== strpos( $hook, 'ukraine-health' ) ) {
 			wp_enqueue_style( 'uh-admin', UH_URL . 'assets/uh-admin.css', array(), UH_VERSION );
 		}
+		if ( false !== strpos( $hook, 'ukraine-health-hospitals' ) ) {
+			wp_enqueue_script( 'uh-admin-maps', UH_URL . 'assets/uh-admin-maps.js', array(), UH_VERSION, true );
+			wp_localize_script(
+				'uh-admin-maps',
+				'UHMaps',
+				array(
+					'locale'    => substr( get_user_locale(), 0, 2 ),
+					'searching' => __( 'Searching OpenStreetMap…', 'ukraine-health' ),
+					'noMatch'   => __( 'No place found. Try another spelling, add the city, or type the details yourself.', 'ukraine-health' ),
+					'failed'    => __( 'OpenStreetMap could not be reached. Please try again in a moment.', 'ukraine-health' ),
+					'pick'      => __( 'Use this', 'ukraine-health' ),
+					'hospital'  => __( 'hospital', 'ukraine-health' ),
+					'picked'    => __( 'Filled in from OpenStreetMap. Check the details before you save.', 'ukraine-health' ),
+				)
+			);
+		}
 	}
 
 	public function menu() {
@@ -94,6 +110,10 @@ class UH_Admin {
 					'contact_email'  => sanitize_email( $p['contact_email'] ?? '' ),
 					'visiting_hours' => sanitize_text_field( $p['visiting_hours'] ?? '' ),
 					'notify_contact' => empty( $p['notify_contact'] ) ? 0 : 1,
+					'place_id'       => preg_replace( '#[^a-z0-9:/]#', '', (string) ( $p['place_id'] ?? '' ) ), // e.g. "osm:way/123".
+					'maps_url'       => esc_url_raw( $p['maps_url'] ?? '' ),
+					'lat'            => is_numeric( $p['lat'] ?? '' ) ? max( -90, min( 90, (float) $p['lat'] ) ) : null,
+					'lng'            => is_numeric( $p['lng'] ?? '' ) ? max( -180, min( 180, (float) $p['lng'] ) ) : null,
 					'active'  => empty( $p['active'] ) ? 0 : 1,
 				);
 				if ( '' === $row['name'] ) {
@@ -468,9 +488,20 @@ class UH_Admin {
 		$this->msg();
 		echo '<div class="uh-cols"><div><table class="widefat striped"><thead><tr><th>' . esc_html__( 'Name', 'ukraine-health' ) . '</th><th>' . esc_html__( 'City', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Country', 'ukraine-health' ) . '</th><th>' . esc_html__( 'Active', 'ukraine-health' ) . '</th><th></th></tr></thead><tbody>';
 		foreach ( UH_Repo::hospitals( false ) as $h ) {
-			echo '<tr><td><a href="' . esc_url( admin_url( 'admin.php?page=ukraine-health-hospitals&edit=' . (int) $h->id ) ) . '">' . esc_html( $h->name ) . '</a><br><small>' . esc_html( $h->address ) . '</small></td><td>' . esc_html( $h->city ) . '</td><td>' . esc_html( $h->country ) . '</td><td>' . ( $h->active ? '✓' : '—' ) . '</td><td><form method="post" onsubmit="return confirm(\'Delete?\')">' . $this->field( 'hospital_delete' ) . '<input type="hidden" name="id" value="' . (int) $h->id . '"><button class="button-link-delete">' . esc_html__( 'Delete', 'ukraine-health' ) . '</button></form></td></tr>'; // phpcs:ignore
+			echo '<tr><td><a href="' . esc_url( admin_url( 'admin.php?page=ukraine-health-hospitals&edit=' . (int) $h->id ) ) . '">' . esc_html( $h->name ) . '</a><br><small>' . esc_html( $h->address ) . ' · <a href="' . esc_url( UH_Repo::maps_url( $h ) ) . '" target="_blank" rel="noopener">' . esc_html__( 'Map', 'ukraine-health' ) . '</a>' . ( $h->place_id ? ' ✓' : '' ) . '</small></td><td>' . esc_html( $h->city ) . '</td><td>' . esc_html( $h->country ) . '</td><td>' . ( $h->active ? '✓' : '—' ) . '</td><td><form method="post" onsubmit="return confirm(\'Delete?\')">' . $this->field( 'hospital_delete' ) . '<input type="hidden" name="id" value="' . (int) $h->id . '"><button class="button-link-delete">' . esc_html__( 'Delete', 'ukraine-health' ) . '</button></form></td></tr>'; // phpcs:ignore
 		}
-		echo '</tbody></table></div><div class="uh-panel"><h2>' . ( $e ? esc_html__( 'Edit hospital', 'ukraine-health' ) : esc_html__( 'Add hospital', 'ukraine-health' ) ) . '</h2><form method="post">' . $this->field( 'hospital_save' ) . '<input type="hidden" name="id" value="' . (int) ( $e->id ?? 0 ) . '">'; // phpcs:ignore
+		echo '</tbody></table></div><div class="uh-panel"><h2>' . ( $e ? esc_html__( 'Edit hospital', 'ukraine-health' ) : esc_html__( 'Add hospital', 'ukraine-health' ) ) . '</h2>';
+		if ( $e ) {
+			echo '<p><a class="button" href="' . esc_url( admin_url( 'admin.php?page=ukraine-health-hospitals' ) ) . '">+ ' . esc_html__( 'Add a new hospital instead', 'ukraine-health' ) . '</a></p>';
+		}
+		echo '<form method="post" id="uh-hospital-form">' . $this->field( 'hospital_save' ) . '<input type="hidden" name="id" value="' . (int) ( $e->id ?? 0 ) . '">'; // phpcs:ignore
+		echo '<div class="uh-finder"><p><label><strong>' . esc_html__( 'Find the hospital on OpenStreetMap', 'ukraine-health' ) . '</strong><br><input type="search" class="regular-text" id="uh-maps-q" placeholder="' . esc_attr__( 'e.g. Stradiņa slimnīca Rīga', 'ukraine-health' ) . '" value="' . esc_attr( $e ? trim( $e->name . ' ' . $e->city ) : '' ) . '" autocomplete="off"></label> <button type="button" class="button" id="uh-maps-search">' . esc_html__( 'Search', 'ukraine-health' ) . '</button></p>';
+		echo '<p class="description">' . esc_html__( 'Pick the right place from the results: its official name, address, city and country are filled in and it is pinned on the map. No account or key needed.', 'ukraine-health' ) . '</p>';
+		echo '<p class="uh-maps-msg" aria-live="polite"></p><ul class="uh-maps-results" id="uh-maps-results"></ul><div class="uh-maps-frame" id="uh-maps-frame"' . ( $e && null !== $e->lat ? ' data-lat="' . esc_attr( $e->lat ) . '" data-lng="' . esc_attr( $e->lng ) . '"' : '' ) . '></div>';
+		echo '<p><a id="uh-maps-open" href="' . esc_url( $e ? UH_Repo::maps_url( $e ) : 'https://www.openstreetmap.org/' ) . '" target="_blank" rel="noopener">' . esc_html__( 'Open in OpenStreetMap', 'ukraine-health' ) . ' ↗</a> <span class="uh-maps-attrib">© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a></span></p></div>';
+		foreach ( array( 'place_id', 'maps_url', 'lat', 'lng' ) as $k ) {
+			echo '<input type="hidden" name="' . esc_attr( $k ) . '" value="' . esc_attr( $e->$k ?? '' ) . '">';
+		}
 		foreach ( array( 'name' => __( 'Name', 'ukraine-health' ), 'country' => __( 'Country', 'ukraine-health' ), 'city' => __( 'City', 'ukraine-health' ), 'address' => __( 'Address', 'ukraine-health' ), 'visiting_hours' => __( 'Visiting hours (shown to Heroes and Supporters)', 'ukraine-health' ), 'contact' => __( 'Contact person / phone', 'ukraine-health' ), 'contact_email' => __( 'Contact person email', 'ukraine-health' ) ) as $k => $l ) {
 			echo '<p><label>' . esc_html( $l ) . '<br><input class="regular-text" type="text" name="' . esc_attr( $k ) . '" value="' . esc_attr( $e->$k ?? ( 'country' === $k ? 'Latvia' : '' ) ) . '" ' . ( 'name' === $k ? 'required' : '' ) . '></label></p>';
 		}

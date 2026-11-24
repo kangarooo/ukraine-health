@@ -24,6 +24,23 @@ class UH_Repo {
 		return $wpdb->get_results( 'SELECT * FROM ' . self::t( 'hospitals' ) . " $where ORDER BY country, city, name" ); // phpcs:ignore
 	}
 
+	/** OpenStreetMap link for a hospital: a pin at its saved location, else a search for its name and address. */
+	public static function maps_url( $h ) {
+		if ( ! $h ) {
+			return '';
+		}
+		if ( isset( $h->lat, $h->lng ) && '' !== (string) $h->lat && '' !== (string) $h->lng ) {
+			$lat = (float) $h->lat;
+			$lng = (float) $h->lng;
+			return sprintf( 'https://www.openstreetmap.org/?mlat=%1$.6F&mlon=%2$.6F#map=17/%1$.6F/%2$.6F', $lat, $lng );
+		}
+		if ( ! empty( $h->maps_url ) ) {
+			return $h->maps_url;
+		}
+		$q = trim( $h->name . ', ' . $h->address . ', ' . $h->city . ', ' . $h->country, ' ,' );
+		return 'https://www.openstreetmap.org/search?query=' . rawurlencode( $q );
+	}
+
 	public static function hospital( $id ) {
 		global $wpdb;
 		return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . self::t( 'hospitals' ) . ' WHERE id=%d', $id ) );
@@ -92,7 +109,7 @@ class UH_Repo {
 			$where[] = 'g.supporter_id=%d';
 			$vals[]  = (int) $args['supporter_id'];
 		}
-		$sql = 'SELECT g.*, s.name AS service_name, s.min_group, s.category, s.chat_url, h.name AS hospital_name, h.city, h.country, h.visiting_hours,
+		$sql = 'SELECT g.*, s.name AS service_name, s.min_group, s.category, s.chat_url, h.name AS hospital_name, h.city, h.country, h.visiting_hours, h.address AS hospital_address, h.place_id, h.maps_url, h.lat, h.lng,
 				(SELECT COUNT(*) FROM ' . self::t( 'requests' ) . " r WHERE r.group_id=g.id AND r.status<>'withdrawn') AS members
 			FROM " . self::t( 'groups' ) . ' g
 			JOIN ' . self::t( 'services' ) . ' s ON s.id=g.service_id

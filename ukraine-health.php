@@ -3,7 +3,7 @@
  * Plugin Name:       Ukraine Health – Hero Support
  * Plugin URI:        https://github.com/kangarooo/ukraine-health
  * Description:       Connects Heroes (patients in rehabilitation) with Supporters (hairdressers, nail care, clothing, care products, mobility aids…). Requests are grouped per hospital and service; when a group reaches its minimum size, matching Supporters are notified (email, Telegram, WhatsApp) and can accept it with an appointment date.
- * Version:           1.2.0
+ * Version:           1.3.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            kangarooo
@@ -15,8 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'UH_VERSION', '1.2.0' );
-define( 'UH_DB_VERSION', '3' );
+define( 'UH_VERSION', '1.3.0' );
+define( 'UH_DB_VERSION', '4' );
 define( 'UH_FILE', __FILE__ );
 define( 'UH_DIR', plugin_dir_path( __FILE__ ) );
 define( 'UH_URL', plugin_dir_url( __FILE__ ) );

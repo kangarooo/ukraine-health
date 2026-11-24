@@ -18,3 +18,10 @@
 .uh-admin .uh-node-actions { display: inline-flex; flex-wrap: wrap; gap: 6px; margin-left: 8px; vertical-align: middle; }
 .uh-admin .uh-inline-form { display: inline-flex; gap: 4px; align-items: center; }
 .uh-admin .uh-badge.uh-cancelled { background: #f1f1f1; color: #777; }
+.uh-admin .uh-finder { background: #f6f7f7; border: 1px solid #dcdcde; border-radius: 6px; padding: 4px 12px 8px; margin-bottom: 12px; }
+.uh-admin .uh-maps-frame iframe { width: 100%; height: 260px; border: 0; border-radius: 6px; }
+.uh-admin .uh-maps-msg { color: #1e7e34; font-weight: 600; min-height: 1em; margin: 4px 0; }
+.uh-admin .uh-maps-results { margin: 4px 0 8px; max-height: 260px; overflow: auto; }
+.uh-admin .uh-maps-results li { display: flex; gap: 8px; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid #e5e5e5; }
+.uh-admin .uh-maps-results small { color: #50575e; }
+.uh-admin .uh-maps-attrib { color: #50575e; font-size: 12px; margin-left: 8px; }
