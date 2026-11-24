@@ -1,0 +1,13 @@
+.uh-admin .uh-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 16px 0 24px; }
+.uh-admin .uh-kpi { background: #fff; border: 1px solid #dcdcde; border-radius: 8px; padding: 16px; }
+.uh-admin .uh-kpi b { display: block; font-size: 28px; line-height: 1.1; color: #0057b7; }
+.uh-admin .uh-kpi span { color: #50575e; }
+.uh-admin .uh-kpi.is-hot { border-color: #dba617; box-shadow: inset 4px 0 0 #ffd700; }
+.uh-admin .uh-cols { display: grid; grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr); gap: 20px; align-items: start; }
+.uh-admin .uh-panel { background: #fff; border: 1px solid #dcdcde; border-radius: 8px; padding: 4px 16px 12px; margin-bottom: 16px; }
+.uh-admin .uh-badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #f0f0f1; vertical-align: middle; }
+.uh-admin .uh-badge.uh-ready { background: #ffd700; }
+.uh-admin .uh-badge.uh-assigned { background: #d9e8fb; color: #00408a; }
+.uh-admin .uh-badge.uh-completed { background: #e7f5ea; color: #1e7e34; }
+.uh-admin form { margin: 0; }
+@media (max-width: 960px) { .uh-admin .uh-cols { grid-template-columns: 1fr; } }

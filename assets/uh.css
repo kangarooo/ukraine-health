@@ -1,0 +1,84 @@
+/* Ukraine Health – front end. Uses theme fonts; blue/yellow accents. */
+.uh {
+	--uh-blue: #0057b7;
+	--uh-blue-dark: #00408a;
+	--uh-yellow: #ffd700;
+	--uh-ink: #1d2327;
+	--uh-muted: #5f6b76;
+	--uh-line: #d7dde3;
+	--uh-bg: #f6f8fa;
+	--uh-ok: #1e7e34;
+	--uh-err: #b32d2e;
+	max-width: 760px;
+	margin: 0 auto;
+	color: var(--uh-ink);
+}
+.uh *, .uh *::before, .uh *::after { box-sizing: border-box; }
+.uh h3 { display: flex; align-items: center; gap: .5em; margin: 1.6em 0 .6em; font-size: 1.15em; }
+.uh-step { display: inline-grid; place-items: center; width: 1.7em; height: 1.7em; border-radius: 50%; background: var(--uh-blue); color: #fff; font-size: .85em; font-weight: 700; }
+.uh-help { color: var(--uh-muted); font-size: .92em; margin: 0 0 .8em; }
+.uh-field { display: block; margin: 0 0 .9em; font-weight: 600; font-size: .95em; flex: 1 1 200px; }
+.uh-field input, .uh-field select, .uh-field textarea {
+	display: block; width: 100%; margin-top: .3em; padding: .65em .75em; font: inherit; font-weight: 400;
+	border: 1px solid var(--uh-line); border-radius: 8px; background: #fff; color: inherit;
+}
+.uh-field input:focus, .uh-field select:focus, .uh-field textarea:focus { outline: 2px solid var(--uh-blue); outline-offset: 1px; border-color: var(--uh-blue); }
+.uh-small { flex: 0 1 140px; }
+.uh-row { display: flex; flex-wrap: wrap; gap: 0 1em; }
+.uh-check { display: flex; gap: .55em; align-items: flex-start; margin: .5em 0; font-size: .95em; }
+.uh-check input { margin-top: .25em; }
+.uh fieldset { border: 0; padding: 0; margin: 0 0 1.1em; min-width: 0; }
+.uh legend { font-weight: 700; margin-bottom: .5em; padding: 0; }
+.uh-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: .6em; }
+.uh-tile {
+	position: relative; display: flex; flex-direction: column; gap: .15em; padding: .8em .9em .8em 2.4em;
+	border: 1.5px solid var(--uh-line); border-radius: 10px; background: #fff; cursor: pointer; transition: border-color .15s, background .15s;
+}
+.uh-tile:hover { border-color: var(--uh-blue); }
+.uh-tile input { position: absolute; left: .85em; top: 1em; accent-color: var(--uh-blue); width: 1.05em; height: 1.05em; }
+.uh-tile.is-checked, .uh-tile:has(input:checked) { border-color: var(--uh-blue); background: #eef4fc; }
+.uh-tile-name { font-weight: 600; line-height: 1.25; }
+.uh-tile-min, .uh-tile-count { font-size: .8em; color: var(--uh-muted); }
+.uh-tile-count:empty { display: none; }
+.uh-tile-count { color: var(--uh-blue-dark); font-weight: 600; }
+.uh-sizes { background: var(--uh-bg); border-radius: 10px; padding: 1em !important; }
+.uh-btn { display: inline-block; padding: .75em 1.4em; border-radius: 8px; border: 0; font: inherit; font-weight: 700; cursor: pointer; text-decoration: none; }
+.uh-btn-primary { background: var(--uh-blue); color: #fff; }
+.uh-btn-primary:hover { background: var(--uh-blue-dark); color: #fff; }
+.uh-btn-primary:disabled { opacity: .6; cursor: progress; }
+.uh-btn-link { background: none; color: var(--uh-err); padding: .3em 0; font-weight: 600; text-decoration: underline; }
+.uh-notice { padding: .85em 1em; border-radius: 8px; margin: 0 0 1em; font-weight: 600; }
+.uh-ok { background: #e7f5ea; color: var(--uh-ok); border-left: 4px solid var(--uh-ok); }
+.uh-err { background: #fbeaea; color: var(--uh-err); border-left: 4px solid var(--uh-err); }
+.uh-card { border: 1px solid var(--uh-line); border-radius: 12px; padding: 1em 1.1em; margin: 0 0 .9em; background: #fff; word-break: break-word; }
+.uh-card-ready { border: 2px solid var(--uh-yellow); box-shadow: 0 0 0 3px rgba(255, 215, 0, .18); }
+.uh-card-head { display: flex; justify-content: space-between; align-items: center; gap: .6em; flex-wrap: wrap; }
+.uh-meta { color: var(--uh-muted); font-size: .9em; margin-top: .25em; }
+.uh-when { margin-top: .5em; font-weight: 700; }
+.uh-progress { height: 8px; border-radius: 4px; background: #e6ebf0; overflow: hidden; margin-top: .7em; }
+.uh-progress span { display: block; height: 100%; background: linear-gradient(90deg, var(--uh-blue), #2f7fe0); }
+.uh-badge { display: inline-block; padding: .2em .65em; border-radius: 999px; font-size: .78em; font-weight: 700; background: #e6ebf0; color: var(--uh-ink); white-space: nowrap; }
+.uh-badge.uh-ready { background: var(--uh-yellow); }
+.uh-badge.uh-assigned { background: #d9e8fb; color: var(--uh-blue-dark); }
+.uh-badge.uh-completed { background: #e7f5ea; color: var(--uh-ok); }
+.uh-badge.uh-cancelled { background: #f1f1f1; color: #777; }
+.uh-tabs { display: flex; gap: .3em; border-bottom: 2px solid var(--uh-line); margin-bottom: 1.2em; overflow-x: auto; }
+.uh-tabs a { padding: .6em 1em; text-decoration: none; color: var(--uh-muted); font-weight: 600; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; }
+.uh-tabs a.is-active { color: var(--uh-blue); border-color: var(--uh-blue); }
+.uh-accept { display: flex; flex-wrap: wrap; gap: 0 .8em; align-items: flex-end; margin-top: .9em; }
+.uh-accept .uh-btn { margin-bottom: .9em; }
+.uh-actions { display: flex; gap: 1em; align-items: center; margin-top: .6em; }
+.uh-inline { display: inline; margin: 0; }
+.uh-members { margin: .7em 0 0 1.2em; padding: 0; font-size: .93em; }
+.uh-members li { margin-bottom: .4em; }
+.uh-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: .8em; max-width: none; }
+.uh-stat { text-align: center; padding: 1.1em .6em; border-radius: 12px; background: var(--uh-bg); }
+.uh-stat-n { display: block; font-size: 2.2em; font-weight: 800; color: var(--uh-blue); line-height: 1.1; }
+.uh-stat-l { font-size: .9em; color: var(--uh-muted); }
+.uh-hp { position: absolute !important; left: -9999px !important; height: 1px; overflow: hidden; }
+.uh-shake { animation: uh-shake .5s; }
+@keyframes uh-shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+@media (max-width: 480px) {
+	.uh-tiles { grid-template-columns: 1fr 1fr; }
+	.uh-btn-primary { width: 100%; }
+}
